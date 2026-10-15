@@ -18,7 +18,7 @@ S5 cerrado termina FAILED a 7200 s antes de otra decisión; el abierto conserva 
 
 Repositorio: https://github.com/elvistec76/piscicultura-control
 
-Rama: `codex/implementacion-spc-agua-0.5.0`. No se integró a main, no se desplegó y se mantuvo la visibilidad pública previamente existente. La Pull Request se entrega como borrador para revisión.
+Rama: `codex/implementacion-spc-agua-0.5.0`. No se integró a main, no se desplegó y se mantuvo la visibilidad pública previamente existente. Pull Request en borrador para revisión: https://github.com/elvistec76/piscicultura-control/pull/1 .
 
 Base documental: `f69f4d8`. Commits incrementales: `01f765c` (núcleo), `b200a5c` (servicios/persistencia/aplicación), `155ea6725393816d14eead4b24b343df60bd993d` (núcleo numérico y transaccional de la matriz completa), `6cd7b08c5b82e73826885af6833cfbbb7084fc7b` (presentación final, reproducción y evidencia). Las ecuaciones y el motor numérico no cambiaron después de `155ea67`. Los hashes del código entregado constan en `evidence/source_manifest.json`; la entrega posterior agrega documentos y datos de evidencia. Los XML identifican cada prueba efectiva; las ampliaciones de interfaz y comprobación de volúmenes se volvieron a ejecutar en la suite corta limpia.
 
