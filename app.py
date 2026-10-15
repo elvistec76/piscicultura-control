@@ -26,14 +26,15 @@ if 'profiles' not in st.session_state: st.session_state.profiles=deepcopy(DEFAUL
 config_tab,execution_tab,compare_tab,history_tab=st.tabs(['Configuración','Ejecución y evolución','Comparación','Historial y exportación'])
 with config_tab:
     col1,col2,col3=st.columns(3)
-    choice=col1.selectbox('Perfil de especie',range(len(st.session_state.profiles)),format_func=lambda i:st.session_state.profiles[i]['name'])
+    profiles=st.session_state.profiles
+    choice=col1.selectbox('Perfil de especie',range(len(profiles)),format_func=lambda i:profiles[i]['name'])
     scenario=col2.selectbox('Escenario',list(SCENARIOS),format_func=lambda x:x+' · '+SCENARIOS[x],index=1)
     mode=col3.selectbox('Estrategia',list(STRATEGY))
     profile=st.session_state.profiles[choice]
     st.write(f"**{profile['scientific_name']}** · Crecimiento o engorde")
     if st.button('Duplicar perfil para editar'):
         st.session_state.profiles.append(duplicate_profile(profile,profile['name']+' · copia'))
-        st.success('Copia añadida al selector. Los resultados históricos conservan su configuración.')
+        st.rerun()
     c=make_config(min(choice,2),scenario,STRATEGY[mode]);c['profile']=deepcopy(profile)
     st.caption('Referencias térmicas derivadas de antecedentes; bandas, alarmas y restantes consignas demostrativas. Unidades canónicas visibles en cada campo.')
     with st.form('configuration'):
@@ -111,12 +112,17 @@ with execution_tab:
     if rid:
         run=repo.get(rid);cols=st.columns(5)
         try:
-            if cols[0].button('Avanzar un intervalo',disabled=run['status'] not in ['PREPARED','RUNNING']): service.advance(rid,uuid.uuid4().hex,run['step'])
-            if cols[1].button('Pausar',disabled=run['status']!='RUNNING'): service.pause(rid)
-            if cols[2].button('Continuar',disabled=run['status']!='PAUSED'): service.resume(rid)
-            if cols[3].button('Detener',disabled=run['status'] not in ['PREPARED','RUNNING','PAUSED']): service.stop(rid)
+            if cols[0].button('Avanzar un intervalo',disabled=run['status'] not in ['PREPARED','RUNNING']):
+                service.advance(rid,uuid.uuid4().hex,run['step']);st.rerun()
+            if cols[1].button('Pausar',disabled=run['status']!='RUNNING'):
+                service.pause(rid);st.rerun()
+            if cols[2].button('Continuar',disabled=run['status']!='PAUSED'):
+                service.resume(rid);st.rerun()
+            if cols[3].button('Detener',disabled=run['status'] not in ['PREPARED','RUNNING','PAUSED']):
+                service.stop(rid);st.rerun()
             if cols[4].button('Ejecutar hasta terminar',disabled=run['status'] not in ['PREPARED','RUNNING']):
                 with st.spinner('Calculando y guardando intervalos…'): service.run_all(rid)
+                st.rerun()
         except (ValueError,RuntimeError) as exc: st.error(str(exc))
         show_run(rid,'active')
     else: st.info('Prepare una corrida en Configuración. Consultar esta pestaña no integra el proceso.')

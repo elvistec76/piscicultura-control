@@ -3,6 +3,8 @@ import json
 import os
 import platform
 import sqlite3
+import threading
+from functools import wraps
 from pathlib import Path
 from contextlib import contextmanager
 from datetime import datetime,timezone
@@ -25,11 +27,19 @@ def owner_alive(owner):
     except (OSError,ValueError,IndexError): return False
 
 
+def serialized(method):
+    @wraps(method)
+    def wrapped(self,*args,**kwargs):
+        with self.lock: return method(self,*args,**kwargs)
+    return wrapped
+
+
 class SQLiteRepository:
     def __init__(self,path='work/piscicultura.sqlite'):
+        self.lock=threading.RLock()
         self.path=str(path)
         Path(path).parent.mkdir(parents=True,exist_ok=True)
-        self.db=sqlite3.connect(self.path)
+        self.db=sqlite3.connect(self.path,check_same_thread=False)
         self.db.execute('PRAGMA foreign_keys=ON')
         self.db.execute('PRAGMA journal_mode=WAL')
         self.db.execute('PRAGMA synchronous=NORMAL')
@@ -49,16 +59,25 @@ class SQLiteRepository:
         ''')
         self.mark_orphans()
 
+    @serialized
     def mark_orphans(self):
         with self.db:
             for row in self.db.execute("SELECT run_id,owner FROM runs WHERE status IN ('RUNNING','PAUSED')").fetchall():
                 if not owner_alive(row['owner']):
                     self.db.execute("UPDATE runs SET status='INTERRUPTED',cause='PROCESO_PROPIETARIO_AUSENTE' WHERE run_id=?",(row['run_id'],))
 
+    @serialized
     def prepare(self,rid,c,noise,runtime,environment):
         with self.db:
             self.db.execute('INSERT INTO runs VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',(rid,c.document,dumps(noise.tolist()),dumps(environment),runtime.status,'',0,0,dumps(runtime.state.tolist()),None,process_owner(),datetime.now(timezone.utc).isoformat()))
 
+    @serialized
+    def position(self,rid):
+        row=self.db.execute('SELECT step,status,time_s FROM runs WHERE run_id=?',(rid,)).fetchone()
+        if row is None: raise KeyError('Corrida desconocida')
+        return dict(row)
+
+    @serialized
     def get(self,rid):
         row=self.db.execute('SELECT * FROM runs WHERE run_id=?',(rid,)).fetchone()
         if row is None: raise KeyError('Corrida desconocida')
@@ -67,17 +86,21 @@ class SQLiteRepository:
             out[key]=json.loads(out[key]) if out[key] else None
         return out
 
+    @serialized
     def list(self): return [dict(r) for r in self.db.execute('SELECT run_id,status,cause,time_s,step,created_at FROM runs ORDER BY created_at DESC')]
 
+    @serialized
     def records(self,rid,table):
         orders={'samples':'sample_index','decisions':'decision_index','actuator_records':'record_index,actuator_id','events':'event_seq','metrics':'metric_key'}
         if table not in orders: raise ValueError('Tabla no consultable')
         return [json.loads(r[0]) for r in self.db.execute(f'SELECT payload FROM {table} WHERE run_id=? ORDER BY {orders[table]}',(rid,))]
 
+    @serialized
     def receipt(self,rid,command):
         row=self.db.execute('SELECT result FROM command_receipts WHERE run_id=? AND command_id=?',(rid,command)).fetchone()
         return json.loads(row[0]) if row else None
 
+    @serialized
     def commit_step(self,rid,command,expected,r,batch):
         with self.db:
             current=self.db.execute('SELECT step,status FROM runs WHERE run_id=?',(rid,)).fetchone()
@@ -96,19 +119,24 @@ class SQLiteRepository:
             self.db.execute('INSERT INTO command_receipts VALUES (?,?,?,?)',(rid,command,expected,dumps(result)))
         return result
 
+    @serialized
     def set_status(self,rid,status,cause=''):
         with self.db: self.db.execute('UPDATE runs SET status=?,cause=? WHERE run_id=?',(status,cause,rid))
 
+    @serialized
     def save_metrics(self,rid,payload):
         with self.db: self.db.execute('INSERT OR REPLACE INTO metrics VALUES (?,?,?)',(rid,'summary',dumps(payload)))
 
+    @serialized
     def save_comparison(self,cid,payload,members):
         with self.db:
             self.db.execute('INSERT INTO comparisons VALUES (?,?)',(cid,dumps(payload)))
             for strategy,rid in members.items(): self.db.execute('INSERT INTO comparison_members VALUES (?,?,?)',(cid,strategy,rid))
 
+    @serialized
     def acknowledge(self,rid,seq):
         with self.db:
             self.db.execute('INSERT OR IGNORE INTO acknowledgments VALUES (?,?,?)',(rid,seq,datetime.now(timezone.utc).isoformat()))
 
+    @serialized
     def close(self): self.db.close()

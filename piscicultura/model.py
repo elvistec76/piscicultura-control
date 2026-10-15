@@ -43,7 +43,11 @@ def integrate(t,state,end,v,g,d,c,check_domain=True):
             # C y U toleran únicamente el residuo numérico aprobado, sin recorte.
             if j in (1,3): lo=-1e-7
             for bound,direction in [(lo,-1),(hi,1)]:
-                def crossing(t,y,j=j,bound=bound): return y[j]-bound
+                def crossing(t,y,j=j,bound=bound,direction=direction):
+                    distance=y[j]-bound
+                    if distance==0 and direction*rates(t,y,v,g,d,c)[j]<=0:
+                        return -direction*1e-14
+                    return distance
                 crossing.terminal=True; crossing.direction=direction
                 events.append(crossing)
     tc=c['time']

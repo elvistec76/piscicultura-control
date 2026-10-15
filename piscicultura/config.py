@@ -25,7 +25,10 @@ class RunConfig:
 
     @classmethod
     def freeze(cls, draft):
-        validate(draft)
+        try:
+            validate(draft)
+        except (TypeError,KeyError,IndexError,AttributeError,ZeroDivisionError) as exc:
+            raise ValueError('Estructura o campo de configuración inválido: '+str(exc)) from exc
         return cls(json.dumps(draft, ensure_ascii=False, allow_nan=False, sort_keys=True))
 
 
@@ -116,6 +119,7 @@ def validate(c):
             raise ValueError(name+': vector numérico inválido')
     if (c['spec_id'],c['spec_version'],c['model_id'],c['model_version']) != ('SPC-AGUA-001','0.5.0','M-AGUA-DEMO-1','1.0.0'):
         raise ValueError('Identificadores o versiones incompatibles')
+    if c['domain']!=DEFAULTS['domain']: raise ValueError('Dominios matemáticos distintos del modelo aprobado')
     if c['units'] != dict(zip(VARIABLES,UNITS)): raise ValueError('Unidades incompatibles')
     if c['strategy'] not in ['open','closed']: raise ValueError('Estrategia inválida')
     if c['profile']['phase']!='crecimiento_engorde': raise ValueError('Fase fuera de alcance')
@@ -139,7 +143,7 @@ def validate(c):
     if not 3600<=H<=259200 or not 30<=dt<=300 or H%dt!=0: raise ValueError('Horizonte o intervalo inválido')
     if c['time']['solver']!='RK45' or not 0<c['time']['max_step_s']<=min(10,dt/6): raise ValueError('Integrador o paso no aprobado')
     vec(c['time']['atol'],10,'atol')
-    if min(c['time']['atol'])<=0 or c['time']['rtol']<=0: raise ValueError('Tolerancias inválidas')
+    if min(c['time']['atol'])<=0 or not 0<c['time']['rtol']<=1e-7 or any(a>b for a,b in zip(c['time']['atol'],DEFAULTS['time']['atol'])): raise ValueError('Tolerancias inválidas o menos estrictas que el modelo aprobado')
     for key in ['x0','z0','open_commands']:
         vec(c[key],5,key)
     vec(c['profile']['references'],5,'referencias')
@@ -155,7 +159,9 @@ def validate(c):
         for j,v in enumerate(c[key]):
             if not (0 if j in (1,3) else -1)<=v<=1: raise ValueError(key+': calibración o respuesta no realizable')
     from .model import saturation
+    if not np.allclose(c['open_commands'],calibrate(c),rtol=0,atol=1e-12): raise ValueError('Comandos abiertos distintos de la calibración nominal; recalcular explícitamente')
     pr=c['profile']; ctrl=c['controller']
+    if ctrl['algorithm']!='sampled_hysteresis' or ctrl['initial_memory']!=[0]*5: raise ValueError('Algoritmo o memoria inicial no aprobados')
     if pr['references'][1]+ctrl['oxygen_delta_mg_L']>=.98*saturation(pr['operating_bands'][0][1],p['pressure_Pa'],p['salinity_per_mille']):
         raise ValueError('Referencia de oxígeno no realizable a saturación operativa')
     vec(c['sensor']['sigma'],5,'sigma'); vec(c['sensor']['bias'],5,'sesgo')
@@ -171,6 +177,7 @@ def validate(c):
         unit=UNITS[target] if k=='bias' and isinstance(target,int) and 0<=target<5 else EVENT_UNITS.get(k)
         if unit is None or e['unit']!=unit: raise ValueError('Unidad o tipo de evento incompatible')
         if not 0<=a<b<=H or a%dt or b%dt: raise ValueError('Evento fuera de horizonte o malla')
+        if k in ['environment','feed','leak','rain','ph_rate','turbidity_rate'] and target!='water': raise ValueError('Objetivo de perturbación incompatible')
         if k in ['bias','missing','freeze'] and (not isinstance(target,int) or not 0<=target<5): raise ValueError('Sensor inválido')
         if k=='availability' and (not isinstance(target,int) or not 0<=target<8 or not 0<=v<=1): raise ValueError('Disponibilidad inválida')
         if k in ['feed','leak','rain','turbidity_rate'] and v<0: raise ValueError('Tasa negativa')

@@ -5,7 +5,9 @@ import sqlite3
 import platform
 import importlib.metadata
 import numpy as np
+import threading
 from . import __version__
+from .repository import serialized
 from .config import RunConfig
 from .engine import initial,advance
 from .scenarios import noise_table
@@ -19,8 +21,9 @@ def environment():
 
 
 class SimulationService:
-    def __init__(self,repository): self.repo=repository;self.active={}
+    def __init__(self,repository): self.lock=threading.RLock();self.repo=repository;self.active={}
 
+    @serialized
     def prepare(self,draft,noise=None):
         cfg=RunConfig.freeze(draft); c=cfg.data;runtime=initial(c)
         noise=noise_table(c) if noise is None else np.array(noise,copy=True)
@@ -32,6 +35,7 @@ class SimulationService:
         self.active[rid]=(c,noise,runtime)
         return rid
 
+    @serialized
     def advance(self,rid,command_id,expected_step):
         receipt=self.repo.receipt(rid,command_id)
         if receipt:
@@ -40,7 +44,7 @@ class SimulationService:
         if rid not in self.active: raise ValueError('Corrida disponible solo para consulta; sin sesión activa')
         c,noise,old=self.active[rid]
         if old.status not in ['PREPARED','RUNNING'] or old.k!=expected_step: raise ValueError('Conflicto de estado o paso esperado')
-        if self.repo.get(rid)['step']!=old.k: raise ValueError('Conflicto del propietario')
+        if self.repo.position(rid)['step']!=old.k: raise ValueError('Conflicto del propietario')
         new,batch=advance(old,c,noise)
         try: result=self.repo.commit_step(rid,command_id,expected_step,new,batch)
         except sqlite3.Error as exc:
@@ -52,32 +56,38 @@ class SimulationService:
         if new.status in TERMINAL: self.compute_metrics(rid)
         return result
 
+    @serialized
     def pause(self,rid):
         c,n,r=self.active[rid]
         if r.status!='RUNNING': raise ValueError('Solo se pausa una corrida en ejecución')
         self.repo.set_status(rid,'PAUSED');r.status='PAUSED'
 
+    @serialized
     def resume(self,rid):
         c,n,r=self.active[rid]
         if r.status!='PAUSED': raise ValueError('Corrida no pausada')
         self.repo.set_status(rid,'RUNNING');r.status='RUNNING'
 
+    @serialized
     def stop(self,rid):
         c,n,r=self.active[rid]
         if r.status not in ['PREPARED','RUNNING','PAUSED']: raise ValueError('Corrida terminal')
         self.repo.set_status(rid,'STOPPED','DETENCION_SOLICITADA');r.status='STOPPED';r.cause='DETENCION_SOLICITADA';self.compute_metrics(rid)
 
+    @serialized
     def run_all(self,rid):
         c,n,r=self.active[rid]
         while r.status in ['PREPARED','RUNNING']:
             self.advance(rid,f'interval-{r.k}',r.k);r=self.active[rid][2]
         return self.repo.get(rid)
 
+    @serialized
     def compute_metrics(self,rid):
         result=evaluate(self.repo.get(rid),self.repo.records(rid,'samples'),self.repo.records(rid,'actuator_records'))
         self.repo.save_metrics(rid,result)
         return result
 
+    @serialized
     def compare(self,draft):
         from copy import deepcopy
         members={};table=noise_table(draft)

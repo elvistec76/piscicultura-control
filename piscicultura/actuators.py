@@ -21,7 +21,7 @@ def response(z,v,t,tau):
 
 
 def mean_actions(z,v,duration,tau,g):
-    """Intégration séparée à chaque racine; jamais pos(moyenne z)."""
+    """Integración separada en cada raíz; nunca pos(promedio z)."""
     signed={0:(0,1),2:(3,4),4:(6,7)}
     out=np.zeros(8)
     for j,(a,b,q) in enumerate(zip(z,v,tau)):
