@@ -1,0 +1,35 @@
+{
+  "pytest.xml": {
+    "tests": "58",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "381.534"
+  },
+  "clean-environment-tests.xml": {
+    "tests": "17",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "5.615"
+  },
+  "ui-tests.xml": {
+    "tests": "1",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "3.704"
+  },
+  "source_manifest.json": {
+    "files_checked": 29,
+    "mismatches": []
+  },
+  "archive_manifest.json": {
+    "files_checked": 60,
+    "mismatches": []
+  },
+  "document_manifest.json": {
+    "files_checked": 17,
+    "mismatches": []
+  }
+}

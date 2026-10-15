@@ -1,0 +1,22 @@
+{
+  "OBS01": {
+    "rejected_before_run": false,
+    "unhandled_exception": "ValueError: Out of range float values are not JSON compliant: nan",
+    "status": "COMPLETED",
+    "metrics_count": 0
+  },
+  "OBS02": {
+    "x_outside_s": 0.0,
+    "y_outside_s": 1800.0,
+    "expected_both_outside_s": 0,
+    "x_recovery_s": 0.0,
+    "y_recovery_s": null,
+    "expected_both_recovery_s": 0
+  },
+  "OBS03": {
+    "duration_s": 28755.0,
+    "expected_duration_s": 28800,
+    "in_band_fraction_temperature": 1.0,
+    "expected_left_convention_fraction": 0.9984375
+  }
+}

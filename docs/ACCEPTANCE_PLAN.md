@@ -1,7 +1,7 @@
 # Plan de aceptación de la especificación matemática
 
 SPC-AGUA-001 · Versión 0.5.0 · 2026-10-14 · Propietario Work.
-Todos los casos están PENDIENTES DE EJECUCIÓN POR CODEX. Los umbrales fueron aprobados como criterios de diseño en etapa 4; no son resultados observados. La aceptación del software no valida un estanque real.
+Plan original conservado: se recibió evidencia de ejecución de Codex y se contrastó en revisión R1. AC01 a AC19 tienen evidencia favorable en las configuraciones originales; AC20 es parcial y RNF10 queda pendiente. Las nuevas comprobaciones revelan correcciones necesarias, sin alterar criterios. Los umbrales fueron aprobados como criterios de diseño en etapa 4; no son resultados observados. La aceptación del software no valida un estanque real.
 
 ## 1 Configuración de referencia y escenarios
 
@@ -73,7 +73,7 @@ Equipo de referencia para esta meta propuesta: computadora local de 64 bits, al 
 
 Codex redactará TEST_RESULTS con caso, configuración, versión, comando de reproducción, resultado esperado, resultado observado, error o duración y estado. IMPLEMENTATION describirá módulos y contratos reales; HANDOFF_CODEX informará diferencias y problemas. Work no llena esos archivos con resultados supuestos.
 
-Todos los AC01 a AC20 y RNF siguen pendientes. Si un objetivo de desempeño no se alcanza, se revisarán modelo, controlador o criterio con justificación y nueva versión. No se reetiquetará un fallo como éxito ni se elegirá únicamente una corrida favorable.
+El estado por caso y requisito figura en REVISION_COHERENCIA_PR1.md; las correcciones adicionales no están ejecutadas por Codex. Si un objetivo de desempeño no se alcanza, se revisarán modelo, controlador o criterio con justificación y nueva versión. No se reetiquetará un fallo como éxito ni se elegirá únicamente una corrida favorable.
 
 ## 6 Comprobación complementaria de interfaz
 

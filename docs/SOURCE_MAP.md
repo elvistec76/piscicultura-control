@@ -60,3 +60,7 @@ Las tablas y figuras del capítulo IV son elaboración propia. No se reutilizan 
 - F14, SciPy solve_ivp: se revisó nuevamente el manual para integración RK45 y tolerancias; los valores concretos son decisiones del proyecto.
 
 La especificación matemática usa balances simplificados de elaboración propia y aproximaciones empíricas declaradas para pH y turbidez. Los parámetros numéricos se clasifican en MODEL_DEFAULTS; las referencias térmicas derivan de antecedentes B01, B03 y B09. Los límites de oxígeno, pH, turbidez y nivel y todos los umbrales de alarma se etiquetan como demostrativos. No se presenta una dosificación química real ni una ecuación calibrada de turbidez.
+
+## Evidencias de implementación incorporadas en revisión R1
+
+La edición académica 0.6.0 cita la devolución, implementación y resultados de Codex de la entrega 0.1.0, commit 41ec9f2d21edb21499c14437b3d00dd9e135e0d2. Se verifican frente a XML, código y exportaciones del ZIP recibido. No son bibliografía de validación física ni mediciones de una piscigranja. Las nuevas comprobaciones de Work se conservan separadas en el paquete de revisión.

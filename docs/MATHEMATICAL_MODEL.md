@@ -1,7 +1,7 @@
 # Especificación matemática de la simulación
 
 SPC-AGUA-001 · Versión 0.5.0 · Modelo M-AGUA-DEMO-1 versión 1.0.0 · 2026-10-14.
-Estado: etapa 4 aprobada por el estudiante mediante «aprobado» el 14 de octubre de 2026; sin implementación ni validación experimental. Modelo académico aprobado para implementación, no validado en campo.
+Estado: etapa 4 aprobada por el estudiante mediante «aprobado» el 14 de octubre de 2026; implementación 0.1.0 recibida para revisión, sin validación de campo. Modelo académico aprobado; aceptación de software todavía abierta.
 Propietario: Work. MODEL_DEFAULTS.json y ACCEPTANCE_PLAN.md forman parte de esta especificación.
 
 ## 1 Naturaleza y supuestos
@@ -199,4 +199,4 @@ Comandos abiertos de aireación calculados: tilapia 0.416728 aproximadamente, tr
 
 ## 16 Alcance de aceptación
 
-ACCEPTANCE_PLAN fija escenarios, soluciones de referencia, tolerancias, recuperación, comparación, fallos, persistencia y rendimiento. Todos figuran pendientes de ejecución por Codex. Los valores numéricos constituyen objetivos de aceptación propuestos, no resultados observados. Cualquier cambio de ecuación, perfil o criterio requiere nueva versión y registro de impacto.
+ACCEPTANCE_PLAN fija escenarios, soluciones de referencia, tolerancias, recuperación, comparación, fallos, persistencia y rendimiento. Los resultados de las configuraciones de referencia se documentan en la revisión R1; los casos adicionales y RNF10 conservan los pendientes descritos allí. Los valores numéricos constituyen objetivos de aceptación propuestos, no resultados observados. Cualquier cambio de ecuación, perfil o criterio requiere nueva versión y registro de impacto.

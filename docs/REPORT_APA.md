@@ -1,8 +1,8 @@
 # Diseño y simulación de un sistema de control automático de la calidad del agua para piscicultura mediante retroalimentación
 
-Versión 0.5.0 · 14 de octubre de 2026 · Capítulos I a V aprobados; capítulos VI y VII como diseño y plan de pruebas
+Edición académica 0.6.0 para revisión · 14 de octubre de 2026 · Especificación evaluada 0.5.0 · Software 0.1.0 · Integración pendiente
 
-Autor: Elvis Erik Huaynoca Condori. Docente y paralelo: completar antes de entregar. Materia: Ingeniería de Sistemas. Fecha de portada: 14 de octubre de 2026. Contiene capítulos I a V aprobados, capítulos VI y VII de diseño y planificación, y referencias APA 7. Resultados y capítulo VIII pendientes de evidencias de Codex.
+Autor: Elvis Erik Huaynoca Condori. Docente y paralelo: completar antes de entregar. Materia: Ingeniería de Sistemas. Fecha de portada: 14 de octubre de 2026. Conserva los fundamentos y el modelo aprobados, actualiza el estado de implementación e incorpora resultados, revisión de coherencia y conclusiones limitadas por la evidencia. La edición 0.6.0 es una actualización académica para revisión; no modifica el contrato ejecutable 0.5.0 ni acredita integración del PR 1.
 
 ## Capítulo I Introducción
 
@@ -30,7 +30,7 @@ Los sensores virtuales producirán mediciones del estado simulado. En la estrate
 
 En la estrategia de lazo abierto, las acciones seguirán una programación temporal o por eventos definidos sin utilizar las mediciones para corregirlas. Será posible conservar sensores para visualizar y registrar datos: en ese caso, la medición tendrá una función de observación y no cerrará el lazo. La comparación utilizará condiciones iniciales y perturbaciones equivalentes para atribuir las diferencias al comportamiento de las estrategias.
 
-La aplicación se desarrollará con Python, NumPy, SciPy, Streamlit, Pandas, Plotly y SQLite. Pytest se utilizará para verificar el comportamiento técnico. Los gráficos y registros permitirán examinar la relación entre perturbaciones, mediciones y decisiones. En esta etapa se documenta el diseño; todavía no existe evidencia de implementación o de desempeño.
+La primera implementación utiliza Python, NumPy, SciPy, Streamlit, Pandas, Plotly y SQLite, con comprobaciones en Pytest. Los gráficos y registros permiten examinar perturbaciones, mediciones y decisiones. El capítulo VII contrasta la implementación recibida y sus evidencias con el diseño; la aceptación integral permanece pendiente de correcciones.
 
 ### 1.4 Alcance y delimitación
 
@@ -38,7 +38,7 @@ El proyecto se delimita a un estanque virtual por ejecución y a las cinco varia
 
 La simulación será completamente digital. No comprenderá adquisición de sensores físicos, instalación de equipos, operación de una piscigranja ni certificación para uso productivo. Tampoco abarcará un modelo completo de crecimiento, enfermedades, nutrición, amoníaco, salinidad o ecosistema del estanque. Algunas de estas condiciones podrán intervenir como factores simplificados, siempre que se declaren sus supuestos.
 
-El trabajo seguirá seis etapas: redacción inicial, investigación teórica, análisis y arquitectura, especificación matemática, implementación y revisión de evidencias. Los resultados y las conclusiones definitivas se redactarán después de ejecutar pruebas documentadas.
+El trabajo comprende documentación, investigación, diseño, modelado, implementación y revisión. Esta edición incorpora evidencias de la primera implementación y conclusiones limitadas por los resultados disponibles.
 
 ## Capítulo II Planteamiento del problema
 
@@ -94,7 +94,7 @@ El compromiso funcional comprende las cinco variables, tres perfiles iniciales, 
 
 La fidelidad dependerá de los modelos y de sus parámetros. Un estanque representado mediante valores agregados no describirá todas las diferencias espaciales del agua. El pH requerirá especial cuidado por su relación con procesos químicos; una aproximación empírica deberá declararse como tal. La turbidez tampoco se convertirá automáticamente a concentración de sólidos sin una relación sustentada.
 
-Las pruebas con datos sintéticos permitirán verificar la consistencia numérica y el comportamiento del programa, pero no demostrarán precisión predictiva en una instalación real. El análisis de resultados señalará escenarios con corrección insuficiente, saturación, oscilaciones o fallos. Las conclusiones finales dependerán de las evidencias aportadas por Codex.
+Las pruebas con datos sintéticos permiten verificar la consistencia numérica y el comportamiento del programa, pero no demuestran precisión predictiva en una instalación real. El análisis distingue los escenarios evaluados, las limitaciones y los defectos pendientes; sus conclusiones se restringen a la evidencia recibida y comprobada.
 
 ## Capítulo III Marco teórico
 
@@ -122,13 +122,13 @@ El documento de la asignatura caracteriza un sistema de control por su influenci
 
 En la simulación, el sistema controlado será el modelo del agua. Las variables controladas serán las propiedades para las que se establezcan objetivos. Las variables medidas serán las lecturas de los sensores virtuales; las manipuladas serán las acciones efectivas, como una potencia o un caudal cuando estos se definan. Esta distinción evita confundir un resultado deseado con el mecanismo utilizado para obtenerlo.
 
-Una referencia puede ser un valor o una condición de operación. La futura especificación diferenciará consigna, banda aceptable y umbral de alarma. También separará la orden calculada de la acción efectiva, puesto que un actuador puede tener capacidad limitada o presentar un fallo.
+Una referencia puede ser un valor o una condición de operación. La especificación diferencia consigna, banda aceptable y umbral de alarma. También separa la orden calculada de la acción efectiva, puesto que un actuador puede tener capacidad limitada o presentar un fallo.
 
 ### 3.4 Control de lazo abierto y lazo cerrado
 
 En el lazo abierto, las acciones siguen una programación sin corregirse con la medición de la salida. En el lazo cerrado, la información de salida interviene en la decisión posterior (*Introducción a la Ingeniería de Sistemas*, s. f.). Ambos modos podrán observarse mediante gráficos; la diferencia estará en el uso de las mediciones para actuar.
 
-Como aplicación conceptual, un aireador programado por horario representaría una estrategia abierta. Si su acción se modifica a partir de la lectura de oxígeno y de una referencia, representaría una estrategia cerrada. Son ejemplos propuestos para comprender los modos, no algoritmos ya seleccionados ni equipos instalados.
+Como aplicación conceptual, un aireador programado por horario representaría una estrategia abierta. Si su acción se modifica a partir de la lectura de oxígeno y de una referencia, representaría una estrategia cerrada. Son ejemplos conceptuales; el capítulo V fija la histéresis y el abierto calibrado utilizados por el simulador.
 
 La comparación exigirá mantener equivalentes las condiciones iniciales y las perturbaciones. Si el modo denominado abierto modifica sus acciones por alarmas basadas en mediciones, esa protección introducirá retroalimentación. Por ello, las reglas de comparación deberán declarar cualquier intervención que altere el tipo de estrategia.
 
@@ -164,7 +164,7 @@ Para trucha, Woynarovich et al. (2011) distinguen condiciones próximas a satura
 
 La International Union of Pure and Applied Chemistry (IUPAC, s. f.) define el pH mediante el logaritmo negativo de la actividad de los iones hidrógeno. Es una magnitud adimensional. Esta definición impide interpretarlo como una cantidad que se mezcla linealmente por simple promedio de los valores de pH.
 
-Para la simulación, se deberá elegir entre una aproximación empírica explícita y un modelo que represente la química necesaria. La primera opción puede ser útil para la demostración de control, pero no permitirá deducir dosificaciones reales. Esta restricción es una decisión metodológica del proyecto.
+La simulación adopta la aproximación empírica del capítulo V para representar la respuesta de pH. Esta elección permite demostrar el control, pero no deducir dosificaciones reales. Una formulación química más completa requeriría otra especificación y datos de calibración.
 
 #### 3.7.4 Turbidez
 
@@ -176,7 +176,7 @@ El proyecto conservará NTU como unidad de su variable virtual. No supondrá que
 
 El nivel se representará como altura en metros respecto del fondo definido. Su intervalo operativo dependerá de la geometría y del volumen útil propuesto. No se tratará como un límite fisiológico propio de la especie.
 
-Como decisión de modelado posterior, su evolución deberá relacionarse con entradas y salidas de agua. Los efectos de fugas, reposición o evaporación se especificarán cuando se definan los balances. No se atribuyen a la literatura valores de profundidad que todavía no se han seleccionado.
+Su evolución se relaciona con entradas y salidas de agua mediante el balance del capítulo V, que incluye fugas, reposición y evaporación. Las profundidades y bandas adoptadas son demostrativas; no se atribuyen a la literatura como condiciones universales por especie.
 
 ### 3.8 Simulación computacional
 
@@ -190,7 +190,7 @@ Se diferenciarán el tiempo simulado, el intervalo de medición y los pasos inte
 
 En este proyecto, verificar el software significará comprobar que calcula y registra conforme a la especificación. La consistencia del modelo se examinará mediante unidades, balances aplicables, comportamientos esperados y sensibilidad numérica. Validar su precisión frente a un estanque real requeriría datos empíricos, que no están disponibles en esta etapa.
 
-Por ello, las conclusiones se limitarán al alcance de las evidencias. Una simulación puede mostrar un comportamiento coherente con sus supuestos sin predecir una piscigranja particular. La formulación matemática y los criterios de aceptación se completarán antes del traspaso a Codex.
+Por ello, las conclusiones se limitarán al alcance de las evidencias. Una simulación puede mostrar un comportamiento coherente con sus supuestos sin predecir una piscigranja particular. La formulación matemática y los criterios de aceptación se aprobaron antes del traspaso a Codex; su comprobación se presenta en el capítulo VII.
 
 ## Capítulo IV Análisis y diseño del sistema
 
@@ -219,7 +219,7 @@ Tabla 1
 | Ambiente simulado | Clima, aportes y perturbaciones programadas | Introducir condiciones externas |
 | Registro e interfaz | Identificadores, tiempo simulado y versión | Conservar evidencias y permitir observación |
 
-Nota. Elaboración propia a partir de las categorías del material de la asignatura. Las capacidades y los coeficientes siguen pendientes de especificación matemática.
+Nota. Elaboración propia a partir de las categorías del material de la asignatura. Las capacidades y los coeficientes se definen en el capítulo V y en la configuración numérica aprobada.
 
 ### 4.3 Estructura y organización
 
@@ -247,7 +247,7 @@ Tabla 2
 | Energía | Intercambio térmico y energía asociada a equipos virtuales | Pérdidas térmicas y energía transferida al ambiente |
 | Información | Perfil, referencias, lecturas y programación | Mediciones, decisiones, alarmas y resultados |
 
-Nota. Las fronteras elegidas determinan qué se considera intercambio. El capítulo V deberá establecer los balances y evitar contar dos veces un mismo flujo. Un filtro recirculante, por ejemplo, no reduce por sí mismo el volumen si el modelo no representa una descarga.
+Nota. Las fronteras elegidas determinan qué se considera intercambio. El capítulo V establece los balances y evita contar dos veces un mismo flujo. Un filtro recirculante, por ejemplo, no reduce por sí mismo el volumen si el modelo no representa una descarga.
 
 ### 4.6 Variables y parámetros
 
@@ -255,7 +255,7 @@ Las cinco variables del alcance serán temperatura en °C, oxígeno disuelto en 
 
 Se utilizará x para estado, y para medición, r para referencia, u para acción manipulada y d para perturbación. Una lectura puede diferir del estado por ruido o sesgo. El controlador tendrá acceso a y y r, pero no al estado exacto del simulador. Los evaluadores podrán consultar x para examinar los efectos del error de medición.
 
-Los parámetros fijos de una corrida comprenderán geometría, biomasa representada, coeficientes, capacidades y condiciones declaradas. El nivel será una variable; la geometría que permite relacionarlo con volumen será un parámetro. Presión y salinidad se tratarán como condiciones parametrizadas del escenario del oxígeno. Los valores numéricos se fijarán en la etapa siguiente.
+Los parámetros fijos de una corrida comprenderán geometría, biomasa representada, coeficientes, capacidades y condiciones declaradas. El nivel será una variable; la geometría que permite relacionarlo con volumen será un parámetro. Presión y salinidad se tratarán como condiciones parametrizadas del escenario del oxígeno. Los valores numéricos figuran en el capítulo V y la configuración aprobada.
 
 ### 4.7 Perturbaciones y fallos
 
@@ -315,21 +315,21 @@ RF01 comprenderá perfiles configurables y procedencia de valores. RF02 cubrirá
 
 RF07 incorporará perturbaciones y fallos con efectos registrados. RF08 cubrirá gráficos, alarmas y calidad de los datos. RF09 guardará configuraciones, mediciones, decisiones y eventos. RF10 permitirá comparar corridas equivalentes y calcular indicadores. RF11 identificará versiones y evidencias de reproducción.
 
-La especificación detallada de REQUIREMENTS contiene 33 subrequisitos funcionales, sus condiciones de comprobación y la relación con los módulos. No se marcan como implementados. Los criterios que dependen de ecuaciones o tolerancias tendrán una condición explícita de cierre en la etapa 4.
+La especificación detallada de REQUIREMENTS contiene 33 subrequisitos funcionales, sus condiciones de comprobación y la relación con los módulos. Su implementación se evalúa individualmente en la revisión de coherencia; tres subrequisitos requieren correcciones y no se declara aceptación integral.
 
 ### 4.10 Requisitos no funcionales
 
 Se establecen requisitos sobre reproducibilidad, consistencia de unidades, integridad de registros, independencia del núcleo, prevención de avances duplicados, claridad de la interfaz, manejo de errores, ejecución local y trazabilidad. Las pruebas deberán distinguir la repetición dentro de un entorno fijado de la comparación entre entornos distintos.
 
-La persistencia se organizará mediante transacciones y relaciones verificables. La documentación de SQLite explica las transacciones y la activación de restricciones de claves foráneas (SQLite, s. f.-a, s. f.-b). Su empleo en este proyecto será una decisión de implementación que Codex deberá demostrar mediante pruebas.
+La persistencia se organizará mediante transacciones y relaciones verificables. La documentación de SQLite explica las transacciones y la activación de restricciones de claves foráneas (SQLite, s. f.-a, s. f.-b). La implementación recibida utiliza estas reglas y aporta pruebas de unicidad, claves foráneas y reversión de lotes.
 
-No se fijará una promesa de velocidad sin hardware de referencia ni una carga de datos determinada. El caso de rendimiento, su entorno y el umbral se cerrarán antes del inicio de programación. Esto evita presentar un requisito imposible de comprobar.
+No se fijará una promesa de velocidad sin hardware de referencia ni una carga de datos determinada. El caso S8, su entorno y el umbral fueron definidos antes de programar. Esto evita presentar un requisito imposible de comprobar.
 
 ### 4.11 Flujo de operación y persistencia
 
 El usuario configurará el escenario y solicitará su validación. Si existen errores, se indicarán los campos afectados y no se creará una corrida ejecutable. Si la configuración es válida, se generará un identificador y se conservará una copia de sus parámetros y versiones.
 
-Durante cada avance autorizado, el coordinador obtendrá mediciones, solicitará decisiones, aplicará la dinámica de los actuadores e integrará el proceso. Se registrarán muestras, órdenes, acciones y eventos con tiempo simulado. El capítulo V fijará el orden temporal exacto y el tratamiento de eventos coincidentes.
+Durante cada avance autorizado, el coordinador obtendrá mediciones, solicitará decisiones, aplicará la dinámica de los actuadores e integrará el proceso. Se registrarán muestras, órdenes, acciones y eventos con tiempo simulado. El capítulo V fija el orden temporal exacto y el tratamiento de eventos coincidentes.
 
 La base de datos contendrá ejecuciones, muestras, decisiones, acciones, eventos, métricas y grupos de comparación. El diseño diferenciará el estado guardado para estudiar una corrida de la información necesaria para continuar una pausa dentro de la sesión. La recuperación tras un cierre inesperado permitirá consultar datos parciales, pero no implicará reanudar automáticamente la integración.
 
@@ -337,9 +337,7 @@ La comparación creará dos corridas vinculadas a una misma configuración base 
 
 ### 4.12 Trazabilidad y cierre del diseño
 
-Cada familia de requisitos se vincula con objetivos, conceptos de la asignatura, módulos y evidencias previstas. Por ejemplo, RF04 materializa sensores y variables de medida; RF05 representa actuadores y variables manipuladas; RF06 y RF10 permiten examinar las estrategias y sus respuestas. La matriz completa se conserva en REQUIREMENTS y se complementa con el análisis conceptual de la etapa 1.
-
-La etapa 3 deja definidos los límites funcionales y los contratos de coordinación. Permanecen pendientes las ecuaciones, referencias numéricas, capacidades, tiempos de respuesta, ganancias y criterios cuantitativos. Esas decisiones corresponderán a la etapa 4 y deberán ser coherentes con este diseño antes de entregar la especificación a Codex.
+Cada familia de requisitos se vincula con objetivos, conceptos, módulos y evidencias en REQUIREMENTS. RF04 representa medición; RF05, actuación; RF06 y RF10, estrategias y evaluación. La etapa 4 completó el modelo y los criterios con histéresis. El capítulo VII contrasta ese diseño aprobado con la primera implementación.
 
 ## Capítulo V Modelado matemático
 
@@ -511,25 +509,25 @@ Al completar 48 h con decisiones cada 60 s, se esperan 2880 intervalos y 2881 mu
 
 La evaluación distinguirá error integrado, tiempo fuera de banda, recuperación, uso de agua, actividad virtual de pH y energía parcial estimada. Los indicadores basados en el estado exacto se separarán de los basados en mediciones. La suma comparativa de errores se normalizará antes de combinar unidades diferentes.
 
-La recuperación se define como la primera muestra en banda seguida de 1800 s consecutivos dentro de ella. Para el escenario S2, se propone que las cinco variables recuperen su banda antes de cuatro horas, permanezcan dentro al menos el 95 % del tramo posterior evaluado y que el error normalizado conjunto del cerrado sea al menos 20 % menor que el del abierto. Son metas de aceptación pendientes de prueba, no resultados de la simulación.
+La recuperación se define como la primera muestra en banda seguida de 1800 s consecutivos dentro de ella. Para el escenario S2, se propone que las cinco variables recuperen su banda antes de cuatro horas, permanezcan dentro al menos el 95 % del tramo posterior evaluado y que el error normalizado conjunto del cerrado sea al menos 20 % menor que el del abierto. Son criterios de aceptación aprobados; los resultados de S2 que los contrastan se presentan en el capítulo VII.
 
-El plan contiene 20 casos, desde soluciones analíticas aisladas hasta fallos, persistencia, repetición y refinamiento numérico. Como ejemplo de comprobación algebraica, aplicar 10000 W durante una hora a 10 m³, sin otros términos, implica un aumento aproximado de 0.860010 °C. Codex deberá contrastar ese resultado con el programa implementado.
+El plan contiene 20 casos, desde soluciones analíticas aisladas hasta fallos, persistencia, repetición y refinamiento numérico. Como ejemplo de comprobación algebraica, aplicar 10000 W durante una hora a 10 m³, sin otros términos, implica un aumento aproximado de 0.860010 °C. El caso AC04 contrasta ese resultado con el programa; la evidencia se describe en el capítulo VII.
 
 El requisito de rendimiento se concreta en una carga de 48 h, registro local y tres repeticiones, con mediana objetivo de hasta 60 s en el equipo de referencia definido. Se registrarán hardware y versiones. Esa meta no acredita velocidad observada ni se trasladará a cualquier computadora.
 
 ### 5.12 Limitaciones y validación posterior
 
-La especificación permite construir casos reproducibles y comprobar su consistencia, pero todavía no acredita desempeño de una aplicación. Los límites demostrativos, los coeficientes compartidos entre especies y las aproximaciones de pH y turbidez impiden atribuir precisión productiva a los resultados.
+La especificación permite construir casos reproducibles y comprobar su consistencia. La evidencia del capítulo VII acredita comportamientos concretos del simulador y conserva las correcciones pendientes. Los límites demostrativos, los coeficientes compartidos entre especies y las aproximaciones de pH y turbidez impiden atribuir precisión productiva a los resultados.
 
-Las pruebas de Codex permitirán verificar la implementación, la integración numérica y el cumplimiento de las metas. Validar el comportamiento frente a un estanque real requeriría datos de campo y calibración adicional. Si una prueba no cumple un criterio, se revisará la formulación o el diseño mediante una nueva versión documentada; no se presentará el fallo como un resultado satisfactorio.
+Las pruebas aportadas por Codex y su revisión permiten verificar aspectos de la implementación, la integración numérica y las metas en los casos ejecutados. Validar el comportamiento frente a un estanque real requeriría datos de campo y calibración adicional. Si una prueba no cumple un criterio, se revisará la formulación o el diseño mediante una nueva versión documentada; no se presentará el fallo como un resultado satisfactorio.
 
 ## Capítulo VI Diseño de la implementación
 
 ### 6.1 Propósito y herramientas
 
-El diseño de implementación convierte el modelo aprobado en responsabilidades de software verificables. La aplicación se desarrollará en Python; NumPy y SciPy resolverán el cálculo numérico, Streamlit presentará la interfaz, Pandas y Plotly organizarán y mostrarán los resultados, SQLite conservará el historial y Pytest permitirá automatizar las comprobaciones. Esta distribución responde al alcance digital del proyecto y mantiene las tecnologías acordadas.
+El diseño de implementación convierte el modelo aprobado en responsabilidades de software verificables. La implementación utiliza Python; NumPy y SciPy resuelven el cálculo numérico, Streamlit presenta la interfaz, Pandas y Plotly organizan y muestran resultados, SQLite conserva el historial y Pytest automatiza comprobaciones. Esta distribución responde al alcance digital del proyecto y mantiene las tecnologías acordadas.
 
-Las versiones concretas del lenguaje y de las bibliotecas se registrarán cuando Codex prepare y compruebe el entorno. La instalación deberá acompañarse de instrucciones reproducibles y de un archivo de dependencias coherente con las versiones utilizadas. No se presupone compatibilidad con un sistema operativo o equipo que todavía no haya sido probado.
+Codex documenta Python 3.12.14, NumPy 2.3.5, SciPy 1.17.0, Streamlit 1.66.0, Pandas 2.2.3, Plotly 7.1.0 y Pytest 9.1.1 en Debian 13.6. Aporta archivos de dependencias e instrucciones de instalación. Las comprobaciones corresponden al entorno declarado y no acreditan compatibilidad con Windows ni rendimiento en el equipo local del estudiante (Codex, 2026b).
 
 ### 6.2 Organización del software
 
@@ -551,7 +549,7 @@ Tabla 7
 | Persistencia y exportación | Guardar lotes atómicos y recuperar historial | Datos íntegros y archivos identificados |
 | Interfaz y gráficos | Mostrar configuración, ejecución y resultados | Cinco variables con unidades y estado |
 
-Nota. La tabla describe el diseño previsto. No constituye un inventario de archivos implementados.
+Nota. La tabla conserva el reparto de responsabilidades del diseño. La implementación efectiva se distribuye entre config, model, actuators, control, scenarios, sensors, engine, service, repository, metrics, export, charts y app (Codex, 2026b).
 
 ### 6.3 Algoritmo de ejecución
 
@@ -577,53 +575,89 @@ La pausa conservará en la sesión el estado del proceso, los actuadores, el con
 
 ### 6.6 Secuencia de construcción y documentación
 
-Codex comenzará por revisar el paquete y preparar el entorno; después implementará configuración, dinámica y pruebas analíticas. Continuará con sensores, actuadores, control y escenarios; incorporará orquestación y persistencia antes de completar la interfaz, las comparaciones y la exportación. Este orden permitirá comprobar el comportamiento del núcleo antes de atribuirlo a la aplicación completa.
+La entrega de Codex documenta la construcción del núcleo, servicios, persistencia y presentación y aporta pruebas de componentes e integración (Codex, 2026a). Los hitos de desarrollo no equivalen a aceptación integral: la revisión del capítulo VII identifica defectos adicionales y criterios todavía abiertos.
 
 El código, las pruebas y los documentos de implementación serán responsabilidad de Codex. La documentación académica conservará su trazabilidad mediante PROJECT_SPEC, REQUIREMENTS, SOURCE_MAP y HANDOFF_WORK. Las desviaciones que cambien ecuaciones, parámetros, criterios o tecnologías se comunicarán antes de aplicarlas. Los ajustes de organización que mantengan el contrato se describirán en la devolución técnica.
 
-## Capítulo VII Pruebas y validación
+## Capítulo VII Pruebas y revisión de coherencia
 
-### 7.1 Propósito y estado de la evaluación
+### 7.1 Evidencia recibida y alcance de la revisión
 
-El plan de pruebas comprobará que la implementación reproduzca el modelo aprobado y cumpla los requisitos. La aceptación documental de las etapas anteriores autoriza su construcción, pero todavía no demuestra el funcionamiento del programa. En esta versión no se han recibido resultados de ejecución de Codex; todos los casos de aceptación permanecen pendientes.
+Se recibió la primera implementación del simulador, identificada como software 0.1.0, junto con los documentos de implementación, resultados y devolución de Codex. La revisión corresponde al commit 41ec9f2d21edb21499c14437b3d00dd9e135e0d2 del Pull Request 1 del repositorio elvistec76/piscicultura-control. La consulta del repositorio confirmó que el PR estaba abierto, en borrador y sin integrar al momento de la revisión. Este informe evalúa esa versión; una modificación posterior requiere comprobar nuevamente los cambios afectados.
 
-La verificación del software distinguirá tres niveles: soluciones analíticas de componentes, integración de los servicios y revisión funcional de la aplicación. Una comprobación algebraica del diseño no sustituye la ejecución del código. La validación frente a un estanque real exigiría datos de campo y calibración adicionales, fuera de las evidencias disponibles.
+Se contrastaron código, pruebas y exportaciones con SPC-AGUA-001 0.5.0 y M-AGUA-DEMO-1 1.0.0. Los doce documentos académicos y de especificación y los cuatro archivos de diagramas coinciden byte por byte con el paquete aprobado. El README remoto es distinto y faltan el prompt de inicio y el Word consolidado. Estas diferencias afectan la entrega documental, pero no demuestran una modificación de las ecuaciones. Los manifiestos recibidos verifican 29 archivos de código y soporte, 60 exportaciones y 17 archivos documentales respecto de las referencias registradas por Codex.
 
-### 7.2 Casos y escenarios
+La revisión separa lo informado por Codex, lo comprobado en los archivos y lo ejecutado de nuevo. Los registros XML recibidos documentan 58 casos parametrizados sin fallos y 17 comprobaciones sin fallos en el entorno limpio declarado por Codex. Esos grupos no se suman como 75 pruebas distintas: la segunda ejecución cubre un subconjunto. El registro separado de interfaz contiene una prueba adicional de ejecución, sin acreditar otro requisito por el solo conteo.
 
-El plan ACCEPTANCE_PLAN define 20 casos identificados como AC01 a AC20. Incluye validación de configuración y saturación de oxígeno; balances aislados de nivel, temperatura, oxígeno, pH y turbidez; respuesta de actuadores; umbrales de control; equilibrio, repetición, recuperación, perturbaciones, fallos, persistencia, refinamiento e indicadores. Los resultados se evaluarán con las tolerancias específicas de cada caso.
+### 7.2 Modelos y estrategias de control
 
-Los escenarios S0 a S9 fijan condiciones comparables. S0 examinará equilibrio nominal; S1, operación variable; S2, recuperación desde condiciones iniciales desviadas; S3 y S4, fuga y carga térmica; S5 a S7, lectura ausente, avería de aireación y sesgo plausible; S8, rendimiento; y S9, capacidad de llenado insuficiente. Sus tiempos y magnitudes se conservarán según la configuración aprobada.
+El código conserva las cinco salidas del agua y los cinco estados auxiliares de actuadores. La saturación de oxígeno utiliza los coeficientes USGS especificados; los balances de nivel, temperatura y oxígeno y las aproximaciones de pH y turbidez mantienen sus términos, signos y unidades. La integración usa RK45 y el ruido se genera por muestra, fuera del integrador. Las acciones opuestas se obtienen de estados firmados y sus integrales se separan cuando el estado cruza cero.
+
+La estrategia cerrada sigue los umbrales y la memoria de histéresis aprobados. La estrategia abierta utiliza órdenes constantes calibradas. Las exportaciones de comparación conservan el mismo estado inicial del agua y de los actuadores, calendario y tabla de ruido. El controlador recibe mediciones, calidad y su configuración; su contrato no le entrega el estado exacto ni el calendario oculto de fallos. El ruido y el sesgo modifican la medición, mientras el proceso responde a las acciones calculadas.
+
+Las pruebas analíticas de pH y turbidez comprueban las soluciones de las ecuaciones programadas. No comprueban actividad de hidrógeno, alcalinidad, dosificación real, concentración de sólidos ni una ley física de mezcla de turbidez. El pH se representa directamente mediante relajación y tasas empíricas; la turbidez, mediante un índice virtual con aporte y remoción. El uso de NTU identifica la salida simulada y no convierte los coeficientes demostrativos en propiedades calibradas de una instalación.
+
+### 7.3 Resultados de los escenarios de referencia
+
+Las exportaciones S1 contienen, para las tres especies y ambas estrategias, 2881 muestras y 2880 decisiones y estado COMPLETED. En S2 se recalcularon de forma independiente el error integrado, el indicador J, la recuperación y la permanencia en banda a partir de los CSV, sin utilizar el módulo de métricas del programa. El recálculo de J coincide con los valores almacenados en la precisión numérica utilizada.
 
 Tabla 8
 
-*Grupos de comprobación y evidencia prevista*
+*Resultados verificados de recuperación en el escenario S2*
 
-| Casos | Aspecto evaluado | Evidencia requerida |
-|---|---|---|
-| AC01 a AC08 | Configuración, ecuaciones y actuadores | Entradas, solución esperada, salida y error |
-| AC09 a AC13 | Control, repetición y recuperación | Series, decisiones, indicadores y estado final |
-| AC14 a AC17 | Fallos, comandos y persistencia | Eventos, causas, recibos y estado de la base |
-| AC18 y AC19 | Refinamiento e indicadores | Diferencias numéricas y cálculo de referencia |
-| AC20 | Rendimiento y ejecución del núcleo | Entorno, tres duraciones y mediana |
+| Perfil | J abierto | J cerrado | Razón cerrado sobre abierto | Recuperación T C p U h en segundos |
+|---|---|---|---|---|
+| Tilapia | 0.898220 | 0.137039 | 0.152567 | 600; 300; 1920; 2760; 300 |
+| Trucha | 1.027465 | 0.148966 | 0.144984 | 1500; 300; 1920; 2760; 300 |
+| Carpa | 0.901371 | 0.138034 | 0.153137 | 0; 240; 1920; 2760; 300 |
 
-Nota. Los grupos organizan el plan; cada caso conserva su identidad y su criterio. También se revisarán los requisitos de interfaz y exportación que requieran evidencia manual.
+Nota. Elaboración propia mediante recálculo de las exportaciones de Codex (2026c). Las cinco variables permanecen en banda el 100 % del tramo de cuatro a doce horas en estas corridas. La temperatura de carpa inicia en 23 °C, exactamente en el límite inferior operativo; su recuperación de 0 s expresa esa condición inicial y la permanencia posterior, no una corrección instantánea. J es adimensional y corresponde al escenario de doce horas aprobado.
 
-### 7.3 Indicadores y criterios de aceptación
+En las corridas S5 el lazo cerrado termina como FAILED a 7200 s antes de una nueva decisión con oxígeno ausente. El abierto conserva sus órdenes y completa. S6 registra aireación efectiva nula durante la avería; S7 conserva el sesgo plausible sin atribuirle detección automática. En S9 ambas estrategias terminan por cruce exterior del límite de nivel: aproximadamente 9700 s en abierto y 14397.127 s en cerrado. Estos fallos son respuestas exigidas por el plan ante capacidad insuficiente y no deben presentarse como pruebas fallidas del mecanismo de detección (Codex, 2026a, 2026c).
 
-La evaluación utilizará error absoluto integrado, tiempo fuera de banda, recuperación sostenida, error normalizado conjunto y uso de actuadores. Los consumos de agua y la energía parcial estimada se presentarán con unidades y alcance. La actividad virtual de pH no se convertirá en dosificación física. Los indicadores identificarán si proceden del estado exacto o de las mediciones.
+Codex registró tres duraciones S8 de 8.993926, 8.734400 y 8.981134 s, con mediana 8.981134 s. El entorno virtual no acredita el SSD y el contexto del equipo local exigidos por RNF10. Por ello, AC20 tiene evidencia funcional y RNF10 permanece pendiente de evaluación contextual; la mediana descriptiva no demuestra su aceptación. No se modificó el umbral de 60 s.
 
-En S2 se exigirá que cada variable del lazo cerrado comience su ventana de recuperación antes o al cumplirse cuatro horas, permanezca en banda al menos el 95 % del tramo de cuatro a doce horas y permita un error normalizado conjunto al menos 20 % menor que el abierto. Una terminación anticipada no acreditará mejora por reducir el intervalo de cálculo. El criterio de rendimiento se evaluará con el equipo y el protocolo indicados en el plan, sin trasladar automáticamente sus conclusiones a otros equipos.
+### 7.4 Reejecución y comprobaciones adicionales
 
-### 7.4 Registro y revisión de resultados
+La revisión volvió a ejecutar los 58 casos de la suite original en una copia aislada del código, con cero fallos y cero errores, en 238.568 s. Se utilizó Python 3.12.14 con las mismas versiones principales de NumPy, SciPy, Pandas, Plotly, Streamlit y Pytest. Este entorno heredó paquetes base y no se presenta como una segunda instalación limpia. Tampoco acredita el hardware local de RNF10. Las evidencias originales se conservaron aparte y no se sustituyeron por los nuevos registros.
 
-Cada resultado deberá identificar versión de código, especificación, modelo, entorno, configuración, realización externa, comando de reproducción y evidencia. Se registrarán el valor esperado, el observado, el error o la duración y el estado de aceptación. Los casos no ejecutados, fallidos o no evaluables se distinguirán de los aprobados.
+Se realizaron comprobaciones adicionales sobre configuración y métricas. La edición de área, biomasa, presión y salinidad mediante la interfaz conservó los valores solicitados en la configuración guardada. En cambio, tres casos no cubiertos por los escenarios de referencia revelaron defectos reproducibles que impiden aceptar integralmente la entrega actual.
 
-Codex entregará IMPLEMENTATION con los módulos reales, TEST_RESULTS con las comprobaciones y HANDOFF_CODEX con diferencias y limitaciones. La revisión académica contrastará esos archivos con los 33 subrequisitos funcionales y los 10 no funcionales. Si un criterio falla, se documentará la causa y la corrección o propuesta de revisión; no se alterará silenciosamente el criterio para aparentar cumplimiento.
+Una banda térmica de ancho cero, con ambos límites iguales a 28.5 °C, es aceptada por la validación. Al completar una corrida S0 de una hora, la escala térmica de J se anula y produce un valor no finito. La persistencia rechaza ese resultado; la corrida queda marcada COMPLETED sin métricas y se propaga una excepción. El mismo problema aparece al detenerla después de un intervalo. Deben rechazarse previamente las bandas que anulan las escalas de temperatura u oxígeno y comunicarse de manera explícita cualquier error al generar métricas.
 
-### 7.5 Resultados pendientes y continuidad del informe
+La segunda comprobación utilizó una banda de turbidez editada a 5–20 NTU y valores idénticos de x e y de 2 NTU durante 1800 s. Según el modelo aprobado solo se penaliza el exceso superior. El cálculo de x informa cero tiempo fuera y recuperación de 0 s; el cálculo individual de y informa 1800 s fuera y ausencia de recuperación. El módulo pierde la regla unilateral al evaluar una sola columna. La corrección debe conservar la identidad de la variable y aplicar el mismo criterio a ambos orígenes.
 
-No se incorporan gráficas de resultados, tablas de desempeño observado ni conclusiones sobre superioridad del controlador, porque la implementación y sus pruebas todavía no están acreditadas. El capítulo VIII se elaborará después de revisar las evidencias. Las conclusiones finales deberán responder a los objetivos y distinguir cumplimiento del modelo académico, limitaciones numéricas y ausencia de validación de campo.
+La tercera comprobación utilizó un intervalo admitido de 135 s en S2. El cálculo del tramo de cuatro a doce horas comienza en la primera muestra posterior a cuatro horas, a 14445 s, y evalúa 28755 s en lugar de 28800 s. Una serie sintética con temperatura fuera de banda en el intervalo izquierdo que atraviesa las cuatro horas demuestra la omisión: se informa fracción 1 en lugar de 0.9984375 con la convención temporal izquierda aprobada. Deben ponderarse los fragmentos que intersectan los extremos de la ventana. Este defecto no modifica los resultados S2 originales con intervalo de 60 s.
+
+### 7.5 Estado de requisitos y decisión de integración
+
+En el alcance inspeccionado, treinta subrequisitos funcionales cuentan con evidencia favorable. RF02.2 y RF02.3 requieren corrección de coherencia y validación de bandas; RF10.2 requiere corregir las métricas anteriores. Siete requisitos no funcionales tienen evidencia favorable dentro del entorno probado. RNF02 y RNF07 quedan parciales por la generación no finita y la excepción no comunicada de forma controlada. RNF10 conserva su condición pendiente. La matriz detallada y las evidencias están en la revisión de coherencia entregada.
+
+Los casos AC01 a AC19 cuentan con resultados favorables en las configuraciones originales; esto no equivale a comprobar todas las configuraciones admitidas por el formulario. La revisión amplía los casos límite necesarios y no invalida las corridas de referencia cuyos datos se verificaron. Los tres defectos deben corregirse y probarse antes de recomendar la integración del PR 1. El PR debe mantenerse en borrador durante ese trabajo; no se emitió aprobación ni se realizó integración.
+
+## Capítulo VIII Conclusiones y recomendaciones
+
+### 8.1 Conclusiones sustentadas por la evidencia disponible
+
+La primera implementación materializa el ciclo de medición, comparación, decisión y actuación definido por el enfoque de Ingeniería de Sistemas. El código y las corridas revisadas mantienen la separación entre estado exacto, lectura virtual y acción efectiva, con perturbaciones y fallos identificables. Esta correspondencia permite estudiar retroalimentación dentro del modelo académico.
+
+En S2, el lazo cerrado obtiene razones J cerrado sobre abierto entre 0.144984 y 0.153137 y satisface los criterios de recuperación y permanencia de las cinco variables en los tres perfiles evaluados. El resultado respalda el comportamiento del controlador en ese experimento. No demuestra superioridad universal, ahorro energético en todos los escenarios ni respuesta adecuada ante cualquier perturbación.
+
+Las verificaciones analíticas y el refinamiento apoyan la consistencia de la implementación con sus ecuaciones. La comparación conserva condiciones iniciales y realización externa equivalentes. La detección de lecturas ausentes y de cruces de dominio conserva causas y resultados parciales; la identificación de esos fallos forma parte del comportamiento esperado.
+
+La aceptación del software permanece abierta. La revisión adicional encontró defectos de validación y de cálculo individual de turbidez que no aparecen en los escenarios originales. También falta la evaluación de RNF10 en el equipo de referencia. Estas limitaciones impiden afirmar cumplimiento integral de todos los requisitos o autorizar la integración de la versión revisada.
+
+La evidencia corresponde a un simulador con parámetros demostrativos, biomasa fija y mezcla perfecta. Los modelos de pH y turbidez son aproximaciones empíricas y no existe validación de campo. Los resultados no permiten seleccionar dosificaciones, dimensionar equipos reales ni certificar rangos productivos por especie.
+
+### 8.2 Recomendaciones
+
+Corregir la validación de bandas y la gestión de errores de métricas, e incorporar pruebas que impidan aceptar escalas nulas de J. Un fallo en un resultado derivado debe distinguirse del estado de integración del proceso y conservar los datos confirmados con una causa visible.
+
+Aplicar el criterio unilateral de turbidez también a las métricas individuales de medición y evaluar las ventanas temporales completas cuando sus extremos no coincidan con la malla. Repetir las pruebas de regresión afectadas y entregar nuevos resultados ligados al commit corregido, sin ampliar tolerancias ni alterar las ecuaciones para hacer pasar los casos.
+
+Actualizar el README, restaurar las referencias de entrega ausentes y distinguir aprobación documental, ejecución de pruebas y aceptación contextual de rendimiento. Ejecutar RNF10 en el equipo acordado con tres bases nuevas, conservando tiempos, características del equipo y versiones.
+
+Considerar una validación de campo solo como trabajo posterior: reunir datos representativos, calibrar parámetros e incorporar una formulación química y óptica adecuada si se pretende realizar inferencias productivas. La presente revisión no sustituye ese proceso.
 
 
 ## Referencias
@@ -635,6 +669,12 @@ Anderson, C. W. (2005). *Turbidity* (Techniques of Water-Resources Investigation
 Åström, K. J., & Murray, R. M. (s. f.-a). *Feedback principles*. FBSwiki. Recuperado el 14 de octubre de 2026, de https://www.fbswiki.org/wiki/index.php/Feedback_Principles
 
 Åström, K. J., & Murray, R. M. (s. f.-b). *System modeling*. FBSwiki. Recuperado el 14 de octubre de 2026, de https://www.fbswiki.org/wiki/index.php/System_Modeling
+
+Codex. (2026a). *Devolución de Codex a Work* [Documentación del software 0.1.0, commit 41ec9f2d21edb21499c14437b3d00dd9e135e0d2, archivo HANDOFF_CODEX.md]. Entrega del proyecto piscicultura-control.
+
+Codex. (2026b). *Implementación técnica* [Documentación del software 0.1.0, mismo commit, archivo IMPLEMENTATION.md]. Entrega del proyecto piscicultura-control.
+
+Codex. (2026c). *Resultados de verificación* [Documentación del software 0.1.0, mismo commit, archivo TEST_RESULTS.md y evidencias de ejecución]. Entrega del proyecto piscicultura-control.
 
 International Council on Systems Engineering. (s. f.). *About systems engineering*. https://www.incose.org/About%20Systems%20Engineering/
 
@@ -665,3 +705,11 @@ U.S. Geological Survey. (2022, 7 de noviembre). *DOTABLES*. https://www.usgs.gov
 U.S. Geological Survey. (2026, 24 de agosto). *Turbidity and water*. https://www.usgs.gov/water-science-school/science/turbidity-and-water
 
 Woynarovich, A., Hoitsy, G., & Moth-Poulsen, T. (2011). *Small-scale rainbow trout farming* (FAO Fisheries and Aquaculture Technical Paper No. 561). Food and Agriculture Organization of the United Nations. https://www.fao.org/4/i2125e/i2125e.pdf
+
+## Anexo A Identificación de la revisión
+
+La revisión utiliza la entrega ZIP piscicultura-control-41ec9f2d21edb21499c14437b3d00dd9e135e0d2.zip y el PR 1 de https://github.com/elvistec76/piscicultura-control/pull/1. La base documental evaluada es SPC-AGUA-001 0.5.0. La edición académica 0.6.0 actualiza el estado y los resultados sin modificar las ecuaciones del modelo 1.0.0.
+
+La matriz completa de 33 subrequisitos y 10 RNF, los casos reproducibles y las condiciones de integración se entregan en REVISION_COHERENCIA_PR1.md. OBSERVACIONES_CODEX_PR1.md especifica las correcciones solicitadas. Los registros nuevos de revisión se conservan separados de los XML y las exportaciones originales.
+
+La reejecución de la suite usa el comando python -m pytest -q tests --junitxml=evidence/work_review_pytest.xml desde una copia de trabajo. Las comprobaciones adicionales se identifican en work_review_edge_probes.json. La ejecución limpia de 17 pruebas corresponde a la evidencia recibida de Codex y no se atribuye a una nueva instalación realizada durante esta revisión.
