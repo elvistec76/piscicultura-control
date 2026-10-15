@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="820" viewBox="0 0 1160 820">
+<defs><marker id="a" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#31556b"/></marker></defs>
+<rect width="1160" height="820" fill="white"/>
+<rect x="350" y="25" width="330" height="80" rx="12" fill="#eff5f8" stroke="#31556b" stroke-width="2"/>
+<text x="515.0" y="58.5" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="21" fill="#172d3b">Referencias y bandas</text>
+<text x="515.0" y="85.5" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="21" fill="#172d3b">r</text>
+<rect x="350" y="180" width="330" height="80" rx="12" fill="#eff5f8" stroke="#31556b" stroke-width="2"/>
+<text x="515.0" y="213.5" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="21" fill="#172d3b">Comparador y decisor</text>
+<text x="515.0" y="240.5" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="21" fill="#172d3b">Controlador</text>
+<rect x="350" y="335" width="330" height="80" rx="12" fill="#eff5f8" stroke="#31556b" stroke-width="2"/>
+<text x="515.0" y="368.5" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="21" fill="#172d3b">Actuadores virtuales</text>
+<text x="515.0" y="395.5" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="21" fill="#172d3b">Límites y respuesta</text>
+<rect x="350" y="490" width="330" height="80" rx="12" fill="#eff5f8" stroke="#31556b" stroke-width="2"/>
+<text x="515.0" y="523.5" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="21" fill="#172d3b">Proceso del agua</text>
+<text x="515.0" y="550.5" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="21" fill="#172d3b">Estado x</text>
+<rect x="350" y="645" width="330" height="80" rx="12" fill="#eff5f8" stroke="#31556b" stroke-width="2"/>
+<text x="515.0" y="678.5" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="21" fill="#172d3b">Sensores virtuales</text>
+<text x="515.0" y="705.5" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="21" fill="#172d3b">Lectura y calidad</text>
+<rect x="820" y="490" width="290" height="80" rx="12" fill="#fff4dc" stroke="#31556b" stroke-width="2"/>
+<text x="965.0" y="523.5" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="21" fill="#172d3b">Ambiente</text>
+<text x="965.0" y="550.5" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="21" fill="#172d3b">Perturbaciones d</text>
+<rect x="820" y="670" width="290" height="95" rx="12" fill="#eeeeee" stroke="#31556b" stroke-width="2"/>
+<text x="965.0" y="711.0" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="21" fill="#172d3b">Registro y evaluación</text>
+<text x="965.0" y="738.0" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="21" fill="#172d3b">Acceso de auditoría</text>
+<path d="M515,105 L515,180" fill="none" stroke="#31556b" stroke-width="2.5" marker-end="url(#a)"/>
+<path d="M515,260 L515,335" fill="none" stroke="#31556b" stroke-width="2.5" marker-end="url(#a)"/>
+<path d="M515,415 L515,490" fill="none" stroke="#31556b" stroke-width="2.5" marker-end="url(#a)"/>
+<path d="M515,570 L515,645" fill="none" stroke="#31556b" stroke-width="2.5" marker-end="url(#a)"/>
+<text x="535" y="145" font-family="DejaVu Sans, sans-serif" font-size="18" fill="#31556b">Referencia</text>
+<text x="535" y="300" font-family="DejaVu Sans, sans-serif" font-size="18" fill="#31556b">Orden</text>
+<text x="535" y="455" font-family="DejaVu Sans, sans-serif" font-size="18" fill="#31556b">Acción efectiva</text>
+<text x="535" y="610" font-family="DejaVu Sans, sans-serif" font-size="18" fill="#31556b">Observación</text>
+<path d="M350,685 L150,685 L150,220 L350,220" fill="none" stroke="#31556b" stroke-width="2.5" marker-end="url(#a)"/>
+<text x="10" y="370" font-family="DejaVu Sans, sans-serif" font-size="18" fill="#31556b">Medición y</text>
+<text x="10" y="394" font-family="DejaVu Sans, sans-serif" font-size="18" fill="#31556b">realimentación</text>
+<path d="M820,530 L680,530" fill="none" stroke="#31556b" stroke-width="2.5" marker-end="url(#a)"/>
+<path d="M680,550 L750,550 L750,700 L820,700" fill="none" stroke="#31556b" stroke-width="2.5" stroke-dasharray="8 6" marker-end="url(#a)"/>
+<text x="758" y="630" font-family="DejaVu Sans, sans-serif" font-size="18" fill="#31556b">x</text>
+<path d="M680,700 L820,740" fill="none" stroke="#31556b" stroke-width="2.5" stroke-dasharray="8 6" marker-end="url(#a)"/>
+<text x="745" y="758" font-family="DejaVu Sans, sans-serif" font-size="18" fill="#31556b">y</text>
+</svg>
