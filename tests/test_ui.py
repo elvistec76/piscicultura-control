@@ -7,7 +7,7 @@ from streamlit.testing.v1 import AppTest
 def by_label(items,label): return next(i for i in items if i.label==label)
 
 
-def test_spanish_configuration_execution_history(tmp_path,monkeypatch):
+def test_spanish_configuration_execution_history(tmp_path,monkeypatch,artifact_dir):
     monkeypatch.setenv('PISCICULTURA_DB',str(tmp_path/'ui.sqlite'))
     at=AppTest.from_file(str(Path(__file__).resolve().parents[1]/'app.py'),default_timeout=30).run()
     assert not at.exception
@@ -39,4 +39,4 @@ def test_spanish_configuration_execution_history(tmp_path,monkeypatch):
     assert len(at.metric)==10  # ejecución e historial muestran cinco lecturas cada uno
     assert any(d.label=='Descargar corrida (ZIP: JSON y CSV)' for d in at.get('download_button'))
     assert any('aproximaciones empíricas' in w.value for w in at.warning)
-    Path('evidence/ui_review.json').write_text(json.dumps(dict(method='Streamlit AppTest',tabs=[t.label for t in at.tabs],profiles=4,initial_time_s=0,after_command_time_s=60,status='STOPPED',render_does_not_advance=True,exceptions=0,comparison_common_s=3600,copy_reference_C=29.,original_reference_C=28.5,charts_per_view=6,metrics_per_view=5),ensure_ascii=False,indent=2))
+    (artifact_dir/'ui_review.json').write_text(json.dumps(dict(method='Streamlit AppTest',tabs=[t.label for t in at.tabs],profiles=4,initial_time_s=0,after_command_time_s=60,status='STOPPED',render_does_not_advance=True,exceptions=0,comparison_common_s=3600,copy_reference_C=29.,original_reference_C=28.5,charts_per_view=6,metrics_per_view=5),ensure_ascii=False,indent=2))

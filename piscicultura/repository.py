@@ -51,6 +51,7 @@ class SQLiteRepository:
         CREATE TABLE IF NOT EXISTS decisions(run_id TEXT REFERENCES runs(run_id),decision_index INTEGER,payload TEXT NOT NULL,PRIMARY KEY(run_id,decision_index));
         CREATE TABLE IF NOT EXISTS actuator_records(run_id TEXT REFERENCES runs(run_id),actuator_id TEXT,record_index INTEGER,payload TEXT NOT NULL,PRIMARY KEY(run_id,actuator_id,record_index));
         CREATE TABLE IF NOT EXISTS events(run_id TEXT REFERENCES runs(run_id),event_seq INTEGER,payload TEXT NOT NULL,PRIMARY KEY(run_id,event_seq));
+        CREATE TABLE IF NOT EXISTS metric_diagnostics(run_id TEXT PRIMARY KEY REFERENCES runs(run_id),status TEXT NOT NULL,cause TEXT NOT NULL,stage TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS metrics(run_id TEXT REFERENCES runs(run_id),metric_key TEXT,payload TEXT NOT NULL,PRIMARY KEY(run_id,metric_key));
         CREATE TABLE IF NOT EXISTS command_receipts(run_id TEXT REFERENCES runs(run_id),command_id TEXT,expected_step INTEGER,result TEXT NOT NULL,PRIMARY KEY(run_id,command_id));
         CREATE TABLE IF NOT EXISTS comparisons(comparison_id TEXT PRIMARY KEY,payload TEXT NOT NULL);
@@ -70,6 +71,7 @@ class SQLiteRepository:
     def prepare(self,rid,c,noise,runtime,environment):
         with self.db:
             self.db.execute('INSERT INTO runs VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',(rid,c.document,dumps(noise.tolist()),dumps(environment),runtime.status,'',0,0,dumps(runtime.state.tolist()),None,process_owner(),datetime.now(timezone.utc).isoformat()))
+            self.db.execute('INSERT INTO metric_diagnostics VALUES (?,?,?,?)',(rid,'PENDING','',''))
 
     @serialized
     def position(self,rid):
@@ -84,6 +86,14 @@ class SQLiteRepository:
         out=dict(row)
         for key in ['config','noise','environment','state','termination_state']:
             out[key]=json.loads(out[key]) if out[key] else None
+        diagnostic=self.db.execute('SELECT status,cause,stage FROM metric_diagnostics WHERE run_id=?',(rid,)).fetchone()
+        if diagnostic:
+            out.update(metrics_status=diagnostic['status'],metrics_cause=diagnostic['cause'],metrics_stage=diagnostic['stage'])
+        else:
+            # Lectura compatible con bases anteriores; no se inventa un diagnóstico histórico.
+            exists=self.db.execute('SELECT 1 FROM metrics WHERE run_id=?',(rid,)).fetchone()
+            pending=out['status'] in ['PREPARED','RUNNING','PAUSED']
+            out.update(metrics_status='READY' if exists else 'PENDING' if pending else 'UNAVAILABLE',metrics_cause='' if exists or pending else 'SIN_DIAGNOSTICO_HISTORICO',metrics_stage='')
         return out
 
     @serialized
@@ -125,7 +135,15 @@ class SQLiteRepository:
 
     @serialized
     def save_metrics(self,rid,payload):
-        with self.db: self.db.execute('INSERT OR REPLACE INTO metrics VALUES (?,?,?)',(rid,'summary',dumps(payload)))
+        with self.db:
+            self.db.execute('INSERT OR REPLACE INTO metrics VALUES (?,?,?)',(rid,'summary',dumps(payload)))
+            self.db.execute('INSERT OR REPLACE INTO metric_diagnostics VALUES (?,?,?,?)',(rid,'READY','',''))
+
+    @serialized
+    def fail_metrics(self,rid,stage,cause):
+        # No modifica agua, recibos ni un resultado derivado anterior ya guardado.
+        with self.db:
+            self.db.execute('INSERT OR REPLACE INTO metric_diagnostics VALUES (?,?,?,?)',(rid,'FAILED',cause,stage))
 
     @serialized
     def save_comparison(self,cid,payload,members):

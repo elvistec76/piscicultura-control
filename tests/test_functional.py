@@ -6,6 +6,7 @@ import socket
 import zipfile
 import numpy as np
 import pytest
+from piscicultura import __version__
 from piscicultura.config import make_config,RunConfig,duplicate_profile,event
 from piscicultura.repository import SQLiteRepository
 from piscicultura.service import SimulationService
@@ -94,7 +95,7 @@ def test_comparison_common_interval_and_exports(tmp_path):
         assert result['common'][strategy]['interval_s']==[0,60]
         with zipfile.ZipFile(io.BytesIO(export_bytes(repo,rid))) as z:
             cfg=json.loads(z.read('config.json'));assert cfg['strategy']==strategy
-            assert 'noise.csv' in z.namelist() and json.loads(z.read('metadata.json'))['environment']['code']=='0.1.0'
+            assert 'noise.csv' in z.namelist() and json.loads(z.read('metadata.json'))['environment']['code']==__version__
     assert repo.db.execute('SELECT COUNT(*) FROM comparison_members').fetchone()[0]==2
     repo.close()
 

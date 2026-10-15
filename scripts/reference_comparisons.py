@@ -1,13 +1,15 @@
 """Vincular corridas observadas, conservar tramo común y exportar comparaciones."""
 import json
+import argparse
 from pathlib import Path
 from piscicultura.repository import SQLiteRepository
 from piscicultura.metrics import evaluate
 
 
 def main():
-    out=Path('evidence/comparisons');out.mkdir(exist_ok=True)
-    index=json.loads(Path('evidence/run_index.json').read_text());repo=SQLiteRepository('work/acceptance.sqlite')
+    parser=argparse.ArgumentParser();parser.add_argument('--evidence-dir',type=Path,default=Path('evidence'));parser.add_argument('--db',default='work/acceptance.sqlite');args=parser.parse_args()
+    out=args.evidence_dir/'comparisons';out.mkdir(exist_ok=True)
+    index=json.loads((args.evidence_dir/'run_index.json').read_text());repo=SQLiteRepository(args.db)
     for profile in range(3):
         for scenario in ['S1','S2','S3','S4','S5','S6','S7','S9']:
             keys={s:f'{scenario}_p{profile}_{s}' for s in ['open','closed']}

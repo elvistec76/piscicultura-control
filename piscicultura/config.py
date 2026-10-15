@@ -3,6 +3,7 @@ from copy import deepcopy
 from dataclasses import dataclass
 import json
 from pathlib import Path
+from . import __version__
 import math
 import numpy as np
 
@@ -59,7 +60,7 @@ def make_config(profile_index=0, scenario='S1', strategy='closed'):
     c = deepcopy(DEFAULTS)
     c.pop('profiles')
     c['schema_version'] = '1.0.0'
-    c['code_version'] = '0.1.0'
+    c['code_version'] = __version__
     c['profile'] = deepcopy(DEFAULTS['profiles'][profile_index])
     c['units'] = dict(zip(VARIABLES, UNITS))
     c['strategy'] = strategy
@@ -151,6 +152,8 @@ def validate(c):
     for j,(a,b) in enumerate(domains):
         if not a<=c['x0'][j]<=b: raise ValueError(VARIABLES[j]+': estado inicial fuera de dominio')
         lo,hi=c['profile']['operating_bands'][j]
+        if j in (0,1) and hi<=lo:
+            raise ValueError(VARIABLES[j]+': profile.operating_bands debe tener ancho positivo para normalizar J')
         cl,ch=c['profile']['critical_limits'][j]
         r=c['profile']['references'][j]
         if not a<=cl<=lo<=r<=hi<=ch<=b: raise ValueError(VARIABLES[j]+': bandas, referencia o límites incoherentes')

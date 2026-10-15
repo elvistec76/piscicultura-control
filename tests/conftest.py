@@ -1,4 +1,5 @@
 import hashlib
+import os
 import json
 from pathlib import Path
 import pytest
@@ -8,9 +9,16 @@ from piscicultura.service import SimulationService,environment
 from piscicultura.export import export_bytes
 
 @pytest.fixture(scope='session')
-def laboratory():
-    out=Path('evidence');(out/'runs').mkdir(parents=True,exist_ok=True)
-    repo=SQLiteRepository('work/acceptance.sqlite');service=SimulationService(repo)
+def artifact_dir():
+    out=Path(os.environ.get('PISCICULTURA_EVIDENCE_DIR','work/test-evidence'))
+    out.mkdir(parents=True,exist_ok=True)
+    return out
+
+
+@pytest.fixture(scope='session')
+def laboratory(artifact_dir):
+    out=artifact_dir;(out/'runs').mkdir(parents=True,exist_ok=True)
+    repo=SQLiteRepository(os.environ.get('PISCICULTURA_ACCEPTANCE_DB',str(out/'acceptance.sqlite')));service=SimulationService(repo)
     cache={};observed={}
     def run(profile,scenario,strategy,refine=False):
         key=f'{scenario}_p{profile}_{strategy}'+('_refined' if refine else '')

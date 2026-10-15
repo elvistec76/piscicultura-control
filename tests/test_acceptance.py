@@ -188,14 +188,14 @@ def test_AC19(laboratory):
     obs['AC19']=dict(iae=m['iae'],outside_s=m['outside_s'],energy_kWh=energy)
 
 
-def test_AC20(tmp_path,laboratory,monkeypatch):
+def test_AC20(tmp_path,laboratory,monkeypatch,artifact_dir):
     _,obs,_=laboratory
     # Prohibición efectiva de red en el núcleo durante preparación, integración, guardado y exportación.
     import socket
     def denied(*args,**kwargs): raise AssertionError('RED_PROHIBIDA')
     monkeypatch.setattr(socket.socket,'connect',denied);monkeypatch.setattr(socket,'create_connection',denied)
     durations=[];benchmark_index=[]
-    benchmark_dir=Path('evidence/benchmark');benchmark_dir.mkdir(exist_ok=True)
+    benchmark_dir=artifact_dir/'benchmark';benchmark_dir.mkdir(exist_ok=True)
     for i in range(3):
         repo=SQLiteRepository(tmp_path/f'bench{i}.sqlite');s=SimulationService(repo)
         start=time.perf_counter();rid=s.prepare(make_config(0,'S8','closed'));result=s.run_all(rid);durations.append(time.perf_counter()-start)

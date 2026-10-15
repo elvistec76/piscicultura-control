@@ -22,7 +22,7 @@ def main():
         rid=s.prepare(c);result=s.run_all(rid);ids=[rid]
     for rid in ids:
         (args.output/(rid+'.zip')).write_bytes(export_bytes(repo,rid));run=repo.get(rid)
-        print(rid,run['status'],run['time_s'],run['cause'])
+        print(rid,run['status'],run['time_s'],run['cause'],'Métricas:',run['metrics_status'],run['metrics_cause'])
     repo.close()
 
 if __name__=='__main__': main()

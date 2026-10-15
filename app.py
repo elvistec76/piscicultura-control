@@ -89,6 +89,10 @@ def show_run(rid,key):
     st.write(f"**{STATUS[run['status']]}** · {run['time_s']/3600:.3f} h simuladas · {run['config']['profile']['name']}")
     st.caption('Corrida '+rid+' · '+('Lazo cerrado' if run['config']['strategy']=='closed' else 'Lazo abierto'))
     if run['cause']: st.error('Causa: '+run['cause'])
+    if run['metrics_status']=='FAILED': st.error('Métricas no disponibles: '+run['metrics_cause']+'. Los datos de integración confirmados se conservan.')
+    elif run['metrics_status']=='UNAVAILABLE': st.warning('Métricas no disponibles: sin diagnóstico histórico.')
+    elif run['metrics_status']=='PENDING': st.caption('Métricas pendientes de finalizar o detener la corrida.')
+    else: st.caption('Métricas disponibles; estado de integración y resultado derivado registrados por separado.')
     if samples:
         last=samples[-1];cols=st.columns(5)
         for j,(name,unit) in enumerate(zip(LABELS,UNITS)):
@@ -106,7 +110,7 @@ def show_run(rid,key):
             seq=st.selectbox('Alarma para reconocer',alarm_ids,key=key+'ack')
             if st.button('Reconocer alarma',key=key+'ackbutton'): repo.acknowledge(rid,seq);st.success('Reconocimiento registrado.')
     stored_metrics=repo.records(rid,'metrics')
-    if stored_metrics and stored_metrics[0]['x']:
+    if run['metrics_status']=='READY' and stored_metrics and stored_metrics[0]['x']:
         m=stored_metrics[0];st.write('**Indicadores sobre el estado exacto x**')
         st.dataframe([{'Variable':name,'Unidad del error integrado':unit+'·s','Error integrado absoluto':m['x']['iae'][j],'Tiempo fuera de banda (s)':m['x']['outside_s'][j],'Recuperación (s)':m['x']['recovery_s'][j] if m['x']['recovery_s'][j] is not None else 'No recuperado'} for j,(name,unit) in enumerate(zip(LABELS,UNITS))],hide_index=True)
         usage=m['usage'];st.write(f"Agua repuesta: {usage['inlet_m3']:.4f} m³ · Agua descargada: {usage['outlet_m3']:.4f} m³ · Energía parcial estimada: {usage['partial_energy_kWh']:.4f} kWh")
@@ -145,15 +149,17 @@ with compare_tab:
         st.write(f"Tramo común: {comparison['common_duration_s']/3600:.3f} h. Horizonte solicitado: {comparison['requested_horizon_s']/3600:.1f} h.")
         rows=[]
         for strategy,data in comparison['full'].items():
-            m=data['metrics'];rows.append({'Estrategia':'Abierto' if strategy=='open' else 'Cerrado','Estado':STATUS[data['status']],'Duración (h)':data['time_s']/3600,'J adimensional':m['J'],'Causa':data['cause']})
+            m=data['metrics'];rows.append({'Estrategia':'Abierto' if strategy=='open' else 'Cerrado','Estado':STATUS[data['status']],'Duración (h)':data['time_s']/3600,'J adimensional':m['J'] if m else None,'Causa':data['cause'],'Estado de métricas':data['metrics_status'],'Diagnóstico de métricas':data['metrics_cause']})
         st.dataframe(rows,hide_index=True)
         st.caption('Se muestran métricas del horizonte observado y del tramo común por separado. Una terminación anticipada impide declarar ventaja por observar menos tiempo.')
         comparison_rows=[]
         for strategy,m in comparison['common'].items():
-            if m['x']:
+            if m and m['x']:
                 for j,(name,unit) in enumerate(zip(LABELS,UNITS)):
                     comparison_rows.append({'Estrategia':'Abierto' if strategy=='open' else 'Cerrado','Variable':name,'Unidad del error integrado':unit+'·s','Error integrado absoluto':m['x']['iae'][j],'Fracción en banda':m['x']['in_band_fraction'][j]})
         st.dataframe(comparison_rows,hide_index=True)
+        for diagnostic in comparison['common_metrics_diagnostics'].values():
+            if diagnostic['status']=='FAILED': st.error('Métricas comunes no disponibles: '+diagnostic['cause'])
         with st.expander('Base común y métricas completas de comparación'): st.json(comparison)
         st.download_button('Descargar comparación JSON',json.dumps(comparison,ensure_ascii=False,indent=2),file_name='comparison.json')
 with history_tab:
