@@ -1,0 +1,20 @@
+{
+  "OBS01": {
+    "rejected_before_run": true,
+    "cause": "temperature_C: profile.operating_bands debe tener ancho positivo para normalizar J"
+  },
+  "OBS02": {
+    "x_outside_s": 0.0,
+    "y_outside_s": 0.0,
+    "expected_both_outside_s": 0,
+    "x_recovery_s": 0.0,
+    "y_recovery_s": 0.0,
+    "expected_both_recovery_s": 0
+  },
+  "OBS03": {
+    "duration_s": 28800.0,
+    "expected_duration_s": 28800,
+    "in_band_fraction_temperature": 0.9984375,
+    "expected_left_convention_fraction": 0.9984375
+  }
+}

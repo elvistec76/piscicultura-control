@@ -1,75 +1,67 @@
-# Devolución de Codex a Work
+# Devolución de correcciones de Codex a Work — PR 1
 
-SPC-AGUA-001 0.5.0 · M-AGUA-DEMO-1 1.0.0 · Software 0.1.0 · 14 de octubre de 2026, America/La_Paz.
+Software 0.1.1 · SPC-AGUA-001 0.5.0 · M-AGUA-DEMO-1 1.0.0 · edición de revisión académica Work 0.6.0. Cierre documental: 15 de octubre de 2026, America/La_Paz.
 
-## Resultado entregado
+## Estado entregado
 
-Se implementó una aplicación local con Python, NumPy, SciPy, Streamlit, Pandas, Plotly, SQLite y Pytest. Incluye cinco variables del agua, diez estados internos, tres perfiles, sensores virtuales con calidad, ocho acciones efectivas, histéresis, abierto calibrado, perturbaciones, fallos, alarmas, gráficos, historial, exportación y comparación reproducible.
+Se atendieron OBS01–OBS03 y se conserva el mismo [PR #1 en borrador](https://github.com/elvistec76/piscicultura-control/pull/1), rama `codex/implementacion-spc-agua-0.5.0`. No se creó otro PR, no se integró a main, no se desplegó ni se cambió la visibilidad pública existente. Se solicita una nueva revisión con las evidencias; no se interpreta el resultado de pruebas como aprobación académica o permiso de integración.
 
-H1–H5 están completados en su trabajo de implementación y evidencia. La suite completa tuvo 58 pruebas parametrizadas pasadas en 381.54 s. AC01–AC19 cumplieron los criterios en las configuraciones evaluadas. AC20 verificó núcleo, persistencia, consulta y exportación sin red; sus tres duraciones fueron 8.993926, 8.734400 y 8.981134 s (mediana 8.981134 s). **La aceptación contextual de RNF10 no es evaluable**: el entorno es una máquina virtual y no se puede acreditar el SSD/equipo local del plan. No se presenta ese dato como aceptación completa de AC20.
+La reanudación comprobó Git y los registros de la ejecución interrumpida. El arreglo estaba comprometido en `9568cc8` y la suite ya había terminado: **85/85 casos pasados, 0 errores/omitidos, 354.998 s**. No se volvió a ejecutar trabajo terminado. Se completaron comparación de datos, manifiestos, los tres documentos técnicos y entrega de la rama. Los 44 casos cortos, incluidos los 27 nuevos, son un subconjunto y no se suman al total de 85.
 
-Se revisaron los 33 RF y los 10 RNF individualmente en TEST_RESULTS. Los RF y nueve RNF tienen evidencia dentro del alcance probado; RNF10 conserva la limitación anterior. Además, 17 pruebas de núcleo, contratos e interfaz pasaron en un entorno virtual limpio; la interfaz final se comprobó con AppTest y Chromium. La revisión académica posterior de Work sigue pendiente.
+## Observaciones y resultado
 
-En S2, J cerrado/abierto fue 0.152567 (tilapia), 0.144984 (trucha) y 0.153137 (carpa). Las cinco variables cumplieron la recuperación y la permanencia en banda exigidas. Estos resultados corresponden a los escenarios demostrativos, no a desempeño productivo ni superioridad universal. En carpa T ya comienza dentro de su banda operativa, por eso su recuperación térmica es 0 s según la definición aprobada.
+| ID | Corrección o atención realizada | Evidencia | Estado |
+|---|---|---|---|
+| OBS01 | Rechazo previo de bandas T/C degeneradas; finitud de métricas y diagnóstico separado de integración; conserva datos y recibos, y permite historial/descarga sin excepción de interfaz | 18 regresiones nuevas, AC01/12/17/19, AppTest, reapertura y seis exportaciones de fallo deliberado | Corrección verificada por Codex; pendiente revisión Work |
+| OBS02 | Identidad explícita de turbidez para x e y, regla solo superior; conserva IAE respecto a referencia y cobertura sin rellenar ausencias | 4 regresiones, AC19, fixtures de U=2/U=25/ausencia y ventanas/comparación | Corrección verificada por Codex |
+| OBS03 | Ventana exacta [14400,43200], 28800 s, ponderación por intersección con estado izquierdo original; IAE por trapecio recortado de error absoluto | 5 regresiones, AC12/19, seis S2 dt=135 y contraste de las 57 referencias | Corrección verificada por Codex; dt=135 sigue admitido |
+| OBS04 | Incorporados README, prompt, informe Word, revisión y propuestas de Work desde 6ac325a, sin edición de contenido ajeno | Manifiesto byte por byte; Word y fuentes accesibles en GitHub | Resuelto como incorporación documental; el dictamen académico sigue pendiente |
+| OBS05 / RNF10 | Conservados tiempos originales y nuevos, sin declarar acreditación por hardware virtual | AC20 funcional y tres repeticiones S8 nuevas | Pendiente/no evaluable: falta equipo local/SSD y contexto del plan |
 
-S5 cerrado termina FAILED a 7200 s antes de otra decisión; el abierto conserva su programa y completa. S6 tiene aireación efectiva nula durante la avería. S7 mantiene el sesgo plausible sin detección inventada. S9 termina en la raíz del cruce exterior de nivel, conservando tiempo y estado: 9700 s en abierto y 14397.126574685 s en cerrado para los tres perfiles. Las corridas fallidas conservan datos y no se etiquetan como completadas.
+Reproducción del caso principal: OBS01 ahora rechaza la banda con variable/campo antes de crear corrida; OBS02 obtiene fuera=0 s y recuperación=0 para x e y; OBS03 obtiene duración=28800 s y fracción=0.9984375. Los valores esperados y observados, tolerancias y comandos están en TEST_RESULTS.
 
-## Código y acceso
+## Contrato y coherencia preservados
 
-Repositorio: https://github.com/elvistec76/piscicultura-control
+La edición académica 0.6.0 no cambió `spec_version=0.5.0`, `model_version=1.0.0`, ecuaciones, parámetros, tolerancias ni el catálogo tecnológico. El paquete se identifica como software 0.1.1. `model.py`, `actuators.py`, `control.py`, `sensors.py`, `scenarios.py`, `engine.py` y MODEL_DEFAULTS.json son idénticos al head 41ec9f2 revisado. Las cinco variables, diez estados, biomasa fija, control por histéresis y abierto calibrado conservan su comportamiento. No se asigna x=r ni se recorta el agua ni se da información oculta al controlador.
 
-Rama: `codex/implementacion-spc-agua-0.5.0`. No se integró a main, no se desplegó y se mantuvo la visibilidad pública previamente existente. Pull Request en borrador para revisión: https://github.com/elvistec76/piscicultura-control/pull/1 .
+OBS01 incorpora `metrics_status`, `metrics_cause` y `metrics_stage`, descritos en IMPLEMENTATION. Son diagnósticos derivados, no nuevos estados de integración. Una corrida puede ser COMPLETED o STOPPED con métricas FAILED; ese diagnóstico conserva su causa y los datos confirmados. READY requiere resultados finitos y guardado correcto. Las bases anteriores se consultan sin inventar causas históricas. Si falla todo el almacenamiento, se comunica la imposibilidad de guardar el diagnóstico; no se afirma persistencia inexistente.
 
-Base documental: `f69f4d8`. Commits incrementales: `01f765c` (núcleo), `b200a5c` (servicios/persistencia/aplicación), `155ea6725393816d14eead4b24b343df60bd993d` (núcleo numérico y transaccional de la matriz completa), `6cd7b08c5b82e73826885af6833cfbbb7084fc7b` (presentación final, reproducción y evidencia). Las ecuaciones y el motor numérico no cambiaron después de `155ea67`. Los hashes del código entregado constan en `evidence/source_manifest.json`; la entrega posterior agrega documentos y datos de evidencia. Los XML identifican cada prueba efectiva; las ampliaciones de interfaz y comprobación de volúmenes se volvieron a ejecutar en la suite corta limpia.
+OBS02 conserva la regla unilateral de banda de U y el IAE respecto a rU. OBS03 no cambia el criterio .95, no rechaza dt=135 ni consume nuevas filas de ruido en extremos interpolados. Solo calcula la intersección temporal correcta y declara la regla de IAE. La recuperación usa muestras reales y la permanencia de 1800 s aprobada.
 
-Documentos para revisar:
+Los 57 archivos de referencia nuevos coinciden con los originales: máximo error x=(0,0,0,0,0), diferencia J=0 e IAE de ventana original=0. Esa igualdad corresponde a las configuraciones comparadas, no a validación de campo ni a todas las configuraciones posibles.
 
-- [IMPLEMENTATION.md](IMPLEMENTATION.md): arquitectura real, instalación, versiones, secuencia, persistencia, límites y comandos.
-- [TEST_RESULTS.md](TEST_RESULTS.md): AC01–AC20, esperados/observados/errores/tolerancias, 33 RF y 10 RNF, incidencias y contexto.
-- [Índice de evidencias](../evidence/README.md): acceso a datos y reproducción.
-- [Índice de corridas](../evidence/run_index.json): 57 exportaciones, incluidas seis de refinamiento.
-- [Comparaciones](../evidence/comparisons): 24 grupos de referencias comunes, con terminaciones y limitaciones.
-- [Rendimiento](../evidence/benchmark/index.json): tres exportaciones adicionales S8 y sus duraciones reales.
-- [Reproducción desde ruido persistido](../evidence/replay_result.json): S2 tilapia cerrado, error máximo de x=(0,0,0,0,0).
+## Código, documentos y datos accesibles
 
-Las 60 exportaciones autónomas incluyen configuración, ruido completo, muestras, decisiones, acciones, eventos, métricas, metadatos y manifiesto de unidades. No se requiere que Work vea el disco de Codex: los archivos están en la rama de GitHub y se entrega también un ZIP descargable con código, documentos y evidencias. Work debe abrir esa entrega o revisar la PR expresamente; no se asume sincronización entre chats.
+- Producción y pruebas: `9568cc8` (OBS01–03). Incorporación de Work hacia la rama de desarrollo: `f3fadeb`, desde `6ac325a`. Base de revisión: `41ec9f2`.
+- [IMPLEMENTATION](IMPLEMENTATION.md): arquitectura, contrato de diagnóstico, ventanas, esquema SQLite y comandos.
+- [TEST_RESULTS](TEST_RESULTS.md): antes/después, suite de 85, aceptación afectada y trazabilidad de 33 RF/10 RNF.
+- [Evidencia nueva](../evidence/correcciones_pr1/README.md), [resumen verificable](../evidence/correcciones_pr1/verification_summary.json) e [índice de referencias](../evidence/correcciones_pr1/regression/run_index.json).
+- [24 comparaciones nuevas](../evidence/correcciones_pr1/regression/comparisons), [S2 dt=135](../evidence/correcciones_pr1/dt135/index.json) y [fallos derivados exportados](../evidence/correcciones_pr1/failure_exports/index.json).
+- [Informe Word de Work](../Informe_Piscicultura_Revision_PR1_APA7.docx), [revisión de coherencia](../REVISION_COHERENCIA_PR1.md) y [observaciones](../OBSERVACIONES_CODEX_PR1.md).
 
-## Preservación y diferencias
+Hay 72 ZIP nuevos autónomos: 57 referencias, 3 S8, 6 dt=135 y 6 fallos de métricas. Se preservaron las 60 exportaciones iniciales y toda la evidencia de Work. Los datos sintéticos están rotulados como fixtures de métricas y no como integración física. El manifiesto nuevo identifica código, fuentes recibidas y hashes de exportaciones. Los manifiestos y documentos iniciales son históricos del head 0.1.0; no se reetiquetan como evidencia del código actual. Los tres documentos iniciales se conservan en `evidence/correcciones_pr1/history/`.
 
-No se modificaron archivos propiedad de Work. `evidence/document_manifest.json` compara byte por byte README, docs y diagrams recibidos con f69f4d8. Se añadieron únicamente código, pruebas, dependencias, evidencias y los tres documentos de Codex. No se anidó otro proyecto ni había código ajeno pendiente que sobrescribir.
+Los documentos de revisión se encontraron en la raíz de GitHub, no en la ruta `docs/revision_pr1/` mencionada. Se informó esa diferencia antes de corregir. Work confirmó la equivalencia técnica de los 12 documentos y 4 diagramas con el paquete original; README/prompt/Word recibidos en R1 se incorporaron íntegros. La antigua frase de requisitos pendiente de aprobación fue corregida por Work, sin atribuirla a cambios de ecuaciones por Codex. Las propuestas académicas se mantienen con su estado de revisión; Codex no las convierte en aprobadas.
 
-Se aplicó la arquitectura aprobada con rutas equivalentes descritas en IMPLEMENTATION. Se eligió JSON canónico dentro de contratos congelados y payloads SQLite con claves relacionales, sin cambiar ecuaciones, tecnologías o alcance. La conexión y el servicio se serializan entre reevaluaciones de Streamlit. La configuración inicial y la tabla de ruido quedan guardadas antes de medir; la muestra de extremo se reutiliza. No hay asignación x=r, recorte correctivo del agua ni acceso del controlador al estado exacto/calendario oculto.
+## Reproducción
 
-Para AC03 se usó el modo de recambio explícito ya aprobado, evitando activar simultáneamente el grupo firmado de llenado y vaciado. Se declararon en core_checks.json todos los términos anulados de los ensayos aislados.
-
-Las métricas de terminación incorporan el estado irregular solo a x. En un tramo común con extremo irregular, x se interpola linealmente en el último segmento y los consumos comunes se restringen a intervalos completos; esa limitación figura expresamente en el resultado. Las métricas completas de cada corrida conservan sus intervalos parciales reales.
-
-## Reproducción mínima
-
-Desde la raíz extraída o clonada, con Python 3.12.14:
-
-```bash
-python -m venv work/venv
-work/venv/bin/python -m pip install -r requirements-lock.txt
-work/venv/bin/python -m pip check
-work/venv/bin/python -m streamlit run app.py
-```
-
-Abrir `http://127.0.0.1:8501`. La aplicación funciona sin red tras la instalación; guarda en `work/piscicultura.sqlite`. El historial puede consultarse después de reiniciar. La pausa permite continuar dentro de la sesión; los registros históricos no prometen reanudación automática tras cerrar el proceso.
+Usar Python 3.12.14 y `requirements-lock.txt`, según IMPLEMENTATION. Desde la raíz:
 
 ```bash
-work/venv/bin/python -m pytest -q tests --junitxml=evidence/pytest.xml
-work/venv/bin/python -m scripts.replay_export evidence/runs/S2_p0_closed.zip --db work/replay.sqlite --output work/replay
+PISCICULTURA_EVIDENCE_DIR=evidence/correcciones_pr1/regression PISCICULTURA_ACCEPTANCE_DB=work/revision_pr1/acceptance.sqlite work/clean-venv/bin/python -m pytest -q tests --junitxml=evidence/correcciones_pr1/pytest.xml
+work/clean-venv/bin/python evidencia_revision/reproducir_observaciones.py --project .
+work/clean-venv/bin/python -m scripts.pr1_revision_evidence
+work/clean-venv/bin/python -m scripts.reference_comparisons --evidence-dir evidence/correcciones_pr1/regression --db work/revision_pr1/acceptance.sqlite
+work/clean-venv/bin/python -m scripts.pr1_review_report
 ```
 
-El segundo comando usa la tabla persistida, no solo la semilla. Repite el experimento con nuevos identificadores y compara x con las tolerancias aprobadas. La suite completa genera nuevas corridas de aceptación; conservar la entrega original para contrastarla con una nueva ejecución.
+La ruta `work/clean-venv` identifica el entorno usado; un entorno nuevo instalado como `work/venv` puede sustituirla. El informe de comparación usa commits históricos y requiere clon Git. La aplicación se ejecuta con `python -m streamlit run app.py`, escucha en loopback y conserva funcionamiento local sin red tras instalar. La pausa solo reanuda dentro de la sesión; no se promete recuperación automática del estado físico al cerrar el proceso.
 
-## Puntos para resolución documental y continuidad de Work
+## Atención pendiente de Work y del estudiante
 
-1. El ZIP Piscicultura_Documentacion_v0.5.0.zip no fue accesible en esta sesión. La fuente efectiva fue el árbol GitHub f69f4d8 con documentos que declaran 0.5.0/1.0.0. Work debe confirmar que corresponde al paquete entregado; no se certifica una equivalencia binaria no comprobada.
-2. REQUIREMENTS conserva una frase sobre RNF01/RNF10 pendientes de aprobación; HANDOFF_WORK y el encargo declaran aprobada la etapa 4. Se mantuvieron criterios originales y se dejó la contradicción para Work. No se reescribieron documentos académicos.
-3. PROJECT_SPEC cita PROMPT_INICIO_CODEX.txt, ausente del árbol remoto. No bloqueó la implementación porque el encargo y HANDOFF_WORK aportaron sus instrucciones.
-4. RNF10 necesita medición en el equipo local con SSD y contexto del plan. No se requiere cambiar su umbral a partir de los resultados de esta máquina virtual.
-5. Work debe contrastar TEST_RESULTS y las exportaciones con el informe, completar conclusiones y capítulo VIII, y resolver docente/paralelo/fecha si corresponde. Codex no editó esas partes.
+1. Reconsiderar OBS01–OBS03 con los XML, datos y el contrato de diagnóstico propuesto; actualizar el dictamen académico si corresponde. Las filas parciales de la revisión R1 describen el head anterior y no fueron sobrescritas por Codex.
+2. Mantener RNF10 abierto: S8 0.1.1 midió (8.400498001,8.502229281,8.400134212) s, mediana 8.400498001 s; los originales y la mediana 8.981133522 s se conservan. Ninguna medición virtual ni la reejecución de Work acredita el SSD/equipo local. La meta sigue en 60 s.
+3. No integrar ni otorgar aceptación integral con RNF10 abierto sin la decisión explícita que exige Work. Esta entrega solicita revisión; no concede esa excepción.
+4. Resolver los pendientes administrativos del informe (docente/paralelo y fecha si corresponde), bajo propiedad académica de Work.
 
-El simulador queda entregado para revisión técnica y académica. Los resultados de software no constituyen validación de campo: pH y turbidez son aproximaciones empíricas y los parámetros demostrativos no deben convertirse en recomendaciones, capacidades de equipos reales ni dosificación productiva.
+pH y turbidez continúan siendo aproximaciones empíricas; no hay química completa, dosificación física, conversión de NTU a sólidos ni validación de campo. Los parámetros demostrativos, límites y capacidades no son recomendaciones productivas. No se redactan conclusiones de ahorro universal ni desempeño de una piscigranja a partir de esta simulación.

@@ -1,14 +1,59 @@
 # Implementación técnica
 
-Responsable: Codex. Especificación SPC-AGUA-001 0.5.0; modelo M-AGUA-DEMO-1 1.0.0; software 0.1.0. Fecha local de ejecución: 14 de octubre de 2026 (America/La_Paz; los registros de máquina usan UTC). Los resultados de pruebas se detallan en TEST_RESULTS.md.
+Responsable: Codex. Especificación SPC-AGUA-001 0.5.0; modelo M-AGUA-DEMO-1 1.0.0; software 0.1.1. Revisión documental Work R1, edición académica 0.6.0; contrato ejecutable conservado en 0.5.0. Fecha local de ejecución: 14 de octubre de 2026 (America/La_Paz; los registros de máquina usan UTC). Las pruebas de corrección se ejecutaron el 14 de octubre por la noche; la consolidación de esta entrega se retomó el 15 de octubre de 2026. Los resultados se detallan en TEST_RESULTS.md.
 
-## Recepción y alcance
+## Correcciones R1 sobre el PR 1
+
+Se leyeron completos REVISION_COHERENCIA_PR1.md y OBSERVACIONES_CODEX_PR1.md de `6ac325a`. Están en la raíz del repositorio; `docs/revision_pr1/` no existe en la fuente recibida. Esa diferencia se comunicó antes de continuar. Los tres defectos se reprodujeron sobre `41ec9f2`; el script de Work y las regresiones antes/después se conservan en `evidence/correcciones_pr1/`.
+
+La rama existente sigue siendo `codex/implementacion-spc-agua-0.5.0`, asociada al mismo PR #1 en borrador. Se incorporó main **hacia esta rama**, sin integrar cambios a main. Los archivos de revisión, README, prompt, informe Word y propuestas académicas de Work se preservan byte por byte respecto de `6ac325a`; se identifican en el manifiesto nuevo. Edición académica 0.6.0 no cambia `spec_version=0.5.0`, `model_version=1.0.0` ni MODEL_DEFAULTS. Software 0.1.1 identifica estos arreglos. Los archivos `model.py`, `actuators.py`, `control.py`, `sensors.py`, `scenarios.py` y `engine.py` conservan las ecuaciones y secuencia del head revisado.
+
+### OBS01: configuración y disponibilidad de resultados derivados
+
+`profile.operating_bands` de T y C debe tener ancho estrictamente positivo porque su semiancho normaliza J. El error identifica la variable canónica y el campo; se rechaza antes de crear una corrida. No se sustituyen escalas cero por epsilon ni resultados no finitos por cero. `evaluate` protege además sus escalas y `assert_finite_metrics` comprueba recursivamente los resultados numéricos antes de guardar.
+
+El estado de integración conserva PREPARED/RUNNING/PAUSED/COMPLETED/STOPPED/FAILED/INTERRUPTED. No se añade otro estado de integración. Se añade el contrato de resultado derivado:
+
+| Campo de `get_run` y exportación | Significado |
+|---|---|
+| `metrics_status=PENDING` | Corrida nueva sin cálculo de métricas confirmado |
+| `metrics_status=READY` | Resultado finito y guardado, junto con su diagnóstico, en una transacción |
+| `metrics_status=FAILED` | Falló el último intento de generar, validar finitud o persistir las métricas |
+| `metrics_status=UNAVAILABLE` | Compatibilidad con historial anterior sin métricas ni diagnóstico conservado; no inventa su causa |
+| `metrics_cause` | Mensaje de error explícito; vacío cuando el cálculo está disponible |
+| `metrics_stage` | `generation`, `nonfinite` o `persistence` para un fallo conocido |
+
+`metric_diagnostics(run_id,status,cause,stage)` es una tabla nueva con FK. `CREATE TABLE IF NOT EXISTS` permite abrir bases anteriores sin cambiar las tablas de agua o comandos. Una corrida histórica con métricas existentes se lee como READY; una terminal sin ellas ni diagnóstico se presenta UNAVAILABLE. No se reconstruye una causa histórica desconocida.
+
+El lote físico y su recibo se confirman como antes. Si después falla una métrica, se conserva ese resultado físico y se guarda FAILED **en el diagnóstico derivado**, con causa. El servicio devuelve `None` para el resultado derivado fallido; `get_run` informa por separado su disponibilidad. No se altera agua, estado de integración, muestra, decisión ni recibo. Si había un cálculo anterior, se conserva para auditoría, pero la interfaz no lo presenta como el último cálculo disponible mientras el diagnóstico sea FAILED. Un recálculo correcto puede restaurar READY sin volver a integrar.
+
+La interfaz muestra «Métricas no disponibles» y la causa, conserva gráficos/descarga y admite comparación con resultados derivados ausentes. El CLI y los metadatos/manifiesto de exportación muestran el diagnóstico. Las métricas comunes de una comparación tienen un diagnóstico propio: pueden estar disponibles aunque fallara el guardado del cálculo completo. Si tampoco puede escribirse el diagnóstico porque la base está inaccesible, el servicio comunica RuntimeError; no afirma haberlo persistido. La interfaz ya gestiona esa excepción. No se promete persistencia durante una pérdida total del almacenamiento.
+
+### OBS02: identidad de variable
+
+`series_metrics(..., variables=...)` recibe identidades explícitas. Producción pasa las cinco identidades para x y una identidad para cada columna y; no deduce que una columna aislada sea bilateral. En `turbidity_NTU` la pertenencia depende únicamente del límite superior. El IAE continúa usando |U−rU|, incluso por debajo de una banda inferior positiva. Las ausencias de y conservan cobertura y no se rellenan para calcular integrales.
+
+### OBS03: ventanas exactas
+
+`series_metrics(..., window=(a,b))` evalúa intersecciones de los intervalos originales con la ventana. Para tiempo fuera usa el estado **izquierdo original** y la longitud de cada intersección; no toma el valor de una muestra interpolada para decidir pertenencia. La ventana [14400,43200] s siempre tiene denominador 28800 s cuando existe cobertura completa. Se guardan `interval_s`, `duration_s`, las identidades y las reglas numéricas.
+
+El IAE en extremos no coincidentes se obtiene recortando el trapecio mediante interpolación lineal del error absoluto entre las muestras originales. Esta regla conserva el IAE aprobado cuando los extremos coinciden con la malla y no genera lecturas ni ruido nuevos. La recuperación sigue usando muestras reales y 1800 s consecutivos dentro del intervalo evaluado; dentro de una ventana su tiempo se expresa desde su inicio. No se restringió `dt=135 s`: se probaron 321 muestras y 320 decisiones por S2 de 12 h en las seis combinaciones de perfil y estrategia.
+
+### Evidencia y archivos
+
+Las evidencias iniciales, incluidos XML 58/58 y las 60 exportaciones 0.1.0, permanecen intactas. La documentación inicial se conserva en `evidence/correcciones_pr1/history/` y en el commit revisado. `evidencia_revision/` contiene evidencia de Work, sin atribuirla a Codex. La evidencia 0.1.1 está exclusivamente bajo `evidence/correcciones_pr1/`. Las pruebas escriben por defecto en `work/test-evidence`; las variables `PISCICULTURA_EVIDENCE_DIR` y `PISCICULTURA_ACCEPTANCE_DB` permiten una salida/base explícita sin sobrescribir lo histórico.
+
+### OBS05: rendimiento contextual pendiente
+
+**RNF10 permanece pendiente/no evaluable en este entorno virtual.** AC20 pasó sus comprobaciones funcionales. Las tres duraciones S8 nuevas fueron 8.400498001, 8.502229281 y 8.400134212 s, mediana 8.400498001 s; se conservan los registros iniciales y su mediana descriptiva de 8.981133522 s. Ninguna de estas mediciones acredita el equipo local con SSD exigido por el plan. La meta sigue en 60 s y se requiere nueva medición contextual, sin ampliar el criterio. La integración del PR y la nueva revisión de Work continúan pendientes.
+
+## Recepción inicial y alcance
 
 Se inspeccionó `/workspace/piscicultura-control` antes de escribir. No había AGENTS.md aplicable, código previo ni cambios locales pendientes. El checkout inicial `1e1747a` contenía solo README y una especificación preliminar. `git fetch origin` encontró `f69f4d8`, que incorpora la documentación 0.5.0 y los diagramas. Se creó `codex/implementacion-spc-agua-0.5.0` directamente desde esa revisión, sin carpetas anidadas ni sobrescritura de trabajo ajeno. README, todos los documentos académicos y diagrams se preservaron íntegros.
 
-El ZIP mencionado en el encargo no estaba accesible en los adjuntos ni en las carpetas del entorno. La fuente efectiva fue el commit remoto indicado. No se afirma equivalencia binaria con un ZIP que no se pudo inspeccionar. `evidence/document_manifest.json` permite verificar lo recibido de GitHub.
+En la recepción inicial el ZIP no estaba accesible y se usó el commit remoto indicado. Work R1 confirmó posteriormente la equivalencia de los 12 documentos técnicos y 4 diagramas con el ZIP 0.5.0. La diferencia técnica queda resuelta; no se afirma equivalencia completa de README, prompt y Word de aquella entrega. Los archivos ahora proporcionados por Work se incorporaron íntegros desde 6ac325a. El manifiesto original se conserva como histórico y el nuevo identifica las fuentes de esta revisión.
 
-Se revisaron README, HANDOFF_WORK, PROJECT_SPEC, REQUIREMENTS, MATHEMATICAL_MODEL, MODEL_DEFAULTS, ACCEPTANCE_PLAN, antecedentes, revisión del modelo, fuentes, changelog, informe y diagramas SVG. No se cambiaron ecuaciones, coeficientes de referencia, umbrales ni tecnologías. La referencia documental a PROMPT_INICIO_CODEX.txt apunta a un archivo ausente en el árbol remoto; el encargo de esta sesión y HANDOFF_WORK aportan las instrucciones de implementación.
+Se revisaron README, HANDOFF_WORK, PROJECT_SPEC, REQUIREMENTS, MATHEMATICAL_MODEL, MODEL_DEFAULTS, ACCEPTANCE_PLAN, antecedentes, revisión del modelo, fuentes, changelog, informe y diagramas SVG. No se cambiaron ecuaciones, coeficientes de referencia, umbrales ni tecnologías. PROMPT_INICIO_CODEX.txt estaba ausente en la base inicial; ahora se incorpora el archivo recibido de Work junto con el informe Word de revisión.
 
 La aplicación representa un estanque bien mezclado con biomasa fija. Es una simulación académica; no acredita operación productiva. pH y turbidez son aproximaciones empíricas; las acciones de pH no son dosis químicas.
 
@@ -78,9 +123,9 @@ Un cruce exterior de dominio termina la integración y conserva instante/estado 
 
 ## Persistencia y concurrencia
 
-Tablas: runs, samples, decisions, actuator_records (ocho filas por intervalo), events, metrics, comparisons, comparison_members, command_receipts y acknowledgments. Las tablas de series contienen claves e índices explícitos y payload JSON. FK está activado por conexión. Las claves compuestas impiden duplicación.
+Tablas: runs, samples, decisions, actuator_records (ocho filas por intervalo), events, metrics, metric_diagnostics, comparisons, comparison_members, command_receipts y acknowledgments. Las tablas de series contienen claves e índices explícitos y payload JSON. FK está activado por conexión. Las claves compuestas impiden duplicación.
 
-Un lote de muestras, decisión, acciones, eventos, estado final y recibo se confirma en una transacción. Un command_id confirmado devuelve su recibo; usarlo con otro expected_step genera conflicto. Un fallo revierte el lote y conserva el estado confirmado anterior, marcando FAILED con causa cuando la base permite esa escritura. Las métricas son datos derivados y se guardan en una transacción aparte; pueden recalcularse desde registros confirmados.
+Un lote de muestras, decisión, acciones, eventos, estado final y recibo se confirma en una transacción. Un command_id confirmado devuelve su recibo; usarlo con otro expected_step genera conflicto. Un fallo revierte el lote y conserva el estado confirmado anterior, marcando FAILED con causa cuando la base permite esa escritura. Las métricas son datos derivados y se guardan junto a su diagnóstico READY en una transacción aparte; si fallan se registra FAILED con causa, preservando el lote físico confirmado. Pueden recalcularse desde registros confirmados.
 
 La conexión permite cambio de hilo y un RLock serializa sus operaciones; otro RLock serializa el servicio por sesión. Esta decisión responde a las reevaluaciones de Streamlit y se probó en AppTest. La versión inicial admite una corrida activa por sesión local; no es una aplicación colaborativa distribuida.
 
@@ -97,12 +142,13 @@ Cada ZIP incluye `config.json`, `noise.csv` (epsilon estándar recortado, autori
 ## Reproducción y pruebas
 
 ```bash
-work/venv/bin/python -m pytest -q tests --junitxml=evidence/pytest.xml
-work/venv/bin/python -m scripts.core_evidence
+PISCICULTURA_EVIDENCE_DIR=evidence/correcciones_pr1/regression PISCICULTURA_ACCEPTANCE_DB=work/revision_pr1/acceptance.sqlite work/venv/bin/python -m pytest -q tests --junitxml=evidence/correcciones_pr1/pytest.xml
+work/venv/bin/python -m scripts.pr1_revision_evidence
+work/venv/bin/python -m scripts.reference_comparisons --evidence-dir evidence/correcciones_pr1/regression --db work/revision_pr1/acceptance.sqlite
 work/venv/bin/python -m piscicultura --scenario S2 --profile 0 --compare --db work/demo.sqlite --output work/exports
 work/venv/bin/python -m piscicultura --config work/config.json --compare --db work/replay.sqlite --output work/replay
 ```
 
-El último comando requiere extraer `config.json` de una exportación. Para reproducir literalmente la tabla persistida, usar el script de reproducción descrito en evidence/README.md; no depender únicamente de la semilla. La suite genera el índice y exportaciones de referencia. Usar una base nueva evita mezclar ensayos, aunque las claves únicas impiden duplicados entre corridas.
+El último comando requiere extraer `config.json` de una exportación. Para reproducir literalmente la tabla persistida, usar el script de reproducción descrito en evidence/README.md; no depender únicamente de la semilla. La suite genera el índice y exportaciones de referencia en la carpeta seleccionada; el comando anterior conserva las referencias originales. `scripts.core_evidence` y `scripts.build_test_report` pertenecen a la entrega inicial y no son los generadores de esta revisión. Usar una base nueva evita mezclar ensayos, aunque las claves únicas impiden duplicados entre corridas.
 
 Los detalles observados, los casos fallidos de desarrollo corregidos, el rendimiento contextual y la matriz RF/RNF están en TEST_RESULTS.md. HANDOFF_CODEX.md identifica entregables y asuntos que Work debe resolver documentalmente.
