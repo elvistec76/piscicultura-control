@@ -80,7 +80,8 @@ with config_tab:
             st.session_state.run_id=service.prepare(cfg.data)
             st.success('Configuración válida y congelada. Corrida preparada sin avanzar el tiempo.')
         except (ValueError,TypeError,KeyError,ZeroDivisionError) as exc: st.error('Configuración rechazada: '+str(exc))
-    st.dataframe(pd.DataFrame(c['origin_registry']).rename(columns={'classification':'Clase de origen','value':'Valor o grupo','unit':'Unidad','source':'Procedencia'}),hide_index=True)
+    origins=pd.DataFrame(c['origin_registry']).replace({'bibliographic':'Bibliográfico','derived':'Derivado','demonstrative':'Demostrativo','Csat coefficients':'Coeficientes de saturación de oxígeno','temperature reference':'Referencia térmica','other references, bands, alarms, parameters':'Otras referencias, bandas, alarmas y parámetros','canonical per field':'Unidad indicada en cada campo'})
+    st.dataframe(origins.rename(columns={'classification':'Clase de origen','value':'Valor o grupo','unit':'Unidad','source':'Procedencia'}),hide_index=True)
 
 
 def show_run(rid,key):
@@ -93,16 +94,23 @@ def show_run(rid,key):
         for j,(name,unit) in enumerate(zip(LABELS,UNITS)):
             v=last['values'][j];cols[j].metric(name,f'{v:.4f} {unit}' if v is not None else 'Sin lectura')
             cols[j].caption({'GOOD':'Válida','MISSING':'Ausente','INVALID':'Inválida'}[last['qualities'][j]])
-        for f in figures(run,samples,actions): st.plotly_chart(f,use_container_width=True,key=key+f.layout.title.text)
+        for f in figures(run,samples,actions): st.plotly_chart(f,width="stretch",key=key+f.layout.title.text)
     events=repo.records(rid,'events')
     st.write('**Alarmas y eventos**')
     st.caption('Inyección: auditoría del simulador. Alarma: condición observable en mediciones. Reconocer una alarma solo registra su lectura.')
     if events:
-        st.dataframe(pd.DataFrame(events).rename(columns={'event_seq':'Secuencia','time_s':'Tiempo (s)','category':'Origen','target':'Objetivo','severity':'Severidad','transition':'Transición','code':'Código','data':'Detalle'}),hide_index=True)
+        visible_events=pd.DataFrame(events).replace({'alarm':'Alarma medida','injection':'Inyección para auditoría','audit':'Auditoría numérica','termination':'Terminación','activation':'Activación','clear':'Cese','AUDITORIA':'Auditoría','CRITICA':'Crítica',**dict(zip(VARIABLES,LABELS))})
+        st.dataframe(visible_events.rename(columns={'event_seq':'Secuencia','time_s':'Tiempo (s)','category':'Origen','target':'Objetivo','severity':'Severidad','transition':'Transición','code':'Código','data':'Detalle'}),hide_index=True)
         alarm_ids=[e['event_seq'] for e in events if e['category']=='alarm' and e['transition']=='activation']
         if alarm_ids:
             seq=st.selectbox('Alarma para reconocer',alarm_ids,key=key+'ack')
             if st.button('Reconocer alarma',key=key+'ackbutton'): repo.acknowledge(rid,seq);st.success('Reconocimiento registrado.')
+    stored_metrics=repo.records(rid,'metrics')
+    if stored_metrics and stored_metrics[0]['x']:
+        m=stored_metrics[0];st.write('**Indicadores sobre el estado exacto x**')
+        st.dataframe([{'Variable':name,'Unidad del error integrado':unit+'·s','Error integrado absoluto':m['x']['iae'][j],'Tiempo fuera de banda (s)':m['x']['outside_s'][j],'Recuperación (s)':m['x']['recovery_s'][j] if m['x']['recovery_s'][j] is not None else 'No recuperado'} for j,(name,unit) in enumerate(zip(LABELS,UNITS))],hide_index=True)
+        usage=m['usage'];st.write(f"Agua repuesta: {usage['inlet_m3']:.4f} m³ · Agua descargada: {usage['outlet_m3']:.4f} m³ · Energía parcial estimada: {usage['partial_energy_kWh']:.4f} kWh")
+        st.caption('Actividad pH en segundos normalizados; no representa una dosificación química. La recuperación exige 1800 s consecutivos dentro de banda. Los indicadores de lectura se separan y registran cobertura.')
     with st.expander('Configuración congelada, métricas y terminación'):
         st.json(run['config']);st.json(repo.records(rid,'metrics'));st.json(run['termination_state'])
     st.download_button('Descargar corrida (ZIP: JSON y CSV)',export_bytes(repo,rid),file_name=rid+'.zip',mime='application/zip',key=key+'download')
@@ -140,7 +148,13 @@ with compare_tab:
             m=data['metrics'];rows.append({'Estrategia':'Abierto' if strategy=='open' else 'Cerrado','Estado':STATUS[data['status']],'Duración (h)':data['time_s']/3600,'J adimensional':m['J'],'Causa':data['cause']})
         st.dataframe(rows,hide_index=True)
         st.caption('Se muestran métricas del horizonte observado y del tramo común por separado. Una terminación anticipada impide declarar ventaja por observar menos tiempo.')
-        st.json(comparison)
+        comparison_rows=[]
+        for strategy,m in comparison['common'].items():
+            if m['x']:
+                for j,(name,unit) in enumerate(zip(LABELS,UNITS)):
+                    comparison_rows.append({'Estrategia':'Abierto' if strategy=='open' else 'Cerrado','Variable':name,'Unidad del error integrado':unit+'·s','Error integrado absoluto':m['x']['iae'][j],'Fracción en banda':m['x']['in_band_fraction'][j]})
+        st.dataframe(comparison_rows,hide_index=True)
+        with st.expander('Base común y métricas completas de comparación'): st.json(comparison)
         st.download_button('Descargar comparación JSON',json.dumps(comparison,ensure_ascii=False,indent=2),file_name='comparison.json')
 with history_tab:
     history=repo.list()

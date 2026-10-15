@@ -26,7 +26,8 @@ def test_AC01():
     for path,value in [('area_m2',0),('biomass_kg',float('nan')),('area_m2','10')]:
         c=make_config();c['parameters'][path]=value
         with pytest.raises((ValueError,TypeError)): RunConfig.freeze(c)
-    for mutate in [lambda c:c['events'].append(dict(kind='leak',target='water',start_s=1,end_s=60,magnitude=.001,unit='m³/s')),
+    for mutate in [lambda c:c['events'].append(dict(kind='leak',target='water',start_s=0,end_s=60,magnitude=.001,unit='mg/L')),
+                   lambda c:c['events'].append(dict(kind='leak',target='water',start_s=1,end_s=60,magnitude=.001,unit='m³/s')),
                    lambda c:c['profile']['references'].__setitem__(1,8.4),
                    lambda c:c['units'].__setitem__('ph','mg/L'),
                    lambda c:c['origin_registry'][0].__setitem__('source','')]:
@@ -49,6 +50,8 @@ def test_AC03():
     assert abs(result[4]-1.0414)<=1e-7
     assert abs((p['exchange_m3_s']+p['inlet_max_m3_s'])*600-.6)<=1e-12
     assert abs(p['exchange_m3_s']*600-.12)<=1e-12
+    usage=volume_usage(c,result,600)
+    assert abs(usage['inlet_m3']-.6)<=1e-9 and abs(usage['outlet_m3']-.12)<=1e-9
 
 
 def test_AC04():
@@ -84,3 +87,12 @@ def test_AC08():
         expected=quad(lambda t:effective(response(z,v,t,tau),np.ones(8))[j],0,120,points=[30*math.log(2)])[0]/120
         assert abs(mean[j]-expected)<1e-10
     out,limited=limit([3,-1,-3,2,0]);assert limited and list(out)==[1,0,-1,1,0]
+
+
+def volume_usage(c,result,duration):
+    from piscicultura.metrics import evaluate
+    means=mean_actions(c['z0'],np.array([0,0,0,0,1]),duration,c['parameters']['actuator_tau_s'],np.ones(8))
+    from piscicultura.config import ACTIONS
+    actions=[dict(actuator_id=name,start_s=0,end_s=duration,mean_effective=float(means[j]),disturbances=dict(rain=0,leak=0)) for j,name in enumerate(ACTIONS)]
+    samples=[dict(time_s=t,x=x,values=x) for t,x in [(0,c['x0']),(duration,result[:5].tolist())]]
+    return evaluate(dict(config=c,termination_state=None),samples,actions)['usage']

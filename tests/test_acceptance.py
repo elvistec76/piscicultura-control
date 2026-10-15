@@ -194,12 +194,15 @@ def test_AC20(tmp_path,laboratory,monkeypatch):
     import socket
     def denied(*args,**kwargs): raise AssertionError('RED_PROHIBIDA')
     monkeypatch.setattr(socket.socket,'connect',denied);monkeypatch.setattr(socket,'create_connection',denied)
-    durations=[]
+    durations=[];benchmark_index=[]
+    benchmark_dir=Path('evidence/benchmark');benchmark_dir.mkdir(exist_ok=True)
     for i in range(3):
         repo=SQLiteRepository(tmp_path/f'bench{i}.sqlite');s=SimulationService(repo)
         start=time.perf_counter();rid=s.prepare(make_config(0,'S8','closed'));result=s.run_all(rid);durations.append(time.perf_counter()-start)
         assert result['status']=='COMPLETED' and len(repo.records(rid,'samples'))==2881
-        assert repo.list() and export_bytes(repo,rid)
+        archive=export_bytes(repo,rid);assert repo.list() and archive
+        (benchmark_dir/f'S8_rep{i}.zip').write_bytes(archive)
+        benchmark_index.append(dict(repetition=i,run_id=rid,duration_s=durations[-1],archive=f'S8_rep{i}.zip'))
         repo.close()
     code="""
 import sys
@@ -213,6 +216,7 @@ from piscicultura.scenarios import noise_table
 c=make_config(0,'S0','open'); r,b=advance(initial(c),c,noise_table(c)); assert r.time_s==60
 """
     subprocess.run([sys.executable,'-c',code],check=True)
+    (benchmark_dir/'index.json').write_text(json.dumps(benchmark_index,indent=2))
     obs['AC20']=dict(durations_s=durations,median_s=statistics.median(durations),threshold_s=60,network='socket connect denegado',hardware_eligibility='NO EVALUABLE hasta verificar almacenamiento SSD y equipo local de referencia')
     # El umbral se registra, pero no acredita RNF10 en hardware no verificable.
     assert all(d>0 for d in durations)
