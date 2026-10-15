@@ -57,3 +57,7 @@ Los comandos de instalación, ejecución y pruebas definitivos se fijarán al co
 - Corridas y exportaciones de referencia con configuración congelada, tabla de ruido, eventos y métricas. Entregar un medio accesible de consulta; no asumir que Work ve el disco o el chat de Codex. Las imágenes de interfaz pueden apoyar la revisión, pero no sustituyen datos y pruebas.
 
 La revisión académica posterior completará resultados y capítulo VIII a partir de esas evidencias. No existe todavía fecha de finalización ni desempeño observado. Pendientes administrativos del informe: docente y paralelo; confirmar fecha de entrega si cambia. El nombre del autor figura en la portada consolidada.
+
+## Cierre de revisión R1 posterior a implementación
+
+La entrega 0.1.0 se recibió y revisó en head 41ec9f2d21edb21499c14437b3d00dd9e135e0d2. Etapa 6 iniciada; las afirmaciones anteriores sobre recepción pendiente describen la etapa 5. El contraste técnico con el paquete 0.5.0 confirmó 12 documentos y 4 diagramas idénticos, README distinto y prompt/Word ausentes en el repositorio. No recomendar integración del PR 1 antes de OBS01 a OBS03 y nueva revisión. RNF10 se mantiene abierto. Usar REVISION_COHERENCIA_PR1 y OBSERVACIONES_CODEX_PR1 para el siguiente trabajo; no ejecutar de nuevo el prompt inicial como si el código no existiera.

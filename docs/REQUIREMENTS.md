@@ -1,7 +1,7 @@
 # Requisitos del sistema
 
 SPC-AGUA-001 · Versión 0.5.0 · 2026-10-14 · Etapas 1 a 4 aprobadas; entrega documental de etapa 5 preparada.
-Se conservan RF01 a RF11. Los sufijos detallan cada familia y no sustituyen su identidad. Ningún requisito tiene evidencia de implementación. Las comprobaciones siguientes son criterios funcionales; las tolerancias y los casos numéricos se concretan en ACCEPTANCE_PLAN 0.5.0.
+Se conservan RF01 a RF11. Los sufijos detallan cada familia y no sustituyen su identidad. La entrega de software 0.1.0 aporta evidencia de implementación; su evaluación individual figura en REVISION_COHERENCIA_PR1.md. Las comprobaciones siguientes son criterios funcionales; las tolerancias y los casos numéricos se concretan en ACCEPTANCE_PLAN 0.5.0.
 
 ## Requisitos funcionales y comprobación prevista
 
@@ -56,7 +56,7 @@ Se conservan RF01 a RF11. Los sufijos detallan cada familia y no sustituyen su i
 | RNF09 | Configuración histórica inmutable y trazabilidad de exportaciones | Editar un perfil no altera corridas previas; cada exportación incluye identificadores y versiones |
 | RNF10 | Rendimiento medible con carga y entorno acordados | Usar S8 y AC20: 48 h, intervalo 60 s, tres repeticiones y mediana <=60 s en el equipo declarado |
 
-RNF10 dispone de criterio propuesto en AC20: carga S8, tres repeticiones, mediana <=60 s y equipo de referencia declarado. RNF01 adopta las tolerancias del plan. Ambos siguen pendientes de aprobación y de ejecución. No se promete compatibilidad con un sistema operativo o versión de Python no comprobados.
+RNF10 dispone de criterio propuesto en AC20: carga S8, tres repeticiones, mediana <=60 s y equipo de referencia declarado. RNF01 adopta las tolerancias del plan. Los criterios de ambos fueron aprobados en etapa 4. RNF01 dispone de evidencia en las configuraciones revisadas; RNF10 permanece pendiente de evaluación contextual en el equipo de referencia. No se promete compatibilidad con un sistema operativo o versión de Python no comprobados.
 
 ## Trazabilidad por familia
 
@@ -78,8 +78,12 @@ OE1 a OE7 corresponden a los objetivos específicos del capítulo II. C01 a C25 
 
 ## Criterio de cierre documental
 
-La aprobación de etapa 4 cubre modelos, perfiles numéricos, capacidades, referencias, bandas, alarmas, intervalos, políticas de fallos, tolerancias e indicadores. Los 33 subrequisitos y los 10 RNF siguen sin evidencia de implementación. La aceptación documental permite el traspaso; la aceptación del software requiere resultados de Codex.
+La aprobación de etapa 4 cubre modelos, perfiles numéricos, capacidades, referencias, bandas, alarmas, intervalos, políticas de fallos, tolerancias e indicadores. La revisión registra evidencia favorable de 30 subrequisitos y 7 RNF dentro del alcance probado; 3 subrequisitos y 2 RNF requieren correcciones, y RNF10 sigue pendiente. La aceptación documental permite el traspaso; la aceptación del software requiere resultados de Codex.
 
 ## Correspondencia con aceptación 0.5.0
 
-RF01 y RF02: AC01. RF03: AC02 a AC07, AC10, AC11 y AC18. RF04: AC09 y AC14. RF05: AC05, AC07, AC08 y AC15. RF06: AC09, AC10 y AC12. RF07: AC13 a AC15. RF08: AC13 a AC15. RF09: AC11, AC16 y AC17. RF10: AC03, AC12, AC13, AC18 y AC19. RF11: AC01, AC11 y AC17. RNF01 a RNF10 conservan sus evidencias previstas y se concretan con AC11, AC16, AC17, AC18 y AC20, junto con la revisión de unidades y de interfaz. No se marca ningún caso como pasado.
+RF01 y RF02: AC01. RF03: AC02 a AC07, AC10, AC11 y AC18. RF04: AC09 y AC14. RF05: AC05, AC07, AC08 y AC15. RF06: AC09, AC10 y AC12. RF07: AC13 a AC15. RF08: AC13 a AC15. RF09: AC11, AC16 y AC17. RF10: AC03, AC12, AC13, AC18 y AC19. RF11: AC01, AC11 y AC17. RNF01 a RNF10 conservan sus evidencias previstas y se concretan con AC11, AC16, AC17, AC18 y AC20, junto con la revisión de unidades y de interfaz. Los resultados de AC01 a AC19 en las configuraciones de referencia se documentan en la revisión; AC20 conserva aceptación funcional y rendimiento contextual pendiente. Las comprobaciones adicionales detectaron defectos de configuración y métricas, por lo que no se declara aceptación global.
+
+## Revisión de implementación R1
+
+Contrato evaluado 0.5.0; edición académica 0.6.0 para revisión. RF02.2, RF02.3 y RF10.2 parciales por bandas degeneradas, métricas individuales de turbidez y ventana temporal recortada. RNF02 y RNF07 parciales; RNF10 pendiente. Las condiciones de corrección y nuevas pruebas constan en OBSERVACIONES_CODEX_PR1.md. No se modifican tolerancias, ecuaciones ni valores de referencia.

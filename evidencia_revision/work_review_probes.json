@@ -1,0 +1,28 @@
+{
+  "ui_parameter_persistence": {
+    "requested": {
+      "area_m2": 20,
+      "biomass_kg": 70,
+      "pressure_Pa": 95000,
+      "salinity_per_mille": 0.1
+    },
+    "stored": {
+      "area_m2": 20.0,
+      "biomass_kg": 70.0,
+      "pressure_Pa": 95000.0,
+      "salinity_per_mille": 0.1
+    },
+    "exceptions": 0
+  },
+  "zero_width_thermal_band": {
+    "accepted": true,
+    "stop": "ValueError: Out of range float values are not JSON compliant: nan",
+    "persisted_status": "STOPPED"
+  },
+  "turbidity_metrics_same_values": {
+    "x_outside_s": 0.0,
+    "y_outside_s": 0.0,
+    "x_recovery_s": 0.0,
+    "y_recovery_s": 0.0
+  }
+}

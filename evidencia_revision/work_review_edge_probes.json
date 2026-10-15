@@ -1,0 +1,20 @@
+{
+  "turbidity_lower_limit": {
+    "band": [
+      5,
+      20
+    ],
+    "identical_x_y_NTU": 2,
+    "x_outside_s": 0.0,
+    "y_outside_s": 1800.0,
+    "x_recovery_s": 0.0,
+    "y_recovery_s": null
+  },
+  "zero_width_complete": {
+    "exception": "ValueError",
+    "message": "Out of range float values are not JSON compliant: nan",
+    "status": "COMPLETED",
+    "metrics": [],
+    "last_time_s": 3600.0
+  }
+}

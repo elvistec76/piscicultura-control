@@ -1,0 +1,20 @@
+{
+  "47_pages_visually_reviewed": true,
+  "equations": 12,
+  "tables": 8,
+  "figures": 2,
+  "original_suite": {
+    "tests": 58,
+    "failures": 0,
+    "errors": 0,
+    "duration_s": 238.568
+  },
+  "model_defaults_unchanged": true,
+  "recommendation": "REQUEST_CHANGES",
+  "new_defects": [
+    "OBS01",
+    "OBS02",
+    "OBS03"
+  ],
+  "code_head": "41ec9f2d21edb21499c14437b3d00dd9e135e0d2"
+}

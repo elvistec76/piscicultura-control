@@ -4,7 +4,7 @@ ID: SPC-AGUA-001
 Versión: 0.5.0
 Fecha local: 2026-10-14
 Propietario: Work documentación
-Estado: etapas 1 a 4 aprobadas; paquete de etapa 5 preparado para entrega a Codex; sin implementación acreditada.
+Estado: etapas 1 a 4 aprobadas; implementación 0.1.0 recibida y revisada en PR 1; aceptación de integración pendiente de correcciones. Contrato ejecutable evaluado 0.5.0.
 
 ## 1 Propósito y alcance
 
@@ -184,20 +184,20 @@ Los textos de uso estarán en español. La interfaz presentará datos confirmado
 
 REQUIREMENTS contiene 33 subrequisitos funcionales y 10 no funcionales. ANALYSIS_STAGE1 conserva la matriz de 25 conceptos. Los objetivos específicos del informe mantienen su numeración. Codex deberá referir estas identidades en sus pruebas y evidencias.
 
-Los pendientes cuantitativos de etapa 3 se concretan en MATHEMATICAL_MODEL, MODEL_DEFAULTS.json y ACCEPTANCE_PLAN, versión 0.5.0. La etapa 4 fue aprobada por el estudiante; la ejecución de pruebas permanece pendiente. No quedan ganancias PID por definir: la estrategia seleccionada es histéresis muestreada. Las pruebas siguen pendientes de ejecución por Codex.
+Los pendientes cuantitativos de etapa 3 se concretan en MATHEMATICAL_MODEL, MODEL_DEFAULTS.json y ACCEPTANCE_PLAN, versión 0.5.0. La etapa 4 fue aprobada por el estudiante; las pruebas de referencia se recibieron y revisaron en R1. No quedan ganancias PID por definir: la estrategia seleccionada es histéresis muestreada. La entrega de Codex aporta ejecuciones de referencia; su revisión y los defectos adicionales se registran en REVISION_COHERENCIA_PR1.md.
 
 ## 14 Responsabilidades y avance
 
-Work mantiene PROJECT_SPEC, REQUIREMENTS, SOURCE_MAP, MATHEMATICAL_MODEL, REPORT_APA, HANDOFF_WORK y CHANGELOG_DOCS, además de anexos de diseño identificados como propios. Codex mantiene código, pruebas, IMPLEMENTATION, TEST_RESULTS y HANDOFF_CODEX. No se modifican esos archivos de Codex ni se afirma haber recibido evidencia.
+Work mantiene PROJECT_SPEC, REQUIREMENTS, SOURCE_MAP, MATHEMATICAL_MODEL, REPORT_APA, HANDOFF_WORK y CHANGELOG_DOCS, además de anexos de diseño identificados como propios. Codex mantiene código, pruebas, IMPLEMENTATION, TEST_RESULTS y HANDOFF_CODEX. No se modifican esos archivos de Codex; la evidencia recibida se evalúa en R1.
 
 Etapa 1 aprobada el 14 de octubre de 2026 mediante «si aprobamos».
 Etapa 2 aprobada el 14 de octubre de 2026 mediante «si», en respuesta a la revisión del capítulo III, especies concretas y crecimiento o engorde.
 Etapa 3 aprobada el 14 de octubre de 2026 mediante «apruebo».
 Etapa 4 aprobada el 14 de octubre de 2026 mediante «aprobado»: M-AGUA-DEMO-1, configuración numérica y 20 casos de aceptación.
-Etapa 5 preparada: paquete de especificación aprobada y guía de inicio; recepción y ejecución por Codex todavía no acreditadas.
-Etapa 6 pendiente: revisión de evidencias y resultados.
+Etapa 5 completada mediante entrega de la base aprobada; la implementación recibida identifica los documentos utilizados y sus evidencias.
+Etapa 6 en revisión: evidencia recibida, resultados contrastados y correcciones solicitadas; sin aceptación integral.
 
-El estudiante dispone de un repositorio según el contexto compartido; todavía no se ha facilitado aquí su URL ni se han sincronizado estos archivos. Se conservará la visibilidad que el estudiante haya elegido. No hay sincronización automática entre Work y Codex.
+Repositorio identificado: https://github.com/elvistec76/piscicultura-control; PR1 en borrador, head revisado 41ec9f2d21edb21499c14437b3d00dd9e135e0d2. Se conserva la visibilidad elegida. Las propuestas académicas R1 aún no se han escrito en el repositorio; no hay sincronización automática entre Work y Codex.
 
 ## 15 Cierre matemático aprobado en etapa 4
 
@@ -205,10 +205,14 @@ Modelo M-AGUA-DEMO-1. Diez estados: cinco propiedades del agua y cinco respuesta
 
 La física se simplifica; pH y turbidez son aproximaciones empíricas declaradas. Los coeficientes biológicos comunes y umbrales son demostrativos. Solo la ecuación de saturación se transcribe como formulación bibliográfica específica. Las referencias térmicas se seleccionan dentro de antecedentes registrados; no se atribuyen como óptimos universales.
 
-ACCEPTANCE_PLAN contiene AC01 a AC20; RNF01, RNF02, RNF10 y criterios numéricos se cierran mediante ese plan. Toda la evidencia observada permanece pendiente. La etapa 5 reúne el paquete de traspaso, el diseño de implementación del capítulo VI y el plan de pruebas del capítulo VII. Los capítulos VI y VII describen el diseño y la evaluación prevista; no acreditan código existente. La programación corresponde a Codex tras recibir el paquete.
+ACCEPTANCE_PLAN conserva AC01 a AC20 y los criterios numéricos. Las evidencias de referencia y los nuevos defectos se documentan en la revisión R1. El capítulo VI conserva el diseño y describe la implementación recibida; el VII incorpora resultados y revisión; el VIII formula conclusiones limitadas por la evidencia. La integración permanece pendiente de correcciones y RNF10 conserva evaluación local abierta.
 
 Ante discrepancias prevalece MATHEMATICAL_MODEL 0.5.0 para ecuaciones y secuencia, MODEL_DEFAULTS.json para valores completos y ACCEPTANCE_PLAN para comprobaciones. Cualquier contradicción debe resolverse documentalmente antes de implementar; no autoriza escoger silenciosamente una variante.
 
 ## 16 Entrega para implementación
 
 HANDOFF_WORK contiene el orden de lectura, hitos de desarrollo y devolución de evidencias. PROMPT_INICIO_CODEX.txt permite iniciar el trabajo en el otro entorno. El modelo se etiqueta 1.0.0 al aprobarse; las ecuaciones, capacidades, perfiles y tolerancias de 0.4.0 no cambian. La versión documental 0.5.0 incorpora aprobación y diseño de entrega. Codex comprobará las dependencias disponibles y documentará sus versiones efectivas; no se presenta un archivo de dependencias no probado como entorno reproducido.
+
+## 17 Revisión R1 de implementación
+
+Software 0.1.0, head 41ec9f2d21edb21499c14437b3d00dd9e135e0d2. Modelo y valores 0.5.0 preservados. La edición académica 0.6.0 actualiza el informe y el estado; no es una nueva configuración ejecutable. Resolver defectos OBS01 a OBS03 antes de integración. La equivalencia técnica de los 12 documentos y 4 diagramas con el paquete original se comprobó; README difiere y faltan prompt/Word. Mantener el PR en borrador durante la corrección.

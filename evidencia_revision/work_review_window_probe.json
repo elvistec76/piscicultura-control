@@ -1,0 +1,11 @@
+{
+  "accepted_interval_s": 135,
+  "requested_window_s": [
+    14400,
+    43200
+  ],
+  "actual_duration_s": 28755.0,
+  "reported_fraction_temperature": 1.0,
+  "expected_fraction_left_convention": 0.9984375,
+  "expected_duration_s": 28800
+}
