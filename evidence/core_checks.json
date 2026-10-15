@@ -1,0 +1,2353 @@
+{
+  "AC02": [
+    {
+      "temperature_C": 10,
+      "expected": 11.28794737,
+      "observed": 11.287947373101861,
+      "absolute_error": 3.1018618784628416e-09,
+      "tolerance": 1e-06,
+      "factors": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "temperature_C": 20,
+      "expected": 9.09242604,
+      "observed": 9.092426042885567,
+      "absolute_error": 2.885567340626949e-09,
+      "tolerance": 1e-06,
+      "factors": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "temperature_C": 30,
+      "expected": 7.55879605,
+      "observed": 7.55879604782573,
+      "absolute_error": 2.1742696532101036e-09,
+      "tolerance": 1e-06,
+      "factors": [
+        1.0,
+        1.0
+      ]
+    }
+  ],
+  "AC03": {
+    "expected": 1.0414,
+    "observed": 1.0414000000000048,
+    "tolerance": 1e-07,
+    "inlet_m3": 0.6000000000000001,
+    "outlet_m3": 0.12000000000000001,
+    "test_config": {
+      "spec_id": "SPC-AGUA-001",
+      "spec_version": "0.5.0",
+      "model_id": "M-AGUA-DEMO-1",
+      "model_version": "1.0.0",
+      "status": "stage4_approved_for_implementation",
+      "owner": "Work",
+      "notice": "Especificación, no resultados ni aplicación implementada. Parámetros demostrativos salvo indicación expresa.",
+      "variable_order": [
+        "temperature_C",
+        "oxygen_mg_L",
+        "ph",
+        "turbidity_NTU",
+        "level_m"
+      ],
+      "response_state_order": [
+        "thermal",
+        "aeration",
+        "ph",
+        "filtration",
+        "level"
+      ],
+      "parameters": {
+        "area_m2": 10.0,
+        "height_max_m": 1.5,
+        "biomass_kg": 50.0,
+        "density_kg_m3": 1000.0,
+        "heat_capacity_J_kg_K": 4186.0,
+        "heat_exchange_W_K": 0.0,
+        "heater_max_W": 20000.0,
+        "cooler_max_W": 20000.0,
+        "k_natural_s_inv": 0.0,
+        "k_air_s_inv": 0.0,
+        "fish_consumption_mg_kg_s_at20": 0.0,
+        "water_consumption_mg_L_s_at20": 0.0,
+        "oxygen_half_saturation_mg_L": 0.5,
+        "temperature_Q10": 2.0,
+        "feed_respiration_multiplier": 0.5,
+        "ph_relaxation_s_inv": 0.0,
+        "ph_background": 7.4,
+        "ph_actuation_per_s": 0.0,
+        "turbidity_source_NTU_s": 0.0,
+        "k_settle_s_inv": 0.0,
+        "k_filter_s_inv": 0.0,
+        "inlet_max_m3_s": 0.0008,
+        "outlet_max_m3_s": 0.0,
+        "evaporation_m3_s": 1e-05,
+        "leak_base_m3_s": 0.0001,
+        "exchange_m3_s": 0.0002,
+        "rain_base_m3_s": 0.0,
+        "inlet_turbidity_NTU": 5.0,
+        "rain_turbidity_NTU": 5.0,
+        "actuator_tau_s": [
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0
+        ],
+        "pressure_Pa": 101325.0,
+        "salinity_per_mille": 0.0,
+        "air_power_W": 300.0,
+        "filter_power_W": 200.0,
+        "inlet_power_W": 100.0,
+        "outlet_power_W": 100.0,
+        "cooling_COP": 3.0,
+        "ph_external_base_per_s": 0.0,
+        "turbidity_external_base_NTU_s": 0.0,
+        "ph_feed_coefficient_per_s": 2e-05
+      },
+      "parameter_origin": "demonstrative_or_declared_physical_approximation",
+      "physical_approximations": {
+        "density_kg_m3": "aproximación constante",
+        "heat_capacity_J_kg_K": "aproximación constante"
+      },
+      "solubility_source": "USGS WQ.2011.03, anexo ecuaciones 1 y 7 a 11; constantes transcritas y revisadas en página PDF 6",
+      "time": {
+        "horizon_s": 21600,
+        "control_interval_s": 60,
+        "solver": "RK45",
+        "max_step_s": 10,
+        "rtol": 1e-07,
+        "atol": [
+          1e-08,
+          1e-08,
+          1e-09,
+          1e-07,
+          1e-10,
+          1e-09,
+          1e-09,
+          1e-09,
+          1e-09,
+          1e-09
+        ]
+      },
+      "sensor": {
+        "sigma": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "noise_standard_clip": 3.0,
+        "seed": 20261014,
+        "noise": "normal_truncated_by_clipping_before_scaling",
+        "bias": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "measurement_ranges": [
+          [
+            -5.0,
+            45.0
+          ],
+          [
+            0.0,
+            25.0
+          ],
+          [
+            0.0,
+            14.0
+          ],
+          [
+            0.0,
+            500.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ],
+        "generator": "numpy.random.Generator(PCG64(seed)); generate one (N+1,5) array in variable_order; persist the resulting clipped epsilon table"
+      },
+      "controller": {
+        "algorithm": "sampled_hysteresis",
+        "thermal_delta_C": 0.3,
+        "ph_delta": 0.15,
+        "level_delta_m": 0.03,
+        "oxygen_delta_mg_L": 0.2,
+        "filter_on_NTU": 15.0,
+        "filter_off_NTU": 10.0,
+        "initial_memory": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "nominal_scenario": {
+        "environment_amplitude_C": 2.0,
+        "environment_period_s": 86400,
+        "feed_daily_starts_s": [
+          28800,
+          72000
+        ],
+        "feed_duration_s": 1800,
+        "feed_intensity": 1.0
+      },
+      "domain": {
+        "temperature_C": [
+          0.0,
+          40.0
+        ],
+        "oxygen_mg_L": [
+          0.0,
+          20.0
+        ],
+        "ph": [
+          4.0,
+          10.0
+        ],
+        "turbidity_NTU": [
+          0.0,
+          200.0
+        ],
+        "level_m": [
+          0.25,
+          1.45
+        ],
+        "pressure_Pa": [
+          50662.5,
+          111457.5
+        ],
+        "salinity_per_mille": [
+          0.0,
+          0.5
+        ]
+      },
+      "acceptance": {
+        "replay_abs_tolerances": [
+          1e-05,
+          1e-05,
+          1e-06,
+          0.0001,
+          1e-07
+        ],
+        "grid_refinement_abs_tolerances": [
+          0.002,
+          0.002,
+          0.0002,
+          0.02,
+          2e-05
+        ],
+        "s2_recovery_deadline_s": 14400,
+        "s2_in_band_fraction_min": 0.95,
+        "s2_normalized_iae_reduction_min": 0.2,
+        "benchmark_median_max_s": 60,
+        "benchmark_repetitions": 3
+      },
+      "common_initial_state_policy": "S0/S1: references; S2: specified disturbances; actuator response states start at nominal open_commands for both strategies",
+      "open_schedule_policy": "constant_calibrated_nominal_commands; no measurement feedback; custom timed schedule stored with run",
+      "source_classes": [
+        "bibliographic",
+        "derived",
+        "demonstrative"
+      ],
+      "availability_order": [
+        "heater",
+        "cooler",
+        "air",
+        "ph_base",
+        "ph_acid",
+        "filter",
+        "inlet",
+        "outlet"
+      ],
+      "availability_default": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "approval": {
+        "stage": 4,
+        "date_local": "2026-10-14",
+        "user_response": "aprobado",
+        "scope": "Especificación académica; pruebas y validación pendientes"
+      },
+      "schema_version": "1.0.0",
+      "code_version": "0.1.0",
+      "profile": {
+        "id": "oreochromis_niloticus_demo_v1",
+        "name": "Tilapia del Nilo",
+        "scientific_name": "Oreochromis niloticus",
+        "phase": "crecimiento_engorde",
+        "references": [
+          28.5,
+          6.0,
+          7.5,
+          10.0,
+          1.0
+        ],
+        "operating_bands": [
+          [
+            27.0,
+            30.0
+          ],
+          [
+            5.0,
+            8.5
+          ],
+          [
+            7.0,
+            8.0
+          ],
+          [
+            0.0,
+            20.0
+          ],
+          [
+            0.9,
+            1.1
+          ]
+        ],
+        "critical_limits": [
+          [
+            26.0,
+            31.0
+          ],
+          [
+            4.0,
+            9.5
+          ],
+          [
+            6.5,
+            8.5
+          ],
+          [
+            0.0,
+            50.0
+          ],
+          [
+            0.8,
+            1.2
+          ]
+        ],
+        "inlet_temperature_C": 28.5,
+        "rain_temperature_C": 28.5,
+        "inlet_oxygen_mg_L": 7.3710724914255845,
+        "rain_oxygen_mg_L": 7.3710724914255845,
+        "baseline_environment_C": 26.5,
+        "temperature_origin": {
+          "classification": "derived",
+          "antecedent": "B01",
+          "note": "Consigna seleccionada dentro del antecedente; no es un óptimo universal"
+        },
+        "other_limits_origin": "demonstrative",
+        "saturation_at_reference_mg_L": 7.759023675184826,
+        "open_commands": [
+          0.025,
+          0.4167276381539342,
+          0.011574074074074032,
+          0.14995000000000003,
+          9.999999999999999e-05
+        ]
+      },
+      "units": {
+        "temperature_C": "°C",
+        "oxygen_mg_L": "mg/L",
+        "ph": "1",
+        "turbidity_NTU": "NTU",
+        "level_m": "m"
+      },
+      "strategy": "open",
+      "scenario": "S0",
+      "events": [],
+      "environment_amplitude_C": 0.0,
+      "x0": [
+        20,
+        2,
+        8,
+        40,
+        1
+      ],
+      "origin_registry": [
+        {
+          "classification": "bibliographic",
+          "value": "Csat coefficients",
+          "unit": "mg/L",
+          "source": "USGS WQ.2011.03, anexo ecuaciones 1 y 7 a 11; constantes transcritas y revisadas en página PDF 6"
+        },
+        {
+          "classification": "derived",
+          "value": "temperature reference",
+          "unit": "°C",
+          "source": "B01"
+        },
+        {
+          "classification": "demonstrative",
+          "value": "other references, bands, alarms, parameters",
+          "unit": "canonical per field",
+          "source": "MODEL_DEFAULTS.json 0.5.0"
+        }
+      ],
+      "open_commands": [
+        0.025,
+        0.41672763815393454,
+        0.011574074074074032,
+        0.14995000000000003,
+        9.999999999999999e-05
+      ],
+      "z0": [
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "absolute_error": 4.6629367034256575e-15
+  },
+  "AC04": {
+    "expected": 20.8600095557,
+    "observed": 20.86000955566206,
+    "tolerance": 1e-06,
+    "test_config": {
+      "spec_id": "SPC-AGUA-001",
+      "spec_version": "0.5.0",
+      "model_id": "M-AGUA-DEMO-1",
+      "model_version": "1.0.0",
+      "status": "stage4_approved_for_implementation",
+      "owner": "Work",
+      "notice": "Especificación, no resultados ni aplicación implementada. Parámetros demostrativos salvo indicación expresa.",
+      "variable_order": [
+        "temperature_C",
+        "oxygen_mg_L",
+        "ph",
+        "turbidity_NTU",
+        "level_m"
+      ],
+      "response_state_order": [
+        "thermal",
+        "aeration",
+        "ph",
+        "filtration",
+        "level"
+      ],
+      "parameters": {
+        "area_m2": 10.0,
+        "height_max_m": 1.5,
+        "biomass_kg": 50.0,
+        "density_kg_m3": 1000.0,
+        "heat_capacity_J_kg_K": 4186.0,
+        "heat_exchange_W_K": 0.0,
+        "heater_max_W": 10000,
+        "cooler_max_W": 20000.0,
+        "k_natural_s_inv": 0.0,
+        "k_air_s_inv": 0.0,
+        "fish_consumption_mg_kg_s_at20": 0.0,
+        "water_consumption_mg_L_s_at20": 0.0,
+        "oxygen_half_saturation_mg_L": 0.5,
+        "temperature_Q10": 2.0,
+        "feed_respiration_multiplier": 0.5,
+        "ph_relaxation_s_inv": 0.0,
+        "ph_background": 7.4,
+        "ph_actuation_per_s": 0.0,
+        "turbidity_source_NTU_s": 0.0,
+        "k_settle_s_inv": 0.0,
+        "k_filter_s_inv": 0.0,
+        "inlet_max_m3_s": 0.0,
+        "outlet_max_m3_s": 0.0,
+        "evaporation_m3_s": 0.0,
+        "leak_base_m3_s": 0.0,
+        "exchange_m3_s": 0.0,
+        "rain_base_m3_s": 0.0,
+        "inlet_turbidity_NTU": 5.0,
+        "rain_turbidity_NTU": 5.0,
+        "actuator_tau_s": [
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0
+        ],
+        "pressure_Pa": 101325.0,
+        "salinity_per_mille": 0.0,
+        "air_power_W": 300.0,
+        "filter_power_W": 200.0,
+        "inlet_power_W": 100.0,
+        "outlet_power_W": 100.0,
+        "cooling_COP": 3.0,
+        "ph_external_base_per_s": 0.0,
+        "turbidity_external_base_NTU_s": 0.0,
+        "ph_feed_coefficient_per_s": 2e-05
+      },
+      "parameter_origin": "demonstrative_or_declared_physical_approximation",
+      "physical_approximations": {
+        "density_kg_m3": "aproximación constante",
+        "heat_capacity_J_kg_K": "aproximación constante"
+      },
+      "solubility_source": "USGS WQ.2011.03, anexo ecuaciones 1 y 7 a 11; constantes transcritas y revisadas en página PDF 6",
+      "time": {
+        "horizon_s": 21600,
+        "control_interval_s": 60,
+        "solver": "RK45",
+        "max_step_s": 10,
+        "rtol": 1e-07,
+        "atol": [
+          1e-08,
+          1e-08,
+          1e-09,
+          1e-07,
+          1e-10,
+          1e-09,
+          1e-09,
+          1e-09,
+          1e-09,
+          1e-09
+        ]
+      },
+      "sensor": {
+        "sigma": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "noise_standard_clip": 3.0,
+        "seed": 20261014,
+        "noise": "normal_truncated_by_clipping_before_scaling",
+        "bias": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "measurement_ranges": [
+          [
+            -5.0,
+            45.0
+          ],
+          [
+            0.0,
+            25.0
+          ],
+          [
+            0.0,
+            14.0
+          ],
+          [
+            0.0,
+            500.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ],
+        "generator": "numpy.random.Generator(PCG64(seed)); generate one (N+1,5) array in variable_order; persist the resulting clipped epsilon table"
+      },
+      "controller": {
+        "algorithm": "sampled_hysteresis",
+        "thermal_delta_C": 0.3,
+        "ph_delta": 0.15,
+        "level_delta_m": 0.03,
+        "oxygen_delta_mg_L": 0.2,
+        "filter_on_NTU": 15.0,
+        "filter_off_NTU": 10.0,
+        "initial_memory": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "nominal_scenario": {
+        "environment_amplitude_C": 2.0,
+        "environment_period_s": 86400,
+        "feed_daily_starts_s": [
+          28800,
+          72000
+        ],
+        "feed_duration_s": 1800,
+        "feed_intensity": 1.0
+      },
+      "domain": {
+        "temperature_C": [
+          0.0,
+          40.0
+        ],
+        "oxygen_mg_L": [
+          0.0,
+          20.0
+        ],
+        "ph": [
+          4.0,
+          10.0
+        ],
+        "turbidity_NTU": [
+          0.0,
+          200.0
+        ],
+        "level_m": [
+          0.25,
+          1.45
+        ],
+        "pressure_Pa": [
+          50662.5,
+          111457.5
+        ],
+        "salinity_per_mille": [
+          0.0,
+          0.5
+        ]
+      },
+      "acceptance": {
+        "replay_abs_tolerances": [
+          1e-05,
+          1e-05,
+          1e-06,
+          0.0001,
+          1e-07
+        ],
+        "grid_refinement_abs_tolerances": [
+          0.002,
+          0.002,
+          0.0002,
+          0.02,
+          2e-05
+        ],
+        "s2_recovery_deadline_s": 14400,
+        "s2_in_band_fraction_min": 0.95,
+        "s2_normalized_iae_reduction_min": 0.2,
+        "benchmark_median_max_s": 60,
+        "benchmark_repetitions": 3
+      },
+      "common_initial_state_policy": "S0/S1: references; S2: specified disturbances; actuator response states start at nominal open_commands for both strategies",
+      "open_schedule_policy": "constant_calibrated_nominal_commands; no measurement feedback; custom timed schedule stored with run",
+      "source_classes": [
+        "bibliographic",
+        "derived",
+        "demonstrative"
+      ],
+      "availability_order": [
+        "heater",
+        "cooler",
+        "air",
+        "ph_base",
+        "ph_acid",
+        "filter",
+        "inlet",
+        "outlet"
+      ],
+      "availability_default": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "approval": {
+        "stage": 4,
+        "date_local": "2026-10-14",
+        "user_response": "aprobado",
+        "scope": "Especificación académica; pruebas y validación pendientes"
+      },
+      "schema_version": "1.0.0",
+      "code_version": "0.1.0",
+      "profile": {
+        "id": "oreochromis_niloticus_demo_v1",
+        "name": "Tilapia del Nilo",
+        "scientific_name": "Oreochromis niloticus",
+        "phase": "crecimiento_engorde",
+        "references": [
+          28.5,
+          6.0,
+          7.5,
+          10.0,
+          1.0
+        ],
+        "operating_bands": [
+          [
+            27.0,
+            30.0
+          ],
+          [
+            5.0,
+            8.5
+          ],
+          [
+            7.0,
+            8.0
+          ],
+          [
+            0.0,
+            20.0
+          ],
+          [
+            0.9,
+            1.1
+          ]
+        ],
+        "critical_limits": [
+          [
+            26.0,
+            31.0
+          ],
+          [
+            4.0,
+            9.5
+          ],
+          [
+            6.5,
+            8.5
+          ],
+          [
+            0.0,
+            50.0
+          ],
+          [
+            0.8,
+            1.2
+          ]
+        ],
+        "inlet_temperature_C": 28.5,
+        "rain_temperature_C": 28.5,
+        "inlet_oxygen_mg_L": 7.3710724914255845,
+        "rain_oxygen_mg_L": 7.3710724914255845,
+        "baseline_environment_C": 26.5,
+        "temperature_origin": {
+          "classification": "derived",
+          "antecedent": "B01",
+          "note": "Consigna seleccionada dentro del antecedente; no es un óptimo universal"
+        },
+        "other_limits_origin": "demonstrative",
+        "saturation_at_reference_mg_L": 7.759023675184826,
+        "open_commands": [
+          0.025,
+          0.4167276381539342,
+          0.011574074074074032,
+          0.14995000000000003,
+          9.999999999999999e-05
+        ]
+      },
+      "units": {
+        "temperature_C": "°C",
+        "oxygen_mg_L": "mg/L",
+        "ph": "1",
+        "turbidity_NTU": "NTU",
+        "level_m": "m"
+      },
+      "strategy": "open",
+      "scenario": "S0",
+      "events": [],
+      "environment_amplitude_C": 0.0,
+      "x0": [
+        20,
+        2,
+        8,
+        40,
+        1
+      ],
+      "origin_registry": [
+        {
+          "classification": "bibliographic",
+          "value": "Csat coefficients",
+          "unit": "mg/L",
+          "source": "USGS WQ.2011.03, anexo ecuaciones 1 y 7 a 11; constantes transcritas y revisadas en página PDF 6"
+        },
+        {
+          "classification": "derived",
+          "value": "temperature reference",
+          "unit": "°C",
+          "source": "B01"
+        },
+        {
+          "classification": "demonstrative",
+          "value": "other references, bands, alarms, parameters",
+          "unit": "canonical per field",
+          "source": "MODEL_DEFAULTS.json 0.5.0"
+        }
+      ],
+      "open_commands": [
+        0.025,
+        0.41672763815393454,
+        0.011574074074074032,
+        0.14995000000000003,
+        9.999999999999999e-05
+      ],
+      "z0": [
+        1,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "absolute_error": 3.793942937591055e-11
+  },
+  "AC05": {
+    "expected": 4.1442082983546635,
+    "observed": 4.144208298354665,
+    "tolerance": 1e-05,
+    "test_config": {
+      "spec_id": "SPC-AGUA-001",
+      "spec_version": "0.5.0",
+      "model_id": "M-AGUA-DEMO-1",
+      "model_version": "1.0.0",
+      "status": "stage4_approved_for_implementation",
+      "owner": "Work",
+      "notice": "Especificación, no resultados ni aplicación implementada. Parámetros demostrativos salvo indicación expresa.",
+      "variable_order": [
+        "temperature_C",
+        "oxygen_mg_L",
+        "ph",
+        "turbidity_NTU",
+        "level_m"
+      ],
+      "response_state_order": [
+        "thermal",
+        "aeration",
+        "ph",
+        "filtration",
+        "level"
+      ],
+      "parameters": {
+        "area_m2": 10.0,
+        "height_max_m": 1.5,
+        "biomass_kg": 50.0,
+        "density_kg_m3": 1000.0,
+        "heat_capacity_J_kg_K": 4186.0,
+        "heat_exchange_W_K": 0.0,
+        "heater_max_W": 20000.0,
+        "cooler_max_W": 20000.0,
+        "k_natural_s_inv": 0.0001,
+        "k_air_s_inv": 0.0,
+        "fish_consumption_mg_kg_s_at20": 0.0,
+        "water_consumption_mg_L_s_at20": 0.0,
+        "oxygen_half_saturation_mg_L": 0.5,
+        "temperature_Q10": 2.0,
+        "feed_respiration_multiplier": 0.5,
+        "ph_relaxation_s_inv": 0.0,
+        "ph_background": 7.4,
+        "ph_actuation_per_s": 0.0,
+        "turbidity_source_NTU_s": 0.0,
+        "k_settle_s_inv": 0.0,
+        "k_filter_s_inv": 0.0,
+        "inlet_max_m3_s": 0.0,
+        "outlet_max_m3_s": 0.0,
+        "evaporation_m3_s": 0.0,
+        "leak_base_m3_s": 0.0,
+        "exchange_m3_s": 0.0,
+        "rain_base_m3_s": 0.0,
+        "inlet_turbidity_NTU": 5.0,
+        "rain_turbidity_NTU": 5.0,
+        "actuator_tau_s": [
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0
+        ],
+        "pressure_Pa": 101325.0,
+        "salinity_per_mille": 0.0,
+        "air_power_W": 300.0,
+        "filter_power_W": 200.0,
+        "inlet_power_W": 100.0,
+        "outlet_power_W": 100.0,
+        "cooling_COP": 3.0,
+        "ph_external_base_per_s": 0.0,
+        "turbidity_external_base_NTU_s": 0.0,
+        "ph_feed_coefficient_per_s": 2e-05
+      },
+      "parameter_origin": "demonstrative_or_declared_physical_approximation",
+      "physical_approximations": {
+        "density_kg_m3": "aproximación constante",
+        "heat_capacity_J_kg_K": "aproximación constante"
+      },
+      "solubility_source": "USGS WQ.2011.03, anexo ecuaciones 1 y 7 a 11; constantes transcritas y revisadas en página PDF 6",
+      "time": {
+        "horizon_s": 21600,
+        "control_interval_s": 60,
+        "solver": "RK45",
+        "max_step_s": 10,
+        "rtol": 1e-07,
+        "atol": [
+          1e-08,
+          1e-08,
+          1e-09,
+          1e-07,
+          1e-10,
+          1e-09,
+          1e-09,
+          1e-09,
+          1e-09,
+          1e-09
+        ]
+      },
+      "sensor": {
+        "sigma": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "noise_standard_clip": 3.0,
+        "seed": 20261014,
+        "noise": "normal_truncated_by_clipping_before_scaling",
+        "bias": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "measurement_ranges": [
+          [
+            -5.0,
+            45.0
+          ],
+          [
+            0.0,
+            25.0
+          ],
+          [
+            0.0,
+            14.0
+          ],
+          [
+            0.0,
+            500.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ],
+        "generator": "numpy.random.Generator(PCG64(seed)); generate one (N+1,5) array in variable_order; persist the resulting clipped epsilon table"
+      },
+      "controller": {
+        "algorithm": "sampled_hysteresis",
+        "thermal_delta_C": 0.3,
+        "ph_delta": 0.15,
+        "level_delta_m": 0.03,
+        "oxygen_delta_mg_L": 0.2,
+        "filter_on_NTU": 15.0,
+        "filter_off_NTU": 10.0,
+        "initial_memory": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "nominal_scenario": {
+        "environment_amplitude_C": 2.0,
+        "environment_period_s": 86400,
+        "feed_daily_starts_s": [
+          28800,
+          72000
+        ],
+        "feed_duration_s": 1800,
+        "feed_intensity": 1.0
+      },
+      "domain": {
+        "temperature_C": [
+          0.0,
+          40.0
+        ],
+        "oxygen_mg_L": [
+          0.0,
+          20.0
+        ],
+        "ph": [
+          4.0,
+          10.0
+        ],
+        "turbidity_NTU": [
+          0.0,
+          200.0
+        ],
+        "level_m": [
+          0.25,
+          1.45
+        ],
+        "pressure_Pa": [
+          50662.5,
+          111457.5
+        ],
+        "salinity_per_mille": [
+          0.0,
+          0.5
+        ]
+      },
+      "acceptance": {
+        "replay_abs_tolerances": [
+          1e-05,
+          1e-05,
+          1e-06,
+          0.0001,
+          1e-07
+        ],
+        "grid_refinement_abs_tolerances": [
+          0.002,
+          0.002,
+          0.0002,
+          0.02,
+          2e-05
+        ],
+        "s2_recovery_deadline_s": 14400,
+        "s2_in_band_fraction_min": 0.95,
+        "s2_normalized_iae_reduction_min": 0.2,
+        "benchmark_median_max_s": 60,
+        "benchmark_repetitions": 3
+      },
+      "common_initial_state_policy": "S0/S1: references; S2: specified disturbances; actuator response states start at nominal open_commands for both strategies",
+      "open_schedule_policy": "constant_calibrated_nominal_commands; no measurement feedback; custom timed schedule stored with run",
+      "source_classes": [
+        "bibliographic",
+        "derived",
+        "demonstrative"
+      ],
+      "availability_order": [
+        "heater",
+        "cooler",
+        "air",
+        "ph_base",
+        "ph_acid",
+        "filter",
+        "inlet",
+        "outlet"
+      ],
+      "availability_default": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "approval": {
+        "stage": 4,
+        "date_local": "2026-10-14",
+        "user_response": "aprobado",
+        "scope": "Especificación académica; pruebas y validación pendientes"
+      },
+      "schema_version": "1.0.0",
+      "code_version": "0.1.0",
+      "profile": {
+        "id": "oreochromis_niloticus_demo_v1",
+        "name": "Tilapia del Nilo",
+        "scientific_name": "Oreochromis niloticus",
+        "phase": "crecimiento_engorde",
+        "references": [
+          28.5,
+          6.0,
+          7.5,
+          10.0,
+          1.0
+        ],
+        "operating_bands": [
+          [
+            27.0,
+            30.0
+          ],
+          [
+            5.0,
+            8.5
+          ],
+          [
+            7.0,
+            8.0
+          ],
+          [
+            0.0,
+            20.0
+          ],
+          [
+            0.9,
+            1.1
+          ]
+        ],
+        "critical_limits": [
+          [
+            26.0,
+            31.0
+          ],
+          [
+            4.0,
+            9.5
+          ],
+          [
+            6.5,
+            8.5
+          ],
+          [
+            0.0,
+            50.0
+          ],
+          [
+            0.8,
+            1.2
+          ]
+        ],
+        "inlet_temperature_C": 28.5,
+        "rain_temperature_C": 28.5,
+        "inlet_oxygen_mg_L": 7.3710724914255845,
+        "rain_oxygen_mg_L": 7.3710724914255845,
+        "baseline_environment_C": 26.5,
+        "temperature_origin": {
+          "classification": "derived",
+          "antecedent": "B01",
+          "note": "Consigna seleccionada dentro del antecedente; no es un óptimo universal"
+        },
+        "other_limits_origin": "demonstrative",
+        "saturation_at_reference_mg_L": 7.759023675184826,
+        "open_commands": [
+          0.025,
+          0.4167276381539342,
+          0.011574074074074032,
+          0.14995000000000003,
+          9.999999999999999e-05
+        ]
+      },
+      "units": {
+        "temperature_C": "°C",
+        "oxygen_mg_L": "mg/L",
+        "ph": "1",
+        "turbidity_NTU": "NTU",
+        "level_m": "m"
+      },
+      "strategy": "open",
+      "scenario": "S0",
+      "events": [],
+      "environment_amplitude_C": 0.0,
+      "x0": [
+        20,
+        2,
+        8,
+        40,
+        1
+      ],
+      "origin_registry": [
+        {
+          "classification": "bibliographic",
+          "value": "Csat coefficients",
+          "unit": "mg/L",
+          "source": "USGS WQ.2011.03, anexo ecuaciones 1 y 7 a 11; constantes transcritas y revisadas en página PDF 6"
+        },
+        {
+          "classification": "derived",
+          "value": "temperature reference",
+          "unit": "°C",
+          "source": "B01"
+        },
+        {
+          "classification": "demonstrative",
+          "value": "other references, bands, alarms, parameters",
+          "unit": "canonical per field",
+          "source": "MODEL_DEFAULTS.json 0.5.0"
+        }
+      ],
+      "open_commands": [
+        0.025,
+        0.41672763815393454,
+        0.011574074074074032,
+        0.14995000000000003,
+        9.999999999999999e-05
+      ],
+      "z0": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "absolute_error": 1.7763568394002505e-15
+  },
+  "AC06": {
+    "expected": 7.975513674265483,
+    "observed": 7.9755136742654855,
+    "tolerance": 1e-06,
+    "test_config": {
+      "spec_id": "SPC-AGUA-001",
+      "spec_version": "0.5.0",
+      "model_id": "M-AGUA-DEMO-1",
+      "model_version": "1.0.0",
+      "status": "stage4_approved_for_implementation",
+      "owner": "Work",
+      "notice": "Especificación, no resultados ni aplicación implementada. Parámetros demostrativos salvo indicación expresa.",
+      "variable_order": [
+        "temperature_C",
+        "oxygen_mg_L",
+        "ph",
+        "turbidity_NTU",
+        "level_m"
+      ],
+      "response_state_order": [
+        "thermal",
+        "aeration",
+        "ph",
+        "filtration",
+        "level"
+      ],
+      "parameters": {
+        "area_m2": 10.0,
+        "height_max_m": 1.5,
+        "biomass_kg": 50.0,
+        "density_kg_m3": 1000.0,
+        "heat_capacity_J_kg_K": 4186.0,
+        "heat_exchange_W_K": 0.0,
+        "heater_max_W": 20000.0,
+        "cooler_max_W": 20000.0,
+        "k_natural_s_inv": 0.0,
+        "k_air_s_inv": 0.0,
+        "fish_consumption_mg_kg_s_at20": 0.0,
+        "water_consumption_mg_L_s_at20": 0.0,
+        "oxygen_half_saturation_mg_L": 0.5,
+        "temperature_Q10": 2.0,
+        "feed_respiration_multiplier": 0.5,
+        "ph_relaxation_s_inv": 1.1574074074074073e-05,
+        "ph_background": 7.4,
+        "ph_actuation_per_s": 0.0,
+        "turbidity_source_NTU_s": 0.0,
+        "k_settle_s_inv": 0.0,
+        "k_filter_s_inv": 0.0,
+        "inlet_max_m3_s": 0.0,
+        "outlet_max_m3_s": 0.0,
+        "evaporation_m3_s": 0.0,
+        "leak_base_m3_s": 0.0,
+        "exchange_m3_s": 0.0,
+        "rain_base_m3_s": 0.0,
+        "inlet_turbidity_NTU": 5.0,
+        "rain_turbidity_NTU": 5.0,
+        "actuator_tau_s": [
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0
+        ],
+        "pressure_Pa": 101325.0,
+        "salinity_per_mille": 0.0,
+        "air_power_W": 300.0,
+        "filter_power_W": 200.0,
+        "inlet_power_W": 100.0,
+        "outlet_power_W": 100.0,
+        "cooling_COP": 3.0,
+        "ph_external_base_per_s": 0.0,
+        "turbidity_external_base_NTU_s": 0.0,
+        "ph_feed_coefficient_per_s": 2e-05
+      },
+      "parameter_origin": "demonstrative_or_declared_physical_approximation",
+      "physical_approximations": {
+        "density_kg_m3": "aproximación constante",
+        "heat_capacity_J_kg_K": "aproximación constante"
+      },
+      "solubility_source": "USGS WQ.2011.03, anexo ecuaciones 1 y 7 a 11; constantes transcritas y revisadas en página PDF 6",
+      "time": {
+        "horizon_s": 21600,
+        "control_interval_s": 60,
+        "solver": "RK45",
+        "max_step_s": 10,
+        "rtol": 1e-07,
+        "atol": [
+          1e-08,
+          1e-08,
+          1e-09,
+          1e-07,
+          1e-10,
+          1e-09,
+          1e-09,
+          1e-09,
+          1e-09,
+          1e-09
+        ]
+      },
+      "sensor": {
+        "sigma": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "noise_standard_clip": 3.0,
+        "seed": 20261014,
+        "noise": "normal_truncated_by_clipping_before_scaling",
+        "bias": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "measurement_ranges": [
+          [
+            -5.0,
+            45.0
+          ],
+          [
+            0.0,
+            25.0
+          ],
+          [
+            0.0,
+            14.0
+          ],
+          [
+            0.0,
+            500.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ],
+        "generator": "numpy.random.Generator(PCG64(seed)); generate one (N+1,5) array in variable_order; persist the resulting clipped epsilon table"
+      },
+      "controller": {
+        "algorithm": "sampled_hysteresis",
+        "thermal_delta_C": 0.3,
+        "ph_delta": 0.15,
+        "level_delta_m": 0.03,
+        "oxygen_delta_mg_L": 0.2,
+        "filter_on_NTU": 15.0,
+        "filter_off_NTU": 10.0,
+        "initial_memory": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "nominal_scenario": {
+        "environment_amplitude_C": 2.0,
+        "environment_period_s": 86400,
+        "feed_daily_starts_s": [
+          28800,
+          72000
+        ],
+        "feed_duration_s": 1800,
+        "feed_intensity": 1.0
+      },
+      "domain": {
+        "temperature_C": [
+          0.0,
+          40.0
+        ],
+        "oxygen_mg_L": [
+          0.0,
+          20.0
+        ],
+        "ph": [
+          4.0,
+          10.0
+        ],
+        "turbidity_NTU": [
+          0.0,
+          200.0
+        ],
+        "level_m": [
+          0.25,
+          1.45
+        ],
+        "pressure_Pa": [
+          50662.5,
+          111457.5
+        ],
+        "salinity_per_mille": [
+          0.0,
+          0.5
+        ]
+      },
+      "acceptance": {
+        "replay_abs_tolerances": [
+          1e-05,
+          1e-05,
+          1e-06,
+          0.0001,
+          1e-07
+        ],
+        "grid_refinement_abs_tolerances": [
+          0.002,
+          0.002,
+          0.0002,
+          0.02,
+          2e-05
+        ],
+        "s2_recovery_deadline_s": 14400,
+        "s2_in_band_fraction_min": 0.95,
+        "s2_normalized_iae_reduction_min": 0.2,
+        "benchmark_median_max_s": 60,
+        "benchmark_repetitions": 3
+      },
+      "common_initial_state_policy": "S0/S1: references; S2: specified disturbances; actuator response states start at nominal open_commands for both strategies",
+      "open_schedule_policy": "constant_calibrated_nominal_commands; no measurement feedback; custom timed schedule stored with run",
+      "source_classes": [
+        "bibliographic",
+        "derived",
+        "demonstrative"
+      ],
+      "availability_order": [
+        "heater",
+        "cooler",
+        "air",
+        "ph_base",
+        "ph_acid",
+        "filter",
+        "inlet",
+        "outlet"
+      ],
+      "availability_default": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "approval": {
+        "stage": 4,
+        "date_local": "2026-10-14",
+        "user_response": "aprobado",
+        "scope": "Especificación académica; pruebas y validación pendientes"
+      },
+      "schema_version": "1.0.0",
+      "code_version": "0.1.0",
+      "profile": {
+        "id": "oreochromis_niloticus_demo_v1",
+        "name": "Tilapia del Nilo",
+        "scientific_name": "Oreochromis niloticus",
+        "phase": "crecimiento_engorde",
+        "references": [
+          28.5,
+          6.0,
+          7.5,
+          10.0,
+          1.0
+        ],
+        "operating_bands": [
+          [
+            27.0,
+            30.0
+          ],
+          [
+            5.0,
+            8.5
+          ],
+          [
+            7.0,
+            8.0
+          ],
+          [
+            0.0,
+            20.0
+          ],
+          [
+            0.9,
+            1.1
+          ]
+        ],
+        "critical_limits": [
+          [
+            26.0,
+            31.0
+          ],
+          [
+            4.0,
+            9.5
+          ],
+          [
+            6.5,
+            8.5
+          ],
+          [
+            0.0,
+            50.0
+          ],
+          [
+            0.8,
+            1.2
+          ]
+        ],
+        "inlet_temperature_C": 28.5,
+        "rain_temperature_C": 28.5,
+        "inlet_oxygen_mg_L": 7.3710724914255845,
+        "rain_oxygen_mg_L": 7.3710724914255845,
+        "baseline_environment_C": 26.5,
+        "temperature_origin": {
+          "classification": "derived",
+          "antecedent": "B01",
+          "note": "Consigna seleccionada dentro del antecedente; no es un óptimo universal"
+        },
+        "other_limits_origin": "demonstrative",
+        "saturation_at_reference_mg_L": 7.759023675184826,
+        "open_commands": [
+          0.025,
+          0.4167276381539342,
+          0.011574074074074032,
+          0.14995000000000003,
+          9.999999999999999e-05
+        ]
+      },
+      "units": {
+        "temperature_C": "°C",
+        "oxygen_mg_L": "mg/L",
+        "ph": "1",
+        "turbidity_NTU": "NTU",
+        "level_m": "m"
+      },
+      "strategy": "open",
+      "scenario": "S0",
+      "events": [],
+      "environment_amplitude_C": 0.0,
+      "x0": [
+        20,
+        2,
+        8,
+        40,
+        1
+      ],
+      "origin_registry": [
+        {
+          "classification": "bibliographic",
+          "value": "Csat coefficients",
+          "unit": "mg/L",
+          "source": "USGS WQ.2011.03, anexo ecuaciones 1 y 7 a 11; constantes transcritas y revisadas en página PDF 6"
+        },
+        {
+          "classification": "derived",
+          "value": "temperature reference",
+          "unit": "°C",
+          "source": "B01"
+        },
+        {
+          "classification": "demonstrative",
+          "value": "other references, bands, alarms, parameters",
+          "unit": "canonical per field",
+          "source": "MODEL_DEFAULTS.json 0.5.0"
+        }
+      ],
+      "open_commands": [
+        0.025,
+        0.41672763815393454,
+        0.011574074074074032,
+        0.14995000000000003,
+        9.999999999999999e-05
+      ],
+      "z0": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "absolute_error": 2.6645352591003757e-15
+  },
+  "AC07": {
+    "expected": 37.22123583244823,
+    "observed": 37.221235832448244,
+    "tolerance": 0.0001,
+    "test_config": {
+      "spec_id": "SPC-AGUA-001",
+      "spec_version": "0.5.0",
+      "model_id": "M-AGUA-DEMO-1",
+      "model_version": "1.0.0",
+      "status": "stage4_approved_for_implementation",
+      "owner": "Work",
+      "notice": "Especificación, no resultados ni aplicación implementada. Parámetros demostrativos salvo indicación expresa.",
+      "variable_order": [
+        "temperature_C",
+        "oxygen_mg_L",
+        "ph",
+        "turbidity_NTU",
+        "level_m"
+      ],
+      "response_state_order": [
+        "thermal",
+        "aeration",
+        "ph",
+        "filtration",
+        "level"
+      ],
+      "parameters": {
+        "area_m2": 10.0,
+        "height_max_m": 1.5,
+        "biomass_kg": 50.0,
+        "density_kg_m3": 1000.0,
+        "heat_capacity_J_kg_K": 4186.0,
+        "heat_exchange_W_K": 0.0,
+        "heater_max_W": 20000.0,
+        "cooler_max_W": 20000.0,
+        "k_natural_s_inv": 0.0,
+        "k_air_s_inv": 0.0,
+        "fish_consumption_mg_kg_s_at20": 0.0,
+        "water_consumption_mg_L_s_at20": 0.0,
+        "oxygen_half_saturation_mg_L": 0.5,
+        "temperature_Q10": 2.0,
+        "feed_respiration_multiplier": 0.5,
+        "ph_relaxation_s_inv": 0.0,
+        "ph_background": 7.4,
+        "ph_actuation_per_s": 0.0,
+        "turbidity_source_NTU_s": 0.0,
+        "k_settle_s_inv": 2e-05,
+        "k_filter_s_inv": 0.0,
+        "inlet_max_m3_s": 0.0,
+        "outlet_max_m3_s": 0.0,
+        "evaporation_m3_s": 0.0,
+        "leak_base_m3_s": 0.0,
+        "exchange_m3_s": 0.0,
+        "rain_base_m3_s": 0.0,
+        "inlet_turbidity_NTU": 5.0,
+        "rain_turbidity_NTU": 5.0,
+        "actuator_tau_s": [
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0
+        ],
+        "pressure_Pa": 101325.0,
+        "salinity_per_mille": 0.0,
+        "air_power_W": 300.0,
+        "filter_power_W": 200.0,
+        "inlet_power_W": 100.0,
+        "outlet_power_W": 100.0,
+        "cooling_COP": 3.0,
+        "ph_external_base_per_s": 0.0,
+        "turbidity_external_base_NTU_s": 0.0,
+        "ph_feed_coefficient_per_s": 2e-05
+      },
+      "parameter_origin": "demonstrative_or_declared_physical_approximation",
+      "physical_approximations": {
+        "density_kg_m3": "aproximación constante",
+        "heat_capacity_J_kg_K": "aproximación constante"
+      },
+      "solubility_source": "USGS WQ.2011.03, anexo ecuaciones 1 y 7 a 11; constantes transcritas y revisadas en página PDF 6",
+      "time": {
+        "horizon_s": 21600,
+        "control_interval_s": 60,
+        "solver": "RK45",
+        "max_step_s": 10,
+        "rtol": 1e-07,
+        "atol": [
+          1e-08,
+          1e-08,
+          1e-09,
+          1e-07,
+          1e-10,
+          1e-09,
+          1e-09,
+          1e-09,
+          1e-09,
+          1e-09
+        ]
+      },
+      "sensor": {
+        "sigma": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "noise_standard_clip": 3.0,
+        "seed": 20261014,
+        "noise": "normal_truncated_by_clipping_before_scaling",
+        "bias": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "measurement_ranges": [
+          [
+            -5.0,
+            45.0
+          ],
+          [
+            0.0,
+            25.0
+          ],
+          [
+            0.0,
+            14.0
+          ],
+          [
+            0.0,
+            500.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ],
+        "generator": "numpy.random.Generator(PCG64(seed)); generate one (N+1,5) array in variable_order; persist the resulting clipped epsilon table"
+      },
+      "controller": {
+        "algorithm": "sampled_hysteresis",
+        "thermal_delta_C": 0.3,
+        "ph_delta": 0.15,
+        "level_delta_m": 0.03,
+        "oxygen_delta_mg_L": 0.2,
+        "filter_on_NTU": 15.0,
+        "filter_off_NTU": 10.0,
+        "initial_memory": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "nominal_scenario": {
+        "environment_amplitude_C": 2.0,
+        "environment_period_s": 86400,
+        "feed_daily_starts_s": [
+          28800,
+          72000
+        ],
+        "feed_duration_s": 1800,
+        "feed_intensity": 1.0
+      },
+      "domain": {
+        "temperature_C": [
+          0.0,
+          40.0
+        ],
+        "oxygen_mg_L": [
+          0.0,
+          20.0
+        ],
+        "ph": [
+          4.0,
+          10.0
+        ],
+        "turbidity_NTU": [
+          0.0,
+          200.0
+        ],
+        "level_m": [
+          0.25,
+          1.45
+        ],
+        "pressure_Pa": [
+          50662.5,
+          111457.5
+        ],
+        "salinity_per_mille": [
+          0.0,
+          0.5
+        ]
+      },
+      "acceptance": {
+        "replay_abs_tolerances": [
+          1e-05,
+          1e-05,
+          1e-06,
+          0.0001,
+          1e-07
+        ],
+        "grid_refinement_abs_tolerances": [
+          0.002,
+          0.002,
+          0.0002,
+          0.02,
+          2e-05
+        ],
+        "s2_recovery_deadline_s": 14400,
+        "s2_in_band_fraction_min": 0.95,
+        "s2_normalized_iae_reduction_min": 0.2,
+        "benchmark_median_max_s": 60,
+        "benchmark_repetitions": 3
+      },
+      "common_initial_state_policy": "S0/S1: references; S2: specified disturbances; actuator response states start at nominal open_commands for both strategies",
+      "open_schedule_policy": "constant_calibrated_nominal_commands; no measurement feedback; custom timed schedule stored with run",
+      "source_classes": [
+        "bibliographic",
+        "derived",
+        "demonstrative"
+      ],
+      "availability_order": [
+        "heater",
+        "cooler",
+        "air",
+        "ph_base",
+        "ph_acid",
+        "filter",
+        "inlet",
+        "outlet"
+      ],
+      "availability_default": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "approval": {
+        "stage": 4,
+        "date_local": "2026-10-14",
+        "user_response": "aprobado",
+        "scope": "Especificación académica; pruebas y validación pendientes"
+      },
+      "schema_version": "1.0.0",
+      "code_version": "0.1.0",
+      "profile": {
+        "id": "oreochromis_niloticus_demo_v1",
+        "name": "Tilapia del Nilo",
+        "scientific_name": "Oreochromis niloticus",
+        "phase": "crecimiento_engorde",
+        "references": [
+          28.5,
+          6.0,
+          7.5,
+          10.0,
+          1.0
+        ],
+        "operating_bands": [
+          [
+            27.0,
+            30.0
+          ],
+          [
+            5.0,
+            8.5
+          ],
+          [
+            7.0,
+            8.0
+          ],
+          [
+            0.0,
+            20.0
+          ],
+          [
+            0.9,
+            1.1
+          ]
+        ],
+        "critical_limits": [
+          [
+            26.0,
+            31.0
+          ],
+          [
+            4.0,
+            9.5
+          ],
+          [
+            6.5,
+            8.5
+          ],
+          [
+            0.0,
+            50.0
+          ],
+          [
+            0.8,
+            1.2
+          ]
+        ],
+        "inlet_temperature_C": 28.5,
+        "rain_temperature_C": 28.5,
+        "inlet_oxygen_mg_L": 7.3710724914255845,
+        "rain_oxygen_mg_L": 7.3710724914255845,
+        "baseline_environment_C": 26.5,
+        "temperature_origin": {
+          "classification": "derived",
+          "antecedent": "B01",
+          "note": "Consigna seleccionada dentro del antecedente; no es un óptimo universal"
+        },
+        "other_limits_origin": "demonstrative",
+        "saturation_at_reference_mg_L": 7.759023675184826,
+        "open_commands": [
+          0.025,
+          0.4167276381539342,
+          0.011574074074074032,
+          0.14995000000000003,
+          9.999999999999999e-05
+        ]
+      },
+      "units": {
+        "temperature_C": "°C",
+        "oxygen_mg_L": "mg/L",
+        "ph": "1",
+        "turbidity_NTU": "NTU",
+        "level_m": "m"
+      },
+      "strategy": "open",
+      "scenario": "S0",
+      "events": [],
+      "environment_amplitude_C": 0.0,
+      "x0": [
+        20,
+        2,
+        8,
+        40,
+        1
+      ],
+      "origin_registry": [
+        {
+          "classification": "bibliographic",
+          "value": "Csat coefficients",
+          "unit": "mg/L",
+          "source": "USGS WQ.2011.03, anexo ecuaciones 1 y 7 a 11; constantes transcritas y revisadas en página PDF 6"
+        },
+        {
+          "classification": "derived",
+          "value": "temperature reference",
+          "unit": "°C",
+          "source": "B01"
+        },
+        {
+          "classification": "demonstrative",
+          "value": "other references, bands, alarms, parameters",
+          "unit": "canonical per field",
+          "source": "MODEL_DEFAULTS.json 0.5.0"
+        }
+      ],
+      "open_commands": [
+        0.025,
+        0.41672763815393454,
+        0.011574074074074032,
+        0.14995000000000003,
+        9.999999999999999e-05
+      ],
+      "z0": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "absolute_error": 1.4210854715202004e-14
+  },
+  "AC08": {
+    "expected": 0.6321205588285577,
+    "observed": 0.6321205527118614,
+    "tolerance": 1e-07,
+    "signed_means": [
+      0.07671320486001368,
+      0.5858710243043806,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "test_config": {
+      "spec_id": "SPC-AGUA-001",
+      "spec_version": "0.5.0",
+      "model_id": "M-AGUA-DEMO-1",
+      "model_version": "1.0.0",
+      "status": "stage4_approved_for_implementation",
+      "owner": "Work",
+      "notice": "Especificación, no resultados ni aplicación implementada. Parámetros demostrativos salvo indicación expresa.",
+      "variable_order": [
+        "temperature_C",
+        "oxygen_mg_L",
+        "ph",
+        "turbidity_NTU",
+        "level_m"
+      ],
+      "response_state_order": [
+        "thermal",
+        "aeration",
+        "ph",
+        "filtration",
+        "level"
+      ],
+      "parameters": {
+        "area_m2": 10.0,
+        "height_max_m": 1.5,
+        "biomass_kg": 50.0,
+        "density_kg_m3": 1000.0,
+        "heat_capacity_J_kg_K": 4186.0,
+        "heat_exchange_W_K": 0.0,
+        "heater_max_W": 20000.0,
+        "cooler_max_W": 20000.0,
+        "k_natural_s_inv": 0.0,
+        "k_air_s_inv": 0.0,
+        "fish_consumption_mg_kg_s_at20": 0.0,
+        "water_consumption_mg_L_s_at20": 0.0,
+        "oxygen_half_saturation_mg_L": 0.5,
+        "temperature_Q10": 2.0,
+        "feed_respiration_multiplier": 0.5,
+        "ph_relaxation_s_inv": 0.0,
+        "ph_background": 7.4,
+        "ph_actuation_per_s": 0.0,
+        "turbidity_source_NTU_s": 0.0,
+        "k_settle_s_inv": 0.0,
+        "k_filter_s_inv": 0.0,
+        "inlet_max_m3_s": 0.0,
+        "outlet_max_m3_s": 0.0,
+        "evaporation_m3_s": 0.0,
+        "leak_base_m3_s": 0.0,
+        "exchange_m3_s": 0.0,
+        "rain_base_m3_s": 0.0,
+        "inlet_turbidity_NTU": 5.0,
+        "rain_turbidity_NTU": 5.0,
+        "actuator_tau_s": [
+          30.0,
+          30.0,
+          30.0,
+          30.0,
+          30.0
+        ],
+        "pressure_Pa": 101325.0,
+        "salinity_per_mille": 0.0,
+        "air_power_W": 300.0,
+        "filter_power_W": 200.0,
+        "inlet_power_W": 100.0,
+        "outlet_power_W": 100.0,
+        "cooling_COP": 3.0,
+        "ph_external_base_per_s": 0.0,
+        "turbidity_external_base_NTU_s": 0.0,
+        "ph_feed_coefficient_per_s": 2e-05
+      },
+      "parameter_origin": "demonstrative_or_declared_physical_approximation",
+      "physical_approximations": {
+        "density_kg_m3": "aproximación constante",
+        "heat_capacity_J_kg_K": "aproximación constante"
+      },
+      "solubility_source": "USGS WQ.2011.03, anexo ecuaciones 1 y 7 a 11; constantes transcritas y revisadas en página PDF 6",
+      "time": {
+        "horizon_s": 21600,
+        "control_interval_s": 60,
+        "solver": "RK45",
+        "max_step_s": 10,
+        "rtol": 1e-07,
+        "atol": [
+          1e-08,
+          1e-08,
+          1e-09,
+          1e-07,
+          1e-10,
+          1e-09,
+          1e-09,
+          1e-09,
+          1e-09,
+          1e-09
+        ]
+      },
+      "sensor": {
+        "sigma": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "noise_standard_clip": 3.0,
+        "seed": 20261014,
+        "noise": "normal_truncated_by_clipping_before_scaling",
+        "bias": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "measurement_ranges": [
+          [
+            -5.0,
+            45.0
+          ],
+          [
+            0.0,
+            25.0
+          ],
+          [
+            0.0,
+            14.0
+          ],
+          [
+            0.0,
+            500.0
+          ],
+          [
+            0.0,
+            2.0
+          ]
+        ],
+        "generator": "numpy.random.Generator(PCG64(seed)); generate one (N+1,5) array in variable_order; persist the resulting clipped epsilon table"
+      },
+      "controller": {
+        "algorithm": "sampled_hysteresis",
+        "thermal_delta_C": 0.3,
+        "ph_delta": 0.15,
+        "level_delta_m": 0.03,
+        "oxygen_delta_mg_L": 0.2,
+        "filter_on_NTU": 15.0,
+        "filter_off_NTU": 10.0,
+        "initial_memory": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "nominal_scenario": {
+        "environment_amplitude_C": 2.0,
+        "environment_period_s": 86400,
+        "feed_daily_starts_s": [
+          28800,
+          72000
+        ],
+        "feed_duration_s": 1800,
+        "feed_intensity": 1.0
+      },
+      "domain": {
+        "temperature_C": [
+          0.0,
+          40.0
+        ],
+        "oxygen_mg_L": [
+          0.0,
+          20.0
+        ],
+        "ph": [
+          4.0,
+          10.0
+        ],
+        "turbidity_NTU": [
+          0.0,
+          200.0
+        ],
+        "level_m": [
+          0.25,
+          1.45
+        ],
+        "pressure_Pa": [
+          50662.5,
+          111457.5
+        ],
+        "salinity_per_mille": [
+          0.0,
+          0.5
+        ]
+      },
+      "acceptance": {
+        "replay_abs_tolerances": [
+          1e-05,
+          1e-05,
+          1e-06,
+          0.0001,
+          1e-07
+        ],
+        "grid_refinement_abs_tolerances": [
+          0.002,
+          0.002,
+          0.0002,
+          0.02,
+          2e-05
+        ],
+        "s2_recovery_deadline_s": 14400,
+        "s2_in_band_fraction_min": 0.95,
+        "s2_normalized_iae_reduction_min": 0.2,
+        "benchmark_median_max_s": 60,
+        "benchmark_repetitions": 3
+      },
+      "common_initial_state_policy": "S0/S1: references; S2: specified disturbances; actuator response states start at nominal open_commands for both strategies",
+      "open_schedule_policy": "constant_calibrated_nominal_commands; no measurement feedback; custom timed schedule stored with run",
+      "source_classes": [
+        "bibliographic",
+        "derived",
+        "demonstrative"
+      ],
+      "availability_order": [
+        "heater",
+        "cooler",
+        "air",
+        "ph_base",
+        "ph_acid",
+        "filter",
+        "inlet",
+        "outlet"
+      ],
+      "availability_default": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "approval": {
+        "stage": 4,
+        "date_local": "2026-10-14",
+        "user_response": "aprobado",
+        "scope": "Especificación académica; pruebas y validación pendientes"
+      },
+      "schema_version": "1.0.0",
+      "code_version": "0.1.0",
+      "profile": {
+        "id": "oreochromis_niloticus_demo_v1",
+        "name": "Tilapia del Nilo",
+        "scientific_name": "Oreochromis niloticus",
+        "phase": "crecimiento_engorde",
+        "references": [
+          28.5,
+          6.0,
+          7.5,
+          10.0,
+          1.0
+        ],
+        "operating_bands": [
+          [
+            27.0,
+            30.0
+          ],
+          [
+            5.0,
+            8.5
+          ],
+          [
+            7.0,
+            8.0
+          ],
+          [
+            0.0,
+            20.0
+          ],
+          [
+            0.9,
+            1.1
+          ]
+        ],
+        "critical_limits": [
+          [
+            26.0,
+            31.0
+          ],
+          [
+            4.0,
+            9.5
+          ],
+          [
+            6.5,
+            8.5
+          ],
+          [
+            0.0,
+            50.0
+          ],
+          [
+            0.8,
+            1.2
+          ]
+        ],
+        "inlet_temperature_C": 28.5,
+        "rain_temperature_C": 28.5,
+        "inlet_oxygen_mg_L": 7.3710724914255845,
+        "rain_oxygen_mg_L": 7.3710724914255845,
+        "baseline_environment_C": 26.5,
+        "temperature_origin": {
+          "classification": "derived",
+          "antecedent": "B01",
+          "note": "Consigna seleccionada dentro del antecedente; no es un óptimo universal"
+        },
+        "other_limits_origin": "demonstrative",
+        "saturation_at_reference_mg_L": 7.759023675184826,
+        "open_commands": [
+          0.025,
+          0.4167276381539342,
+          0.011574074074074032,
+          0.14995000000000003,
+          9.999999999999999e-05
+        ]
+      },
+      "units": {
+        "temperature_C": "°C",
+        "oxygen_mg_L": "mg/L",
+        "ph": "1",
+        "turbidity_NTU": "NTU",
+        "level_m": "m"
+      },
+      "strategy": "open",
+      "scenario": "S0",
+      "events": [],
+      "environment_amplitude_C": 0.0,
+      "x0": [
+        20,
+        2,
+        8,
+        40,
+        1
+      ],
+      "origin_registry": [
+        {
+          "classification": "bibliographic",
+          "value": "Csat coefficients",
+          "unit": "mg/L",
+          "source": "USGS WQ.2011.03, anexo ecuaciones 1 y 7 a 11; constantes transcritas y revisadas en página PDF 6"
+        },
+        {
+          "classification": "derived",
+          "value": "temperature reference",
+          "unit": "°C",
+          "source": "B01"
+        },
+        {
+          "classification": "demonstrative",
+          "value": "other references, bands, alarms, parameters",
+          "unit": "canonical per field",
+          "source": "MODEL_DEFAULTS.json 0.5.0"
+        }
+      ],
+      "open_commands": [
+        0.025,
+        0.41672763815393454,
+        0.011574074074074032,
+        0.14995000000000003,
+        9.999999999999999e-05
+      ],
+      "z0": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "absolute_error": 6.116696260605181e-09
+  }
+}

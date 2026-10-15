@@ -1,0 +1,635 @@
+{
+  "comparison_id": "S6_p1",
+  "base_equal_except_strategy": true,
+  "noise_tables_equal": true,
+  "authorized_differences": [
+    "strategy"
+  ],
+  "common_duration_s": 43200.0,
+  "requested_horizon_s": 43200,
+  "members": {
+    "open": "ced3e21ceb894c8e9a52641d76b2d29f",
+    "closed": "bee7610d7ef5406ebba1768870c5e5fe"
+  },
+  "archives": {
+    "open": "../runs/S6_p1_open.zip",
+    "closed": "../runs/S6_p1_closed.zip"
+  },
+  "full": {
+    "open": {
+      "status": "COMPLETED",
+      "cause": "",
+      "time_s": 43200.0,
+      "metrics": {
+        "formula_version": "M-AGUA-DEMO-1/section14-v1",
+        "origin": "x",
+        "variables": [
+          "temperature_C",
+          "oxygen_mg_L",
+          "ph",
+          "turbidity_NTU",
+          "level_m"
+        ],
+        "units": [
+          "°C",
+          "mg/L",
+          "1",
+          "NTU",
+          "m"
+        ],
+        "interval_s": [
+          0.0,
+          43200.0
+        ],
+        "x": {
+          "iae": [
+            6579.101107614919,
+            32790.15463150435,
+            449.88567358726755,
+            8831.55414875148,
+            0.0
+          ],
+          "outside_s": [
+            0.0,
+            13860.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "in_band_fraction": [
+            1.0,
+            0.6791666666666667,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "recovery_s": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "duration_s": 43200.0
+        },
+        "J": 0.12341519157513665,
+        "window_4_12h": {
+          "iae": [
+            6178.740060694712,
+            28756.262764968887,
+            449.88567358726755,
+            8831.55414875148,
+            0.0
+          ],
+          "outside_s": [
+            0.0,
+            13200.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "in_band_fraction": [
+            1.0,
+            0.5416666666666667,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "recovery_s": [
+            14400.0,
+            27600.0,
+            14400.0,
+            14400.0,
+            14400.0
+          ],
+          "duration_s": 28800.0
+        },
+        "y": {
+          "coverage": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "per_variable": [
+            {
+              "iae": [
+                6700.6574587321065
+              ],
+              "outside_s": [
+                0.0
+              ],
+              "in_band_fraction": [
+                1.0
+              ],
+              "recovery_s": [
+                0.0
+              ],
+              "duration_s": 43200.0
+            },
+            {
+              "iae": [
+                32913.80919348587
+              ],
+              "outside_s": [
+                13740.0
+              ],
+              "in_band_fraction": [
+                0.6819444444444445
+              ],
+              "recovery_s": [
+                0.0
+              ],
+              "duration_s": 43200.0
+            },
+            {
+              "iae": [
+                688.6235916483638
+              ],
+              "outside_s": [
+                0.0
+              ],
+              "in_band_fraction": [
+                1.0
+              ],
+              "recovery_s": [
+                0.0
+              ],
+              "duration_s": 43200.0
+            },
+            {
+              "iae": [
+                11035.798170004382
+              ],
+              "outside_s": [
+                0.0
+              ],
+              "in_band_fraction": [
+                1.0
+              ],
+              "recovery_s": [
+                0.0
+              ],
+              "duration_s": 43200.0
+            },
+            {
+              "iae": [
+                68.41975467766886
+              ],
+              "outside_s": [
+                0.0
+              ],
+              "in_band_fraction": [
+                1.0
+              ],
+              "recovery_s": [
+                0.0
+              ],
+              "duration_s": 43200.0
+            }
+          ],
+          "rule": "IAE solo con cobertura completa; sin interpolación de ausencias"
+        },
+        "joint_recovery_s": 0.0,
+        "usage": {
+          "inlet_m3": 0.008639999999999884,
+          "outlet_m3": 0.0,
+          "ph_base_normalized_s": 500.0000000000012,
+          "ph_acid_normalized_s": 0.0,
+          "partial_energy_kWh": 6.845921159114491,
+          "rain_m3": 0.0,
+          "leak_m3": 0.0,
+          "evaporation_m3": 0.008639999999999927,
+          "exchange_m3": 0.0
+        },
+        "common_endpoint_policy": "termination_state irregular incluido solo en x"
+      }
+    },
+    "closed": {
+      "status": "COMPLETED",
+      "cause": "",
+      "time_s": 43200.0,
+      "metrics": {
+        "formula_version": "M-AGUA-DEMO-1/section14-v1",
+        "origin": "x",
+        "variables": [
+          "temperature_C",
+          "oxygen_mg_L",
+          "ph",
+          "turbidity_NTU",
+          "level_m"
+        ],
+        "units": [
+          "°C",
+          "mg/L",
+          "1",
+          "NTU",
+          "m"
+        ],
+        "interval_s": [
+          0.0,
+          43200.0
+        ],
+        "x": {
+          "iae": [
+            3652.1367238767925,
+            20419.424307346708,
+            1369.1309870287862,
+            109247.80964292224,
+            18.63650363505153
+          ],
+          "outside_s": [
+            0.0,
+            8700.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "in_band_fraction": [
+            1.0,
+            0.7986111111111112,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "recovery_s": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "duration_s": 43200.0
+        },
+        "J": 0.10975646610079615,
+        "window_4_12h": {
+          "iae": [
+            2853.740004445368,
+            15451.054531783713,
+            1255.9882838728624,
+            81039.00858076653,
+            16.57152000036671
+          ],
+          "outside_s": [
+            0.0,
+            7920.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "in_band_fraction": [
+            1.0,
+            0.725,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "recovery_s": [
+            14400.0,
+            22320.0,
+            14400.0,
+            14400.0,
+            14400.0
+          ],
+          "duration_s": 28800.0
+        },
+        "y": {
+          "coverage": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "per_variable": [
+            {
+              "iae": [
+                3748.2559861141312
+              ],
+              "outside_s": [
+                0.0
+              ],
+              "in_band_fraction": [
+                1.0
+              ],
+              "recovery_s": [
+                0.0
+              ],
+              "duration_s": 43200.0
+            },
+            {
+              "iae": [
+                20463.020564016388
+              ],
+              "outside_s": [
+                8760.0
+              ],
+              "in_band_fraction": [
+                0.7972222222222223
+              ],
+              "recovery_s": [
+                0.0
+              ],
+              "duration_s": 43200.0
+            },
+            {
+              "iae": [
+                1421.0138349550493
+              ],
+              "outside_s": [
+                0.0
+              ],
+              "in_band_fraction": [
+                1.0
+              ],
+              "recovery_s": [
+                0.0
+              ],
+              "duration_s": 43200.0
+            },
+            {
+              "iae": [
+                109331.28458960069
+              ],
+              "outside_s": [
+                0.0
+              ],
+              "in_band_fraction": [
+                1.0
+              ],
+              "recovery_s": [
+                0.0
+              ],
+              "duration_s": 43200.0
+            },
+            {
+              "iae": [
+                71.28830931987237
+              ],
+              "outside_s": [
+                0.0
+              ],
+              "in_band_fraction": [
+                1.0
+              ],
+              "recovery_s": [
+                0.0
+              ],
+              "duration_s": 43200.0
+            }
+          ],
+          "rule": "IAE solo con cobertura completa; sin interpolación de ausencias"
+        },
+        "joint_recovery_s": 0.0,
+        "usage": {
+          "inlet_m3": 6.0000001262309045e-06,
+          "outlet_m3": 0.0,
+          "ph_base_normalized_s": 0.3472222295272502,
+          "ph_acid_normalized_s": 0.0,
+          "partial_energy_kWh": 0.8657561669656182,
+          "rain_m3": 0.0,
+          "leak_m3": 0.0,
+          "evaporation_m3": 0.008639999999999927,
+          "exchange_m3": 0.0
+        },
+        "common_endpoint_policy": "termination_state irregular incluido solo en x"
+      }
+    }
+  },
+  "common": {
+    "open": {
+      "formula_version": "M-AGUA-DEMO-1/section14-v1",
+      "origin": "x",
+      "variables": [
+        "temperature_C",
+        "oxygen_mg_L",
+        "ph",
+        "turbidity_NTU",
+        "level_m"
+      ],
+      "units": [
+        "°C",
+        "mg/L",
+        "1",
+        "NTU",
+        "m"
+      ],
+      "interval_s": [
+        0.0,
+        43200.0
+      ],
+      "x": {
+        "iae": [
+          6579.101107614919,
+          32790.15463150435,
+          449.88567358726755,
+          8831.55414875148,
+          0.0
+        ],
+        "outside_s": [
+          0.0,
+          13860.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "in_band_fraction": [
+          1.0,
+          0.6791666666666667,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "recovery_s": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "duration_s": 43200.0
+      },
+      "J": 0.12341519157513665,
+      "window_4_12h": {
+        "iae": [
+          6178.740060694712,
+          28756.262764968887,
+          449.88567358726755,
+          8831.55414875148,
+          0.0
+        ],
+        "outside_s": [
+          0.0,
+          13200.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "in_band_fraction": [
+          1.0,
+          0.5416666666666667,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "recovery_s": [
+          14400.0,
+          27600.0,
+          14400.0,
+          14400.0,
+          14400.0
+        ],
+        "duration_s": 28800.0
+      },
+      "y": {
+        "coverage": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "per_variable": [
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "rule": "IAE solo con cobertura completa; sin interpolación de ausencias"
+      },
+      "joint_recovery_s": 0.0,
+      "usage": {
+        "inlet_m3": 0.008639999999999884,
+        "outlet_m3": 0.0,
+        "ph_base_normalized_s": 500.0000000000012,
+        "ph_acid_normalized_s": 0.0,
+        "partial_energy_kWh": 6.845921159114491,
+        "rain_m3": 0.0,
+        "leak_m3": 0.0,
+        "evaporation_m3": 0.008639999999999927,
+        "exchange_m3": 0.0
+      },
+      "common_endpoint_policy": "x interpolado linealmente si necesario; consumos comunes solo intervalos completos"
+    },
+    "closed": {
+      "formula_version": "M-AGUA-DEMO-1/section14-v1",
+      "origin": "x",
+      "variables": [
+        "temperature_C",
+        "oxygen_mg_L",
+        "ph",
+        "turbidity_NTU",
+        "level_m"
+      ],
+      "units": [
+        "°C",
+        "mg/L",
+        "1",
+        "NTU",
+        "m"
+      ],
+      "interval_s": [
+        0.0,
+        43200.0
+      ],
+      "x": {
+        "iae": [
+          3652.1367238767925,
+          20419.424307346708,
+          1369.1309870287862,
+          109247.80964292224,
+          18.63650363505153
+        ],
+        "outside_s": [
+          0.0,
+          8700.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "in_band_fraction": [
+          1.0,
+          0.7986111111111112,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "recovery_s": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "duration_s": 43200.0
+      },
+      "J": 0.10975646610079615,
+      "window_4_12h": {
+        "iae": [
+          2853.740004445368,
+          15451.054531783713,
+          1255.9882838728624,
+          81039.00858076653,
+          16.57152000036671
+        ],
+        "outside_s": [
+          0.0,
+          7920.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "in_band_fraction": [
+          1.0,
+          0.725,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "recovery_s": [
+          14400.0,
+          22320.0,
+          14400.0,
+          14400.0,
+          14400.0
+        ],
+        "duration_s": 28800.0
+      },
+      "y": {
+        "coverage": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "per_variable": [
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "rule": "IAE solo con cobertura completa; sin interpolación de ausencias"
+      },
+      "joint_recovery_s": 0.0,
+      "usage": {
+        "inlet_m3": 6.0000001262309045e-06,
+        "outlet_m3": 0.0,
+        "ph_base_normalized_s": 0.3472222295272502,
+        "ph_acid_normalized_s": 0.0,
+        "partial_energy_kWh": 0.8657561669656182,
+        "rain_m3": 0.0,
+        "leak_m3": 0.0,
+        "evaporation_m3": 0.008639999999999927,
+        "exchange_m3": 0.0
+      },
+      "common_endpoint_policy": "x interpolado linealmente si necesario; consumos comunes solo intervalos completos"
+    }
+  },
+  "limitations": [
+    "No declarar ganadora una corrida fallida; energía parcial; parámetros demostrativos"
+  ]
+}

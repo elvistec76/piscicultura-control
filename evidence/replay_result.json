@@ -1,0 +1,21 @@
+{
+  "source": "evidence/runs/S2_p0_closed.zip",
+  "run_id": "6614619ea041480d8087150ce17f188a",
+  "status": "COMPLETED",
+  "time_s": 43200.0,
+  "max_abs_error_x": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "tolerances": [
+    1e-05,
+    1e-05,
+    1e-06,
+    0.0001,
+    1e-07
+  ],
+  "noise_source": "CSV persistido; sin regeneración"
+}

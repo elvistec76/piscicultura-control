@@ -1,0 +1,10 @@
+{
+  "browser": "154.0.8037.57",
+  "source_run_id": "5645d5f4f027426285e42c7d15480b20",
+  "source_archive": "../runs/S2_p0_closed.zip",
+  "errors": [],
+  "blocked_external_requests": [],
+  "visible_charts": 6,
+  "history_has_download": true,
+  "network_policy": "Solo loopback permitido en navegador; todas las solicitudes externas abortadas"
+}
