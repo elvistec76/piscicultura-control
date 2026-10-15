@@ -1,0 +1,657 @@
+{
+  "comparison_id": "S7_p2",
+  "base_equal_except_strategy": true,
+  "noise_tables_equal": true,
+  "authorized_differences": [
+    "strategy"
+  ],
+  "common_duration_s": 21600.0,
+  "requested_horizon_s": 21600,
+  "members": {
+    "open": "ad6345fa061f432fbf566fad635b02e6",
+    "closed": "07f32f1f51df4284adf11c2cd9fd713d"
+  },
+  "archives": {
+    "open": "../runs/S7_p2_open.zip",
+    "closed": "../runs/S7_p2_closed.zip"
+  },
+  "full": {
+    "open": {
+      "status": "COMPLETED",
+      "cause": "",
+      "time_s": 21600.0,
+      "metrics": {
+        "formula_version": "M-AGUA-DEMO-1/section14-v1",
+        "origin": "x",
+        "variables": [
+          "temperature_C",
+          "oxygen_mg_L",
+          "ph",
+          "turbidity_NTU",
+          "level_m"
+        ],
+        "units": [
+          "°C",
+          "mg/L",
+          "1",
+          "NTU",
+          "m"
+        ],
+        "interval_s": [
+          0.0,
+          21600.0
+        ],
+        "x": {
+          "iae": [
+            1246.835923636868,
+            193.3325679014438,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "outside_s": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "in_band_fraction": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "recovery_s": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "duration_s": 21600.0,
+          "interval_s": [
+            0.0,
+            21600.0
+          ],
+          "variables": [
+            "temperature_C",
+            "oxygen_mg_L",
+            "ph",
+            "turbidity_NTU",
+            "level_m"
+          ],
+          "iae_boundary_rule": "Interpolación lineal del error absoluto entre muestras; trapecios recortados",
+          "outside_rule": "Estado izquierdo original por duración de intersección"
+        },
+        "J": 0.00871944168683134,
+        "window_4_12h": null,
+        "y": {
+          "coverage": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "per_variable": [
+            {
+              "iae": [
+                1374.9081503050938
+              ],
+              "outside_s": [
+                0.0
+              ],
+              "in_band_fraction": [
+                1.0
+              ],
+              "recovery_s": [
+                0.0
+              ],
+              "duration_s": 21600.0,
+              "interval_s": [
+                0.0,
+                21600.0
+              ],
+              "variables": [
+                "temperature_C"
+              ],
+              "iae_boundary_rule": "Interpolación lineal del error absoluto entre muestras; trapecios recortados",
+              "outside_rule": "Estado izquierdo original por duración de intersección"
+            },
+            {
+              "iae": [
+                3941.5789162722394
+              ],
+              "outside_s": [
+                0.0
+              ],
+              "in_band_fraction": [
+                1.0
+              ],
+              "recovery_s": [
+                0.0
+              ],
+              "duration_s": 21600.0,
+              "interval_s": [
+                0.0,
+                21600.0
+              ],
+              "variables": [
+                "oxygen_mg_L"
+              ],
+              "iae_boundary_rule": "Interpolación lineal del error absoluto entre muestras; trapecios recortados",
+              "outside_rule": "Estado izquierdo original por duración de intersección"
+            },
+            {
+              "iae": [
+                172.99527900553477
+              ],
+              "outside_s": [
+                0.0
+              ],
+              "in_band_fraction": [
+                1.0
+              ],
+              "recovery_s": [
+                0.0
+              ],
+              "duration_s": 21600.0,
+              "interval_s": [
+                0.0,
+                21600.0
+              ],
+              "variables": [
+                "ph"
+              ],
+              "iae_boundary_rule": "Interpolación lineal del error absoluto entre muestras; trapecios recortados",
+              "outside_rule": "Estado izquierdo original por duración de intersección"
+            },
+            {
+              "iae": [
+                1674.009314918367
+              ],
+              "outside_s": [
+                0.0
+              ],
+              "in_band_fraction": [
+                1.0
+              ],
+              "recovery_s": [
+                0.0
+              ],
+              "duration_s": 21600.0,
+              "interval_s": [
+                0.0,
+                21600.0
+              ],
+              "variables": [
+                "turbidity_NTU"
+              ],
+              "iae_boundary_rule": "Interpolación lineal del error absoluto entre muestras; trapecios recortados",
+              "outside_rule": "Estado izquierdo original por duración de intersección"
+            },
+            {
+              "iae": [
+                32.86774800174094
+              ],
+              "outside_s": [
+                0.0
+              ],
+              "in_band_fraction": [
+                1.0
+              ],
+              "recovery_s": [
+                0.0
+              ],
+              "duration_s": 21600.0,
+              "interval_s": [
+                0.0,
+                21600.0
+              ],
+              "variables": [
+                "level_m"
+              ],
+              "iae_boundary_rule": "Interpolación lineal del error absoluto entre muestras; trapecios recortados",
+              "outside_rule": "Estado izquierdo original por duración de intersección"
+            }
+          ],
+          "rule": "IAE solo con cobertura completa; sin interpolación de ausencias"
+        },
+        "joint_recovery_s": 0.0,
+        "usage": {
+          "inlet_m3": 0.004319999999999991,
+          "outlet_m3": 0.0,
+          "ph_base_normalized_s": 249.9999999999969,
+          "ph_acid_normalized_s": 0.0,
+          "partial_energy_kWh": 3.6256030917585473,
+          "rain_m3": 0.0,
+          "leak_m3": 0.0,
+          "evaporation_m3": 0.0043199999999999775,
+          "exchange_m3": 0.0
+        },
+        "common_endpoint_policy": "termination_state irregular incluido solo en x"
+      }
+    },
+    "closed": {
+      "status": "COMPLETED",
+      "cause": "",
+      "time_s": 21600.0,
+      "metrics": {
+        "formula_version": "M-AGUA-DEMO-1/section14-v1",
+        "origin": "x",
+        "variables": [
+          "temperature_C",
+          "oxygen_mg_L",
+          "ph",
+          "turbidity_NTU",
+          "level_m"
+        ],
+        "units": [
+          "°C",
+          "mg/L",
+          "1",
+          "NTU",
+          "m"
+        ],
+        "interval_s": [
+          0.0,
+          21600.0
+        ],
+        "x": {
+          "iae": [
+            1416.271359912707,
+            5777.89553952598,
+            248.17622897863973,
+            58656.23714812704,
+            4.652663634722172
+          ],
+          "outside_s": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "in_band_fraction": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "recovery_s": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "duration_s": 21600.0,
+          "interval_s": [
+            0.0,
+            21600.0
+          ],
+          "variables": [
+            "temperature_C",
+            "oxygen_mg_L",
+            "ph",
+            "turbidity_NTU",
+            "level_m"
+          ],
+          "iae_boundary_rule": "Interpolación lineal del error absoluto entre muestras; trapecios recortados",
+          "outside_rule": "Estado izquierdo original por duración de intersección"
+        },
+        "J": 0.07149561529939047,
+        "window_4_12h": null,
+        "y": {
+          "coverage": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "per_variable": [
+            {
+              "iae": [
+                1505.8747465991285
+              ],
+              "outside_s": [
+                0.0
+              ],
+              "in_band_fraction": [
+                1.0
+              ],
+              "recovery_s": [
+                0.0
+              ],
+              "duration_s": 21600.0,
+              "interval_s": [
+                0.0,
+                21600.0
+              ],
+              "variables": [
+                "temperature_C"
+              ],
+              "iae_boundary_rule": "Interpolación lineal del error absoluto entre muestras; trapecios recortados",
+              "outside_rule": "Estado izquierdo original por duración de intersección"
+            },
+            {
+              "iae": [
+                2826.5038828839965
+              ],
+              "outside_s": [
+                0.0
+              ],
+              "in_band_fraction": [
+                1.0
+              ],
+              "recovery_s": [
+                0.0
+              ],
+              "duration_s": 21600.0,
+              "interval_s": [
+                0.0,
+                21600.0
+              ],
+              "variables": [
+                "oxygen_mg_L"
+              ],
+              "iae_boundary_rule": "Interpolación lineal del error absoluto entre muestras; trapecios recortados",
+              "outside_rule": "Estado izquierdo original por duración de intersección"
+            },
+            {
+              "iae": [
+                294.56665914092946
+              ],
+              "outside_s": [
+                0.0
+              ],
+              "in_band_fraction": [
+                1.0
+              ],
+              "recovery_s": [
+                0.0
+              ],
+              "duration_s": 21600.0,
+              "interval_s": [
+                0.0,
+                21600.0
+              ],
+              "variables": [
+                "ph"
+              ],
+              "iae_boundary_rule": "Interpolación lineal del error absoluto entre muestras; trapecios recortados",
+              "outside_rule": "Estado izquierdo original por duración de intersección"
+            },
+            {
+              "iae": [
+                58570.965890312
+              ],
+              "outside_s": [
+                0.0
+              ],
+              "in_band_fraction": [
+                1.0
+              ],
+              "recovery_s": [
+                0.0
+              ],
+              "duration_s": 21600.0,
+              "interval_s": [
+                0.0,
+                21600.0
+              ],
+              "variables": [
+                "turbidity_NTU"
+              ],
+              "iae_boundary_rule": "Interpolación lineal del error absoluto entre muestras; trapecios recortados",
+              "outside_rule": "Estado izquierdo original por duración de intersección"
+            },
+            {
+              "iae": [
+                33.453322482341505
+              ],
+              "outside_s": [
+                0.0
+              ],
+              "in_band_fraction": [
+                1.0
+              ],
+              "recovery_s": [
+                0.0
+              ],
+              "duration_s": 21600.0,
+              "interval_s": [
+                0.0,
+                21600.0
+              ],
+              "variables": [
+                "level_m"
+              ],
+              "iae_boundary_rule": "Interpolación lineal del error absoluto entre muestras; trapecios recortados",
+              "outside_rule": "Estado izquierdo original por duración de intersección"
+            }
+          ],
+          "rule": "IAE solo con cobertura completa; sin interpolación de ausencias"
+        },
+        "joint_recovery_s": 0.0,
+        "usage": {
+          "inlet_m3": 6.000000121973264e-06,
+          "outlet_m3": 0.0,
+          "ph_base_normalized_s": 0.34722222928085894,
+          "ph_acid_normalized_s": 0.0,
+          "partial_energy_kWh": 0.5633688918123092,
+          "rain_m3": 0.0,
+          "leak_m3": 0.0,
+          "evaporation_m3": 0.0043199999999999775,
+          "exchange_m3": 0.0
+        },
+        "common_endpoint_policy": "termination_state irregular incluido solo en x"
+      }
+    }
+  },
+  "common": {
+    "open": {
+      "formula_version": "M-AGUA-DEMO-1/section14-v1",
+      "origin": "x",
+      "variables": [
+        "temperature_C",
+        "oxygen_mg_L",
+        "ph",
+        "turbidity_NTU",
+        "level_m"
+      ],
+      "units": [
+        "°C",
+        "mg/L",
+        "1",
+        "NTU",
+        "m"
+      ],
+      "interval_s": [
+        0.0,
+        21600.0
+      ],
+      "x": {
+        "iae": [
+          1246.835923636868,
+          193.3325679014438,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "outside_s": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "in_band_fraction": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "recovery_s": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "duration_s": 21600.0,
+        "interval_s": [
+          0.0,
+          21600.0
+        ],
+        "variables": [
+          "temperature_C",
+          "oxygen_mg_L",
+          "ph",
+          "turbidity_NTU",
+          "level_m"
+        ],
+        "iae_boundary_rule": "Interpolación lineal del error absoluto entre muestras; trapecios recortados",
+        "outside_rule": "Estado izquierdo original por duración de intersección"
+      },
+      "J": 0.00871944168683134,
+      "window_4_12h": null,
+      "y": {
+        "coverage": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "per_variable": [
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "rule": "IAE solo con cobertura completa; sin interpolación de ausencias"
+      },
+      "joint_recovery_s": 0.0,
+      "usage": {
+        "inlet_m3": 0.004319999999999991,
+        "outlet_m3": 0.0,
+        "ph_base_normalized_s": 249.9999999999969,
+        "ph_acid_normalized_s": 0.0,
+        "partial_energy_kWh": 3.6256030917585473,
+        "rain_m3": 0.0,
+        "leak_m3": 0.0,
+        "evaporation_m3": 0.0043199999999999775,
+        "exchange_m3": 0.0
+      },
+      "common_endpoint_policy": "x interpolado linealmente si necesario; consumos comunes solo intervalos completos"
+    },
+    "closed": {
+      "formula_version": "M-AGUA-DEMO-1/section14-v1",
+      "origin": "x",
+      "variables": [
+        "temperature_C",
+        "oxygen_mg_L",
+        "ph",
+        "turbidity_NTU",
+        "level_m"
+      ],
+      "units": [
+        "°C",
+        "mg/L",
+        "1",
+        "NTU",
+        "m"
+      ],
+      "interval_s": [
+        0.0,
+        21600.0
+      ],
+      "x": {
+        "iae": [
+          1416.271359912707,
+          5777.89553952598,
+          248.17622897863973,
+          58656.23714812704,
+          4.652663634722172
+        ],
+        "outside_s": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "in_band_fraction": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "recovery_s": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "duration_s": 21600.0,
+        "interval_s": [
+          0.0,
+          21600.0
+        ],
+        "variables": [
+          "temperature_C",
+          "oxygen_mg_L",
+          "ph",
+          "turbidity_NTU",
+          "level_m"
+        ],
+        "iae_boundary_rule": "Interpolación lineal del error absoluto entre muestras; trapecios recortados",
+        "outside_rule": "Estado izquierdo original por duración de intersección"
+      },
+      "J": 0.07149561529939047,
+      "window_4_12h": null,
+      "y": {
+        "coverage": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "per_variable": [
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "rule": "IAE solo con cobertura completa; sin interpolación de ausencias"
+      },
+      "joint_recovery_s": 0.0,
+      "usage": {
+        "inlet_m3": 6.000000121973264e-06,
+        "outlet_m3": 0.0,
+        "ph_base_normalized_s": 0.34722222928085894,
+        "ph_acid_normalized_s": 0.0,
+        "partial_energy_kWh": 0.5633688918123092,
+        "rain_m3": 0.0,
+        "leak_m3": 0.0,
+        "evaporation_m3": 0.0043199999999999775,
+        "exchange_m3": 0.0
+      },
+      "common_endpoint_policy": "x interpolado linealmente si necesario; consumos comunes solo intervalos completos"
+    }
+  },
+  "limitations": [
+    "No declarar ganadora una corrida fallida; energía parcial; parámetros demostrativos"
+  ]
+}

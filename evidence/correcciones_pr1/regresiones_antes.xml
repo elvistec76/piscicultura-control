@@ -1,0 +1,889 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="22" skipped="0" tests="24" time="4.443" timestamp="2026-10-15T03:12:08.673049+00:00" hostname="e16d5c53507a"><testcase classname="tests.test_pr1_revision" name="test_OBS01_zero_width_rejected_before_prepare[T]" time="0.023"><failure message="Failed: DID NOT RAISE ValueError">tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_OBS01_zero_width_rejected0')
+variable = 0
+
+    @pytest.mark.parametrize('variable',[0,1],ids=['T','C'])
+    def test_OBS01_zero_width_rejected_before_prepare(tmp_path,variable):
+        c=make_config(0,'S0','open');r=c['profile']['references'][variable]
+        c['profile']['operating_bands'][variable]=[r,r]
+        repo=SQLiteRepository(tmp_path/'invalid.sqlite');s=SimulationService(repo)
+&gt;       with pytest.raises(ValueError,match=VARIABLES[variable]+'.*operating_bands'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_pr1_revision.py:39: Failed</failure></testcase><testcase classname="tests.test_pr1_revision" name="test_OBS01_zero_width_rejected_before_prepare[C]" time="0.016"><failure message="Failed: DID NOT RAISE ValueError">tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_OBS01_zero_width_rejected1')
+variable = 1
+
+    @pytest.mark.parametrize('variable',[0,1],ids=['T','C'])
+    def test_OBS01_zero_width_rejected_before_prepare(tmp_path,variable):
+        c=make_config(0,'S0','open');r=c['profile']['references'][variable]
+        c['profile']['operating_bands'][variable]=[r,r]
+        repo=SQLiteRepository(tmp_path/'invalid.sqlite');s=SimulationService(repo)
+&gt;       with pytest.raises(ValueError,match=VARIABLES[variable]+'.*operating_bands'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_pr1_revision.py:39: Failed</failure></testcase><testcase classname="tests.test_pr1_revision" name="test_OBS01_metrics_failure_preserves_confirmed_run[generation-completion]" time="0.255"><failure message="ValueError: GENERACION_INYECTADA">tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_OBS01_metrics_failure_pre0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f58bf937ad0&gt;
+phase = 'completion', fault = 'generation'
+
+    @pytest.mark.parametrize('phase',['completion','stop','sensor_failure'])
+    @pytest.mark.parametrize('fault',['generation','nonfinite','persistence'])
+    def test_OBS01_metrics_failure_preserves_confirmed_run(tmp_path,monkeypatch,phase,fault):
+        c=make_config(0,'S0','open');c['time']['horizon_s']=3600
+        if phase=='sensor_failure':
+            c['strategy']='closed'
+            c['events']=[dict(kind='missing',target=1,start_s=60,end_s=120,magnitude=1,unit='1')]
+        repo=SQLiteRepository(tmp_path/'metrics.sqlite');s=SimulationService(repo);rid=s.prepare(c)
+        if fault=='generation':
+            def broken(*args,**kwargs): raise ValueError('GENERACION_INYECTADA')
+            monkeypatch.setattr('piscicultura.service.evaluate',broken)
+        elif fault=='nonfinite':
+            def nonfinite(*args,**kwargs): return dict(J=float('nan'))
+            monkeypatch.setattr('piscicultura.service.evaluate',nonfinite)
+        else:
+            repo.db.execute("CREATE TRIGGER metrics_failure BEFORE INSERT ON metrics BEGIN SELECT RAISE(ABORT,'PERSISTENCIA_INYECTADA'); END")
+        if phase=='stop':
+            s.advance(rid,'first',0);before=repo.get(rid);s.stop(rid)
+            expected='STOPPED'
+            assert repo.get(rid)['state']==before['state']
+        else:
+&gt;           s.run_all(rid);expected='FAILED' if phase=='sensor_failure' else 'COMPLETED'
+            ^^^^^^^^^^^^^^
+
+tests/test_pr1_revision.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/service.py:81: in run_all
+    self.advance(rid,f'interval-{r.k}',r.k);r=self.active[rid][2]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/service.py:56: in advance
+    if new.status in TERMINAL: self.compute_metrics(rid)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/service.py:86: in compute_metrics
+    result=evaluate(self.repo.get(rid),self.repo.records(rid,'samples'),self.repo.records(rid,'actuator_records'))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = ({'run_id': '8b43cc98b347417abfabb918a19b2ab3', 'config': {'acceptance': {'benchmark_median_max_s': 60, 'benchmark_rep...t_s': 0.0, 'end_s': 60.0, ...}, {'record_index': 0, 'actuator_id': 'outlet', 'start_s': 0.0, 'end_s': 60.0, ...}, ...])
+kwargs = {}
+
+&gt;   def broken(*args,**kwargs): raise ValueError('GENERACION_INYECTADA')
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: GENERACION_INYECTADA
+
+tests/test_pr1_revision.py:54: ValueError</failure></testcase><testcase classname="tests.test_pr1_revision" name="test_OBS01_metrics_failure_preserves_confirmed_run[generation-stop]" time="0.028"><failure message="ValueError: GENERACION_INYECTADA">tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_OBS01_metrics_failure_pre1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f58bf5f1880&gt;
+phase = 'stop', fault = 'generation'
+
+    @pytest.mark.parametrize('phase',['completion','stop','sensor_failure'])
+    @pytest.mark.parametrize('fault',['generation','nonfinite','persistence'])
+    def test_OBS01_metrics_failure_preserves_confirmed_run(tmp_path,monkeypatch,phase,fault):
+        c=make_config(0,'S0','open');c['time']['horizon_s']=3600
+        if phase=='sensor_failure':
+            c['strategy']='closed'
+            c['events']=[dict(kind='missing',target=1,start_s=60,end_s=120,magnitude=1,unit='1')]
+        repo=SQLiteRepository(tmp_path/'metrics.sqlite');s=SimulationService(repo);rid=s.prepare(c)
+        if fault=='generation':
+            def broken(*args,**kwargs): raise ValueError('GENERACION_INYECTADA')
+            monkeypatch.setattr('piscicultura.service.evaluate',broken)
+        elif fault=='nonfinite':
+            def nonfinite(*args,**kwargs): return dict(J=float('nan'))
+            monkeypatch.setattr('piscicultura.service.evaluate',nonfinite)
+        else:
+            repo.db.execute("CREATE TRIGGER metrics_failure BEFORE INSERT ON metrics BEGIN SELECT RAISE(ABORT,'PERSISTENCIA_INYECTADA'); END")
+        if phase=='stop':
+&gt;           s.advance(rid,'first',0);before=repo.get(rid);s.stop(rid)
+                                                          ^^^^^^^^^^^
+
+tests/test_pr1_revision.py:62: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/service.py:75: in stop
+    self.repo.set_status(rid,'STOPPED','DETENCION_SOLICITADA');r.status='STOPPED';r.cause='DETENCION_SOLICITADA';self.compute_metrics(rid)
+                                                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/service.py:86: in compute_metrics
+    result=evaluate(self.repo.get(rid),self.repo.records(rid,'samples'),self.repo.records(rid,'actuator_records'))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = ({'run_id': 'd88e96ad1dd6443db84dae843cc67731', 'config': {'acceptance': {'benchmark_median_max_s': 60, 'benchmark_rep...t_s': 0.0, 'end_s': 60.0, ...}, {'record_index': 0, 'actuator_id': 'outlet', 'start_s': 0.0, 'end_s': 60.0, ...}, ...])
+kwargs = {}
+
+&gt;   def broken(*args,**kwargs): raise ValueError('GENERACION_INYECTADA')
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: GENERACION_INYECTADA
+
+tests/test_pr1_revision.py:54: ValueError</failure></testcase><testcase classname="tests.test_pr1_revision" name="test_OBS01_metrics_failure_preserves_confirmed_run[generation-sensor_failure]" time="0.022"><failure message="ValueError: GENERACION_INYECTADA">tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_OBS01_metrics_failure_pre2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f58bf792c00&gt;
+phase = 'sensor_failure', fault = 'generation'
+
+    @pytest.mark.parametrize('phase',['completion','stop','sensor_failure'])
+    @pytest.mark.parametrize('fault',['generation','nonfinite','persistence'])
+    def test_OBS01_metrics_failure_preserves_confirmed_run(tmp_path,monkeypatch,phase,fault):
+        c=make_config(0,'S0','open');c['time']['horizon_s']=3600
+        if phase=='sensor_failure':
+            c['strategy']='closed'
+            c['events']=[dict(kind='missing',target=1,start_s=60,end_s=120,magnitude=1,unit='1')]
+        repo=SQLiteRepository(tmp_path/'metrics.sqlite');s=SimulationService(repo);rid=s.prepare(c)
+        if fault=='generation':
+            def broken(*args,**kwargs): raise ValueError('GENERACION_INYECTADA')
+            monkeypatch.setattr('piscicultura.service.evaluate',broken)
+        elif fault=='nonfinite':
+            def nonfinite(*args,**kwargs): return dict(J=float('nan'))
+            monkeypatch.setattr('piscicultura.service.evaluate',nonfinite)
+        else:
+            repo.db.execute("CREATE TRIGGER metrics_failure BEFORE INSERT ON metrics BEGIN SELECT RAISE(ABORT,'PERSISTENCIA_INYECTADA'); END")
+        if phase=='stop':
+            s.advance(rid,'first',0);before=repo.get(rid);s.stop(rid)
+            expected='STOPPED'
+            assert repo.get(rid)['state']==before['state']
+        else:
+&gt;           s.run_all(rid);expected='FAILED' if phase=='sensor_failure' else 'COMPLETED'
+            ^^^^^^^^^^^^^^
+
+tests/test_pr1_revision.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/service.py:81: in run_all
+    self.advance(rid,f'interval-{r.k}',r.k);r=self.active[rid][2]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/service.py:56: in advance
+    if new.status in TERMINAL: self.compute_metrics(rid)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/service.py:86: in compute_metrics
+    result=evaluate(self.repo.get(rid),self.repo.records(rid,'samples'),self.repo.records(rid,'actuator_records'))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = ({'run_id': '4ed5abeb21ba44ab99e2116384890229', 'config': {'acceptance': {'benchmark_median_max_s': 60, 'benchmark_rep...t_s': 0.0, 'end_s': 60.0, ...}, {'record_index': 0, 'actuator_id': 'outlet', 'start_s': 0.0, 'end_s': 60.0, ...}, ...])
+kwargs = {}
+
+&gt;   def broken(*args,**kwargs): raise ValueError('GENERACION_INYECTADA')
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: GENERACION_INYECTADA
+
+tests/test_pr1_revision.py:54: ValueError</failure></testcase><testcase classname="tests.test_pr1_revision" name="test_OBS01_metrics_failure_preserves_confirmed_run[nonfinite-completion]" time="0.250"><failure message="ValueError: Out of range float values are not JSON compliant: nan">tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_OBS01_metrics_failure_pre3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f58bf819be0&gt;
+phase = 'completion', fault = 'nonfinite'
+
+    @pytest.mark.parametrize('phase',['completion','stop','sensor_failure'])
+    @pytest.mark.parametrize('fault',['generation','nonfinite','persistence'])
+    def test_OBS01_metrics_failure_preserves_confirmed_run(tmp_path,monkeypatch,phase,fault):
+        c=make_config(0,'S0','open');c['time']['horizon_s']=3600
+        if phase=='sensor_failure':
+            c['strategy']='closed'
+            c['events']=[dict(kind='missing',target=1,start_s=60,end_s=120,magnitude=1,unit='1')]
+        repo=SQLiteRepository(tmp_path/'metrics.sqlite');s=SimulationService(repo);rid=s.prepare(c)
+        if fault=='generation':
+            def broken(*args,**kwargs): raise ValueError('GENERACION_INYECTADA')
+            monkeypatch.setattr('piscicultura.service.evaluate',broken)
+        elif fault=='nonfinite':
+            def nonfinite(*args,**kwargs): return dict(J=float('nan'))
+            monkeypatch.setattr('piscicultura.service.evaluate',nonfinite)
+        else:
+            repo.db.execute("CREATE TRIGGER metrics_failure BEFORE INSERT ON metrics BEGIN SELECT RAISE(ABORT,'PERSISTENCIA_INYECTADA'); END")
+        if phase=='stop':
+            s.advance(rid,'first',0);before=repo.get(rid);s.stop(rid)
+            expected='STOPPED'
+            assert repo.get(rid)['state']==before['state']
+        else:
+&gt;           s.run_all(rid);expected='FAILED' if phase=='sensor_failure' else 'COMPLETED'
+            ^^^^^^^^^^^^^^
+
+tests/test_pr1_revision.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/service.py:81: in run_all
+    self.advance(rid,f'interval-{r.k}',r.k);r=self.active[rid][2]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/service.py:56: in advance
+    if new.status in TERMINAL: self.compute_metrics(rid)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/service.py:87: in compute_metrics
+    self.repo.save_metrics(rid,result)
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/repository.py:128: in save_metrics
+    with self.db: self.db.execute('INSERT OR REPLACE INTO metrics VALUES (?,?,?)',(rid,'summary',dumps(payload)))
+                                                                                                 ^^^^^^^^^^^^^^
+piscicultura/repository.py:13: in dumps
+    def dumps(obj): return json.dumps(obj,ensure_ascii=False,allow_nan=False,separators=(',',':'))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;json.encoder.JSONEncoder object at 0x7f58bf81da60&gt;, o = {'J': nan}
+_one_shot = True
+
+    def iterencode(self, o, _one_shot=False):
+        """Encode the given object and yield each string
+        representation as available.
+    
+        For example::
+    
+            for chunk in JSONEncoder().iterencode(bigobject):
+                mysocket.write(chunk)
+    
+        """
+        if self.check_circular:
+            markers = {}
+        else:
+            markers = None
+        if self.ensure_ascii:
+            _encoder = encode_basestring_ascii
+        else:
+            _encoder = encode_basestring
+    
+        def floatstr(o, allow_nan=self.allow_nan,
+                _repr=float.__repr__, _inf=INFINITY, _neginf=-INFINITY):
+            # Check for specials.  Note that this type of test is processor
+            # and/or platform-specific, so do tests which don't depend on the
+            # internals.
+    
+            if o != o:
+                text = 'NaN'
+            elif o == _inf:
+                text = 'Infinity'
+            elif o == _neginf:
+                text = '-Infinity'
+            else:
+                return _repr(o)
+    
+            if not allow_nan:
+                raise ValueError(
+                    "Out of range float values are not JSON compliant: " +
+                    repr(o))
+    
+            return text
+    
+    
+        if (_one_shot and c_make_encoder is not None
+                and self.indent is None):
+            _iterencode = c_make_encoder(
+                markers, self.default, _encoder, self.indent,
+                self.key_separator, self.item_separator, self.sort_keys,
+                self.skipkeys, self.allow_nan)
+        else:
+            _iterencode = _make_iterencode(
+                markers, self.default, _encoder, self.indent, floatstr,
+                self.key_separator, self.item_separator, self.sort_keys,
+                self.skipkeys, _one_shot)
+&gt;       return _iterencode(o, 0)
+               ^^^^^^^^^^^^^^^^^
+E       ValueError: Out of range float values are not JSON compliant: nan
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/encoder.py:258: ValueError</failure></testcase><testcase classname="tests.test_pr1_revision" name="test_OBS01_metrics_failure_preserves_confirmed_run[nonfinite-stop]" time="0.021"><failure message="ValueError: Out of range float values are not JSON compliant: nan">tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_OBS01_metrics_failure_pre4')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f58bf790d70&gt;
+phase = 'stop', fault = 'nonfinite'
+
+    @pytest.mark.parametrize('phase',['completion','stop','sensor_failure'])
+    @pytest.mark.parametrize('fault',['generation','nonfinite','persistence'])
+    def test_OBS01_metrics_failure_preserves_confirmed_run(tmp_path,monkeypatch,phase,fault):
+        c=make_config(0,'S0','open');c['time']['horizon_s']=3600
+        if phase=='sensor_failure':
+            c['strategy']='closed'
+            c['events']=[dict(kind='missing',target=1,start_s=60,end_s=120,magnitude=1,unit='1')]
+        repo=SQLiteRepository(tmp_path/'metrics.sqlite');s=SimulationService(repo);rid=s.prepare(c)
+        if fault=='generation':
+            def broken(*args,**kwargs): raise ValueError('GENERACION_INYECTADA')
+            monkeypatch.setattr('piscicultura.service.evaluate',broken)
+        elif fault=='nonfinite':
+            def nonfinite(*args,**kwargs): return dict(J=float('nan'))
+            monkeypatch.setattr('piscicultura.service.evaluate',nonfinite)
+        else:
+            repo.db.execute("CREATE TRIGGER metrics_failure BEFORE INSERT ON metrics BEGIN SELECT RAISE(ABORT,'PERSISTENCIA_INYECTADA'); END")
+        if phase=='stop':
+&gt;           s.advance(rid,'first',0);before=repo.get(rid);s.stop(rid)
+                                                          ^^^^^^^^^^^
+
+tests/test_pr1_revision.py:62: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/service.py:75: in stop
+    self.repo.set_status(rid,'STOPPED','DETENCION_SOLICITADA');r.status='STOPPED';r.cause='DETENCION_SOLICITADA';self.compute_metrics(rid)
+                                                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/service.py:87: in compute_metrics
+    self.repo.save_metrics(rid,result)
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/repository.py:128: in save_metrics
+    with self.db: self.db.execute('INSERT OR REPLACE INTO metrics VALUES (?,?,?)',(rid,'summary',dumps(payload)))
+                                                                                                 ^^^^^^^^^^^^^^
+piscicultura/repository.py:13: in dumps
+    def dumps(obj): return json.dumps(obj,ensure_ascii=False,allow_nan=False,separators=(',',':'))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;json.encoder.JSONEncoder object at 0x7f58bf792810&gt;, o = {'J': nan}
+_one_shot = True
+
+    def iterencode(self, o, _one_shot=False):
+        """Encode the given object and yield each string
+        representation as available.
+    
+        For example::
+    
+            for chunk in JSONEncoder().iterencode(bigobject):
+                mysocket.write(chunk)
+    
+        """
+        if self.check_circular:
+            markers = {}
+        else:
+            markers = None
+        if self.ensure_ascii:
+            _encoder = encode_basestring_ascii
+        else:
+            _encoder = encode_basestring
+    
+        def floatstr(o, allow_nan=self.allow_nan,
+                _repr=float.__repr__, _inf=INFINITY, _neginf=-INFINITY):
+            # Check for specials.  Note that this type of test is processor
+            # and/or platform-specific, so do tests which don't depend on the
+            # internals.
+    
+            if o != o:
+                text = 'NaN'
+            elif o == _inf:
+                text = 'Infinity'
+            elif o == _neginf:
+                text = '-Infinity'
+            else:
+                return _repr(o)
+    
+            if not allow_nan:
+                raise ValueError(
+                    "Out of range float values are not JSON compliant: " +
+                    repr(o))
+    
+            return text
+    
+    
+        if (_one_shot and c_make_encoder is not None
+                and self.indent is None):
+            _iterencode = c_make_encoder(
+                markers, self.default, _encoder, self.indent,
+                self.key_separator, self.item_separator, self.sort_keys,
+                self.skipkeys, self.allow_nan)
+        else:
+            _iterencode = _make_iterencode(
+                markers, self.default, _encoder, self.indent, floatstr,
+                self.key_separator, self.item_separator, self.sort_keys,
+                self.skipkeys, _one_shot)
+&gt;       return _iterencode(o, 0)
+               ^^^^^^^^^^^^^^^^^
+E       ValueError: Out of range float values are not JSON compliant: nan
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/encoder.py:258: ValueError</failure></testcase><testcase classname="tests.test_pr1_revision" name="test_OBS01_metrics_failure_preserves_confirmed_run[nonfinite-sensor_failure]" time="0.018"><failure message="ValueError: Out of range float values are not JSON compliant: nan">tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_OBS01_metrics_failure_pre5')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f58bf81c4a0&gt;
+phase = 'sensor_failure', fault = 'nonfinite'
+
+    @pytest.mark.parametrize('phase',['completion','stop','sensor_failure'])
+    @pytest.mark.parametrize('fault',['generation','nonfinite','persistence'])
+    def test_OBS01_metrics_failure_preserves_confirmed_run(tmp_path,monkeypatch,phase,fault):
+        c=make_config(0,'S0','open');c['time']['horizon_s']=3600
+        if phase=='sensor_failure':
+            c['strategy']='closed'
+            c['events']=[dict(kind='missing',target=1,start_s=60,end_s=120,magnitude=1,unit='1')]
+        repo=SQLiteRepository(tmp_path/'metrics.sqlite');s=SimulationService(repo);rid=s.prepare(c)
+        if fault=='generation':
+            def broken(*args,**kwargs): raise ValueError('GENERACION_INYECTADA')
+            monkeypatch.setattr('piscicultura.service.evaluate',broken)
+        elif fault=='nonfinite':
+            def nonfinite(*args,**kwargs): return dict(J=float('nan'))
+            monkeypatch.setattr('piscicultura.service.evaluate',nonfinite)
+        else:
+            repo.db.execute("CREATE TRIGGER metrics_failure BEFORE INSERT ON metrics BEGIN SELECT RAISE(ABORT,'PERSISTENCIA_INYECTADA'); END")
+        if phase=='stop':
+            s.advance(rid,'first',0);before=repo.get(rid);s.stop(rid)
+            expected='STOPPED'
+            assert repo.get(rid)['state']==before['state']
+        else:
+&gt;           s.run_all(rid);expected='FAILED' if phase=='sensor_failure' else 'COMPLETED'
+            ^^^^^^^^^^^^^^
+
+tests/test_pr1_revision.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/service.py:81: in run_all
+    self.advance(rid,f'interval-{r.k}',r.k);r=self.active[rid][2]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/service.py:56: in advance
+    if new.status in TERMINAL: self.compute_metrics(rid)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/service.py:87: in compute_metrics
+    self.repo.save_metrics(rid,result)
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/repository.py:128: in save_metrics
+    with self.db: self.db.execute('INSERT OR REPLACE INTO metrics VALUES (?,?,?)',(rid,'summary',dumps(payload)))
+                                                                                                 ^^^^^^^^^^^^^^
+piscicultura/repository.py:13: in dumps
+    def dumps(obj): return json.dumps(obj,ensure_ascii=False,allow_nan=False,separators=(',',':'))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/__init__.py:238: in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/encoder.py:200: in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;json.encoder.JSONEncoder object at 0x7f58bf81fd70&gt;, o = {'J': nan}
+_one_shot = True
+
+    def iterencode(self, o, _one_shot=False):
+        """Encode the given object and yield each string
+        representation as available.
+    
+        For example::
+    
+            for chunk in JSONEncoder().iterencode(bigobject):
+                mysocket.write(chunk)
+    
+        """
+        if self.check_circular:
+            markers = {}
+        else:
+            markers = None
+        if self.ensure_ascii:
+            _encoder = encode_basestring_ascii
+        else:
+            _encoder = encode_basestring
+    
+        def floatstr(o, allow_nan=self.allow_nan,
+                _repr=float.__repr__, _inf=INFINITY, _neginf=-INFINITY):
+            # Check for specials.  Note that this type of test is processor
+            # and/or platform-specific, so do tests which don't depend on the
+            # internals.
+    
+            if o != o:
+                text = 'NaN'
+            elif o == _inf:
+                text = 'Infinity'
+            elif o == _neginf:
+                text = '-Infinity'
+            else:
+                return _repr(o)
+    
+            if not allow_nan:
+                raise ValueError(
+                    "Out of range float values are not JSON compliant: " +
+                    repr(o))
+    
+            return text
+    
+    
+        if (_one_shot and c_make_encoder is not None
+                and self.indent is None):
+            _iterencode = c_make_encoder(
+                markers, self.default, _encoder, self.indent,
+                self.key_separator, self.item_separator, self.sort_keys,
+                self.skipkeys, self.allow_nan)
+        else:
+            _iterencode = _make_iterencode(
+                markers, self.default, _encoder, self.indent, floatstr,
+                self.key_separator, self.item_separator, self.sort_keys,
+                self.skipkeys, _one_shot)
+&gt;       return _iterencode(o, 0)
+               ^^^^^^^^^^^^^^^^^
+E       ValueError: Out of range float values are not JSON compliant: nan
+
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/json/encoder.py:258: ValueError</failure></testcase><testcase classname="tests.test_pr1_revision" name="test_OBS01_metrics_failure_preserves_confirmed_run[persistence-completion]" time="0.222"><failure message="sqlite3.IntegrityError: PERSISTENCIA_INYECTADA">tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_OBS01_metrics_failure_pre6')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f58bf81dd00&gt;
+phase = 'completion', fault = 'persistence'
+
+    @pytest.mark.parametrize('phase',['completion','stop','sensor_failure'])
+    @pytest.mark.parametrize('fault',['generation','nonfinite','persistence'])
+    def test_OBS01_metrics_failure_preserves_confirmed_run(tmp_path,monkeypatch,phase,fault):
+        c=make_config(0,'S0','open');c['time']['horizon_s']=3600
+        if phase=='sensor_failure':
+            c['strategy']='closed'
+            c['events']=[dict(kind='missing',target=1,start_s=60,end_s=120,magnitude=1,unit='1')]
+        repo=SQLiteRepository(tmp_path/'metrics.sqlite');s=SimulationService(repo);rid=s.prepare(c)
+        if fault=='generation':
+            def broken(*args,**kwargs): raise ValueError('GENERACION_INYECTADA')
+            monkeypatch.setattr('piscicultura.service.evaluate',broken)
+        elif fault=='nonfinite':
+            def nonfinite(*args,**kwargs): return dict(J=float('nan'))
+            monkeypatch.setattr('piscicultura.service.evaluate',nonfinite)
+        else:
+            repo.db.execute("CREATE TRIGGER metrics_failure BEFORE INSERT ON metrics BEGIN SELECT RAISE(ABORT,'PERSISTENCIA_INYECTADA'); END")
+        if phase=='stop':
+            s.advance(rid,'first',0);before=repo.get(rid);s.stop(rid)
+            expected='STOPPED'
+            assert repo.get(rid)['state']==before['state']
+        else:
+&gt;           s.run_all(rid);expected='FAILED' if phase=='sensor_failure' else 'COMPLETED'
+            ^^^^^^^^^^^^^^
+
+tests/test_pr1_revision.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/service.py:81: in run_all
+    self.advance(rid,f'interval-{r.k}',r.k);r=self.active[rid][2]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/service.py:56: in advance
+    if new.status in TERMINAL: self.compute_metrics(rid)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/service.py:87: in compute_metrics
+    self.repo.save_metrics(rid,result)
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;piscicultura.repository.SQLiteRepository object at 0x7f58bf81d5b0&gt;
+rid = '1fa018a9a91248f19437d02cc97a7fb7'
+payload = {'formula_version': 'M-AGUA-DEMO-1/section14-v1', 'origin': 'x', 'variables': ['temperature_C', 'oxygen_mg_L', 'ph', 'turbidity_NTU', 'level_m'], 'units': ['°C', 'mg/L', '1', 'NTU', 'm'], ...}
+
+    @serialized
+    def save_metrics(self,rid,payload):
+&gt;       with self.db: self.db.execute('INSERT OR REPLACE INTO metrics VALUES (?,?,?)',(rid,'summary',dumps(payload)))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       sqlite3.IntegrityError: PERSISTENCIA_INYECTADA
+
+piscicultura/repository.py:128: IntegrityError</failure></testcase><testcase classname="tests.test_pr1_revision" name="test_OBS01_metrics_failure_preserves_confirmed_run[persistence-stop]" time="0.021"><failure message="sqlite3.IntegrityError: PERSISTENCIA_INYECTADA">tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_OBS01_metrics_failure_pre7')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f58bf7f2ff0&gt;
+phase = 'stop', fault = 'persistence'
+
+    @pytest.mark.parametrize('phase',['completion','stop','sensor_failure'])
+    @pytest.mark.parametrize('fault',['generation','nonfinite','persistence'])
+    def test_OBS01_metrics_failure_preserves_confirmed_run(tmp_path,monkeypatch,phase,fault):
+        c=make_config(0,'S0','open');c['time']['horizon_s']=3600
+        if phase=='sensor_failure':
+            c['strategy']='closed'
+            c['events']=[dict(kind='missing',target=1,start_s=60,end_s=120,magnitude=1,unit='1')]
+        repo=SQLiteRepository(tmp_path/'metrics.sqlite');s=SimulationService(repo);rid=s.prepare(c)
+        if fault=='generation':
+            def broken(*args,**kwargs): raise ValueError('GENERACION_INYECTADA')
+            monkeypatch.setattr('piscicultura.service.evaluate',broken)
+        elif fault=='nonfinite':
+            def nonfinite(*args,**kwargs): return dict(J=float('nan'))
+            monkeypatch.setattr('piscicultura.service.evaluate',nonfinite)
+        else:
+            repo.db.execute("CREATE TRIGGER metrics_failure BEFORE INSERT ON metrics BEGIN SELECT RAISE(ABORT,'PERSISTENCIA_INYECTADA'); END")
+        if phase=='stop':
+&gt;           s.advance(rid,'first',0);before=repo.get(rid);s.stop(rid)
+                                                          ^^^^^^^^^^^
+
+tests/test_pr1_revision.py:62: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/service.py:75: in stop
+    self.repo.set_status(rid,'STOPPED','DETENCION_SOLICITADA');r.status='STOPPED';r.cause='DETENCION_SOLICITADA';self.compute_metrics(rid)
+                                                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/service.py:87: in compute_metrics
+    self.repo.save_metrics(rid,result)
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;piscicultura.repository.SQLiteRepository object at 0x7f58bf7f1c40&gt;
+rid = 'aa95bc361c584a01ae3591ed7d1f854c'
+payload = {'formula_version': 'M-AGUA-DEMO-1/section14-v1', 'origin': 'x', 'variables': ['temperature_C', 'oxygen_mg_L', 'ph', 'turbidity_NTU', 'level_m'], 'units': ['°C', 'mg/L', '1', 'NTU', 'm'], ...}
+
+    @serialized
+    def save_metrics(self,rid,payload):
+&gt;       with self.db: self.db.execute('INSERT OR REPLACE INTO metrics VALUES (?,?,?)',(rid,'summary',dumps(payload)))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       sqlite3.IntegrityError: PERSISTENCIA_INYECTADA
+
+piscicultura/repository.py:128: IntegrityError</failure></testcase><testcase classname="tests.test_pr1_revision" name="test_OBS01_metrics_failure_preserves_confirmed_run[persistence-sensor_failure]" time="0.021"><failure message="sqlite3.IntegrityError: PERSISTENCIA_INYECTADA">tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_OBS01_metrics_failure_pre8')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f58bf7f1b50&gt;
+phase = 'sensor_failure', fault = 'persistence'
+
+    @pytest.mark.parametrize('phase',['completion','stop','sensor_failure'])
+    @pytest.mark.parametrize('fault',['generation','nonfinite','persistence'])
+    def test_OBS01_metrics_failure_preserves_confirmed_run(tmp_path,monkeypatch,phase,fault):
+        c=make_config(0,'S0','open');c['time']['horizon_s']=3600
+        if phase=='sensor_failure':
+            c['strategy']='closed'
+            c['events']=[dict(kind='missing',target=1,start_s=60,end_s=120,magnitude=1,unit='1')]
+        repo=SQLiteRepository(tmp_path/'metrics.sqlite');s=SimulationService(repo);rid=s.prepare(c)
+        if fault=='generation':
+            def broken(*args,**kwargs): raise ValueError('GENERACION_INYECTADA')
+            monkeypatch.setattr('piscicultura.service.evaluate',broken)
+        elif fault=='nonfinite':
+            def nonfinite(*args,**kwargs): return dict(J=float('nan'))
+            monkeypatch.setattr('piscicultura.service.evaluate',nonfinite)
+        else:
+            repo.db.execute("CREATE TRIGGER metrics_failure BEFORE INSERT ON metrics BEGIN SELECT RAISE(ABORT,'PERSISTENCIA_INYECTADA'); END")
+        if phase=='stop':
+            s.advance(rid,'first',0);before=repo.get(rid);s.stop(rid)
+            expected='STOPPED'
+            assert repo.get(rid)['state']==before['state']
+        else:
+&gt;           s.run_all(rid);expected='FAILED' if phase=='sensor_failure' else 'COMPLETED'
+            ^^^^^^^^^^^^^^
+
+tests/test_pr1_revision.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/service.py:81: in run_all
+    self.advance(rid,f'interval-{r.k}',r.k);r=self.active[rid][2]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/service.py:56: in advance
+    if new.status in TERMINAL: self.compute_metrics(rid)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/service.py:87: in compute_metrics
+    self.repo.save_metrics(rid,result)
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = &lt;piscicultura.repository.SQLiteRepository object at 0x7f58bf7f2630&gt;
+rid = 'd719788f02174510954edb3d19f91e45'
+payload = {'formula_version': 'M-AGUA-DEMO-1/section14-v1', 'origin': 'x', 'variables': ['temperature_C', 'oxygen_mg_L', 'ph', 'turbidity_NTU', 'level_m'], 'units': ['°C', 'mg/L', '1', 'NTU', 'm'], ...}
+
+    @serialized
+    def save_metrics(self,rid,payload):
+&gt;       with self.db: self.db.execute('INSERT OR REPLACE INTO metrics VALUES (?,?,?)',(rid,'summary',dumps(payload)))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       sqlite3.IntegrityError: PERSISTENCIA_INYECTADA
+
+piscicultura/repository.py:128: IntegrityError</failure></testcase><testcase classname="tests.test_pr1_revision" name="test_OBS01_metrics_retry_preserves_old_result_and_recovers" time="0.022"><failure message="ValueError: RECALCULO_INYECTADO">tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_OBS01_metrics_retry_prese0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f58bf5d1d90&gt;
+
+    def test_OBS01_metrics_retry_preserves_old_result_and_recovers(tmp_path,monkeypatch):
+        repo=SQLiteRepository(tmp_path/'retry.sqlite');s=SimulationService(repo)
+        c=make_config(0,'S0','open');rid=s.prepare(c);s.advance(rid,'a',0);s.stop(rid)
+        before=repo.records(rid,'metrics');state=repo.get(rid)['state']
+        with monkeypatch.context() as m:
+            def broken(*args,**kwargs): raise ValueError('RECALCULO_INYECTADO')
+            m.setattr('piscicultura.service.evaluate',broken)
+&gt;           assert s.compute_metrics(rid) is None
+                   ^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_pr1_revision.py:92: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+piscicultura/repository.py:33: in wrapped
+    with self.lock: return method(self,*args,**kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+piscicultura/service.py:86: in compute_metrics
+    result=evaluate(self.repo.get(rid),self.repo.records(rid,'samples'),self.repo.records(rid,'actuator_records'))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = ({'run_id': 'ccbafaf2497445c6a92df0da0beaf776', 'config': {'acceptance': {'benchmark_median_max_s': 60, 'benchmark_rep...t_s': 0.0, 'end_s': 60.0, ...}, {'record_index': 0, 'actuator_id': 'outlet', 'start_s': 0.0, 'end_s': 60.0, ...}, ...])
+kwargs = {}
+
+&gt;   def broken(*args,**kwargs): raise ValueError('RECALCULO_INYECTADO')
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ValueError: RECALCULO_INYECTADO
+
+tests/test_pr1_revision.py:90: ValueError</failure></testcase><testcase classname="tests.test_pr1_revision" name="test_OBS02_turbidity_x_y_identity[below_lower]" time="0.003"><failure message="assert 1800.0 == 0.0">value = 2.0, expected_out = 0.0, expected_recovery = 0.0
+
+    @pytest.mark.parametrize('value,expected_out,expected_recovery',[(2.,0.,0.),(25.,1800.,None)],ids=['below_lower','above_upper'])
+    def test_OBS02_turbidity_x_y_identity(value,expected_out,expected_recovery):
+        c=make_config(0,'S0','open');c['profile']['operating_bands'][3]=[5,20];RunConfig.freeze(c)
+        m=evaluate_samples(c,synthetic(c,[0,1800],3,value))
+        for result,j in [(m['x'],3),(m['y']['per_variable'][3],0)]:
+&gt;           assert result['outside_s'][j]==expected_out
+E           assert 1800.0 == 0.0
+
+tests/test_pr1_revision.py:105: AssertionError</failure></testcase><testcase classname="tests.test_pr1_revision" name="test_OBS02_turbidity_x_y_identity[above_upper]" time="0.002" /><testcase classname="tests.test_pr1_revision" name="test_OBS02_missing_turbidity_keeps_coverage_and_no_integral" time="0.001" /><testcase classname="tests.test_pr1_revision" name="test_OBS02_turbidity_in_window_and_common_comparison" time="0.003"><failure message="assert 230040.0 == (8 * 28800)">def test_OBS02_turbidity_in_window_and_common_comparison():
+        c=make_config(0,'S2','closed');c['profile']['operating_bands'][3]=[5,20]
+        samples=synthetic(c,range(0,43201,135),3,2.)
+        full=evaluate_samples(c,samples);common=evaluate_samples(c,samples,end_s=43200)
+        for m in [full,common]:
+            assert m['x']['outside_s'][3]==m['window_4_12h']['outside_s'][3]==0
+            assert m['window_4_12h']['in_band_fraction'][3]==1
+&gt;           assert m['window_4_12h']['iae'][3]==8*28800
+E           assert 230040.0 == (8 * 28800)
+
+tests/test_pr1_revision.py:126: AssertionError</failure></testcase><testcase classname="tests.test_pr1_revision" name="test_OBS03_exact_window_left_interval[aligned]" time="0.005"><failure message="KeyError: 'interval_s'">dt = 60
+
+    @pytest.mark.parametrize('dt',[60,135],ids=['aligned','unaligned'])
+    def test_OBS03_exact_window_left_interval(dt):
+        c=make_config(0,'S2','closed');c['time']['control_interval_s']=dt;RunConfig.freeze(c)
+        samples=synthetic(c,range(0,43201,dt))
+        target=14310 if dt==135 else 14340
+        next(s for s in samples if s['time_s']==target)['x'][0]=32.
+        m=evaluate_samples(c,samples);w=m['window_4_12h']
+&gt;       assert w['duration_s']==28800 and w['interval_s']==[14400,43200]
+                                          ^^^^^^^^^^^^^^^
+E       KeyError: 'interval_s'
+
+tests/test_pr1_revision.py:136: KeyError</failure></testcase><testcase classname="tests.test_pr1_revision" name="test_OBS03_exact_window_left_interval[unaligned]" time="0.009"><failure message="assert (28755.0 == 28800)">dt = 135
+
+    @pytest.mark.parametrize('dt',[60,135],ids=['aligned','unaligned'])
+    def test_OBS03_exact_window_left_interval(dt):
+        c=make_config(0,'S2','closed');c['time']['control_interval_s']=dt;RunConfig.freeze(c)
+        samples=synthetic(c,range(0,43201,dt))
+        target=14310 if dt==135 else 14340
+        next(s for s in samples if s['time_s']==target)['x'][0]=32.
+        m=evaluate_samples(c,samples);w=m['window_4_12h']
+&gt;       assert w['duration_s']==28800 and w['interval_s']==[14400,43200]
+E       assert (28755.0 == 28800)
+
+tests/test_pr1_revision.py:136: AssertionError</failure></testcase><testcase classname="tests.test_pr1_revision" name="test_OBS03_window_near_95_percent[10-0.9515625]" time="0.004"><failure message="assert (28755.0 == 28800)">outside_count = 10, expected_fraction = 0.9515625
+
+    @pytest.mark.parametrize('outside_count,expected_fraction',[(10,.9515625),(11,.946875)])
+    def test_OBS03_window_near_95_percent(outside_count,expected_fraction):
+        c=make_config(0,'S2','closed');c['time']['control_interval_s']=135
+        samples=synthetic(c,range(0,43201,135));samples[106]['x'][0]=32.  # t=14310: 45 s en ventana
+        for sample in samples[107:107+outside_count]: sample['x'][0]=32.
+        w=evaluate_samples(c,samples)['window_4_12h']
+&gt;       assert w['duration_s']==28800 and w['in_band_fraction'][0]==pytest.approx(expected_fraction,abs=1e-12)
+E       assert (28755.0 == 28800)
+
+tests/test_pr1_revision.py:149: AssertionError</failure></testcase><testcase classname="tests.test_pr1_revision" name="test_OBS03_window_near_95_percent[11-0.946875]" time="0.009"><failure message="assert (28755.0 == 28800)">outside_count = 11, expected_fraction = 0.946875
+
+    @pytest.mark.parametrize('outside_count,expected_fraction',[(10,.9515625),(11,.946875)])
+    def test_OBS03_window_near_95_percent(outside_count,expected_fraction):
+        c=make_config(0,'S2','closed');c['time']['control_interval_s']=135
+        samples=synthetic(c,range(0,43201,135));samples[106]['x'][0]=32.  # t=14310: 45 s en ventana
+        for sample in samples[107:107+outside_count]: sample['x'][0]=32.
+        w=evaluate_samples(c,samples)['window_4_12h']
+&gt;       assert w['duration_s']==28800 and w['in_band_fraction'][0]==pytest.approx(expected_fraction,abs=1e-12)
+E       assert (28755.0 == 28800)
+
+tests/test_pr1_revision.py:149: AssertionError</failure></testcase><testcase classname="tests.test_pr1_revision" name="test_OBS03_both_window_boundaries_and_iae" time="0.003"><failure message="TypeError: series_metrics() got an unexpected keyword argument 'window'">def test_OBS03_both_window_boundaries_and_iae():
+        from piscicultura.metrics import series_metrics
+&gt;       w=series_metrics([0,10,20],[[0],[2],[0]],[0],[[-1,1]],window=(5,15))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: series_metrics() got an unexpected keyword argument 'window'
+
+tests/test_pr1_revision.py:155: TypeError</failure></testcase><testcase classname="tests.test_pr1_revision" name="test_OBS01_ui_metrics_failure_is_visible[generation]" time="1.466"><failure message="assert False&#10; +  where False = any(&lt;generator object test_OBS01_ui_metrics_failure_is_visible.&lt;locals&gt;.&lt;genexpr&gt; at 0x7f58c0d93100&gt;)">tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_OBS01_ui_metrics_failure_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f58bf733500&gt;
+fault = 'generation'
+
+    @pytest.mark.parametrize('fault',['generation','persistence'])
+    def test_OBS01_ui_metrics_failure_is_visible(tmp_path,monkeypatch,fault):
+        monkeypatch.setenv('PISCICULTURA_DB',str(tmp_path/'ui.sqlite'))
+        at=AppTest.from_file(str(Path(__file__).resolve().parents[1]/'app.py'),default_timeout=30).run()
+        by_label(at.selectbox,'Escenario').select('S0').run()
+        by_label(at.button,'Validar y preparar corrida').click().run()
+        by_label(at.button,'Avanzar un intervalo').click().run()
+        service=at.session_state['service'];rid=at.session_state['run_id']
+        if fault=='generation':
+            def broken(*args,**kwargs): raise ValueError('UI_GENERACION_INYECTADA')
+            monkeypatch.setattr('piscicultura.service.evaluate',broken)
+        else:
+            service.repo.db.execute("CREATE TRIGGER metrics_failure BEFORE INSERT ON metrics BEGIN SELECT RAISE(ABORT,'UI_PERSISTENCIA_INYECTADA'); END")
+        by_label(at.button,'Detener').click().run()
+        assert not at.exception
+        assert service.repo.get(rid)['status']=='STOPPED'
+&gt;       assert any('Métricas no disponibles' in e.value for e in at.error)
+E       assert False
+E        +  where False = any(&lt;generator object test_OBS01_ui_metrics_failure_is_visible.&lt;locals&gt;.&lt;genexpr&gt; at 0x7f58c0d93100&gt;)
+
+tests/test_pr1_revision.py:177: AssertionError</failure></testcase><testcase classname="tests.test_pr1_revision" name="test_OBS01_ui_metrics_failure_is_visible[persistence]" time="0.534"><failure message="assert not ElementList(_list=[Exception(message='UI_PERSISTENCIA_INYECTADA', stack_trace=['File &quot;/workspace/piscicultura-control/...n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^'])])&#10; +  where ElementList(_list=[Exception(message='UI_PERSISTENCIA_INYECTADA', stack_trace=['File &quot;/workspace/piscicultura-control/...n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^'])]) = AppTest(\n    _script_path='/workspace/piscicultura-control/app.py',\n    default_timeout=30,\n    _session_state={$$ID-0...SpecialBlock(\n            type='sidebar'\n        ),\n        2: SpecialBlock(\n            type='event'\n        )\n    }\n).exception">tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_OBS01_ui_metrics_failure_1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f58aeaf6cc0&gt;
+fault = 'persistence'
+
+    @pytest.mark.parametrize('fault',['generation','persistence'])
+    def test_OBS01_ui_metrics_failure_is_visible(tmp_path,monkeypatch,fault):
+        monkeypatch.setenv('PISCICULTURA_DB',str(tmp_path/'ui.sqlite'))
+        at=AppTest.from_file(str(Path(__file__).resolve().parents[1]/'app.py'),default_timeout=30).run()
+        by_label(at.selectbox,'Escenario').select('S0').run()
+        by_label(at.button,'Validar y preparar corrida').click().run()
+        by_label(at.button,'Avanzar un intervalo').click().run()
+        service=at.session_state['service'];rid=at.session_state['run_id']
+        if fault=='generation':
+            def broken(*args,**kwargs): raise ValueError('UI_GENERACION_INYECTADA')
+            monkeypatch.setattr('piscicultura.service.evaluate',broken)
+        else:
+            service.repo.db.execute("CREATE TRIGGER metrics_failure BEFORE INSERT ON metrics BEGIN SELECT RAISE(ABORT,'UI_PERSISTENCIA_INYECTADA'); END")
+        by_label(at.button,'Detener').click().run()
+&gt;       assert not at.exception
+E       assert not ElementList(_list=[Exception(message='UI_PERSISTENCIA_INYECTADA', stack_trace=['File "/workspace/piscicultura-control/...n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^'])])
+E        +  where ElementList(_list=[Exception(message='UI_PERSISTENCIA_INYECTADA', stack_trace=['File "/workspace/piscicultura-control/...n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^'])]) = AppTest(\n    _script_path='/workspace/piscicultura-control/app.py',\n    default_timeout=30,\n    _session_state={$$ID-0...SpecialBlock(\n            type='sidebar'\n        ),\n        2: SpecialBlock(\n            type='event'\n        )\n    }\n).exception
+
+tests/test_pr1_revision.py:175: AssertionError</failure></testcase><testcase classname="tests.test_pr1_revision" name="test_OBS01_ui_zero_width_creates_no_run" time="0.358"><failure message="AssertionError: assert (not ElementList() and [{'run_id': '...s': 0.0, ...}] == []&#10; +  where ElementList() = AppTest(\n    _script_path='/workspace/piscicultura-control/app.py',\n    default_timeout=30,\n    _session_state={$$ID-0...SpecialBlock(\n            type='sidebar'\n        ),\n        2: SpecialBlock(\n            type='event'\n        )\n    }\n).exception&#10;  &#10;  Left contains one more item: {'run_id': '4923145a6d504dc6b5d013a1e043a211', 'status': 'PREPARED', 'cause': '', 'time_s': 0.0, ...}&#10;  Use -v to get more diff)">tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-11/test_OBS01_ui_zero_width_creat0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x7f58ae7c4e30&gt;
+
+    def test_OBS01_ui_zero_width_creates_no_run(tmp_path,monkeypatch):
+        monkeypatch.setenv('PISCICULTURA_DB',str(tmp_path/'ui_invalid.sqlite'))
+        at=AppTest.from_file(str(Path(__file__).resolve().parents[1]/'app.py'),default_timeout=30).run()
+        by_label(at.number_input,'Temperatura: banda inferior (°C)').set_value(28.5)
+        by_label(at.number_input,'Temperatura: banda superior (°C)').set_value(28.5)
+        by_label(at.button,'Validar y preparar corrida').click().run()
+&gt;       assert not at.exception and at.session_state['service'].repo.list()==[]
+E       AssertionError: assert (not ElementList() and [{'run_id': '...s': 0.0, ...}] == []
+E        +  where ElementList() = AppTest(\n    _script_path='/workspace/piscicultura-control/app.py',\n    default_timeout=30,\n    _session_state={$$ID-0...SpecialBlock(\n            type='sidebar'\n        ),\n        2: SpecialBlock(\n            type='event'\n        )\n    }\n).exception
+E         
+E         Left contains one more item: {'run_id': '4923145a6d504dc6b5d013a1e043a211', 'status': 'PREPARED', 'cause': '', 'time_s': 0.0, ...}
+E         Use -v to get more diff)
+
+tests/test_pr1_revision.py:187: AssertionError</failure></testcase></testsuite></testsuites>

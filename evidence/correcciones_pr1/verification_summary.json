@@ -1,0 +1,700 @@
+{
+  "full_suite": {
+    "tests": 85,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "duration_s": 354.998,
+    "summed_case_duration_s": 354.152
+  },
+  "short_suite": {
+    "tests": 44,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "duration_s": 11.211,
+    "summed_case_duration_s": 10.743
+  },
+  "before_regressions": {
+    "tests": 24,
+    "failures": 22,
+    "errors": 0,
+    "skipped": 0,
+    "duration_s": 4.443,
+    "summed_case_duration_s": 3.316
+  },
+  "first_corrected_regressions": {
+    "tests": 24,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "duration_s": 4.606,
+    "summed_case_duration_s": 3.976
+  },
+  "work_reproducer_after": {
+    "OBS01": {
+      "rejected_before_run": true,
+      "cause": "temperature_C: profile.operating_bands debe tener ancho positivo para normalizar J"
+    },
+    "OBS02": {
+      "x_outside_s": 0.0,
+      "y_outside_s": 0.0,
+      "expected_both_outside_s": 0,
+      "x_recovery_s": 0.0,
+      "y_recovery_s": 0.0,
+      "expected_both_recovery_s": 0
+    },
+    "OBS03": {
+      "duration_s": 28800.0,
+      "expected_duration_s": 28800,
+      "in_band_fraction_temperature": 0.9984375,
+      "expected_left_convention_fraction": 0.9984375
+    }
+  },
+  "reference_runs_compared": 57,
+  "differences": {
+    "S0_p0_open": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": null
+    },
+    "S0_p1_open": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": null
+    },
+    "S0_p2_open": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": null
+    },
+    "S1_p0_open": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S1_p1_open": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S1_p2_open": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S1_p0_closed": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S1_p1_closed": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S1_p2_closed": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S2_p0_open": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S2_p0_closed": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S2_p1_open": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S2_p1_closed": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S2_p2_open": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S2_p2_closed": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S3_p0_open": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S3_p0_closed": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S3_p1_open": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S3_p1_closed": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S3_p2_open": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S3_p2_closed": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S4_p0_open": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S4_p0_closed": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S4_p1_open": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S4_p1_closed": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S4_p2_open": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S4_p2_closed": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S5_p0_open": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": null
+    },
+    "S5_p0_closed": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": null
+    },
+    "S5_p1_open": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": null
+    },
+    "S5_p1_closed": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": null
+    },
+    "S5_p2_open": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": null
+    },
+    "S5_p2_closed": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": null
+    },
+    "S7_p0_open": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": null
+    },
+    "S7_p0_closed": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": null
+    },
+    "S7_p1_open": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": null
+    },
+    "S7_p1_closed": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": null
+    },
+    "S7_p2_open": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": null
+    },
+    "S7_p2_closed": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": null
+    },
+    "S6_p0_open": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S6_p0_closed": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S6_p1_open": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S6_p1_closed": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S6_p2_open": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S6_p2_closed": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S9_p0_open": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": null
+    },
+    "S9_p0_closed": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": null
+    },
+    "S9_p1_open": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": null
+    },
+    "S9_p1_closed": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": null
+    },
+    "S9_p2_open": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": null
+    },
+    "S9_p2_closed": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": null
+    },
+    "S2_p0_open_refined": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S2_p1_open_refined": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S2_p2_open_refined": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S2_p0_closed_refined": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S2_p1_closed_refined": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    },
+    "S2_p2_closed_refined": {
+      "max_abs_x": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_J": 0.0,
+      "max_abs_window_iae": 0.0
+    }
+  },
+  "benchmark": {
+    "durations_s": [
+      8.400498000999505,
+      8.502229280999927,
+      8.400134212000012
+    ],
+    "median_s": 8.400498000999505,
+    "threshold_s": 60,
+    "network": "socket connect denegado",
+    "hardware_eligibility": "NO EVALUABLE hasta verificar almacenamiento SSD y equipo local de referencia"
+  },
+  "pending": [
+    "OBS05/RNF10: falta equipo local con SSD y protocolo acreditado",
+    "Nueva revisión de Work; PR sigue en borrador, sin integración"
+  ],
+  "scientific_limits": "pH y turbidez empíricos; sin validación de campo ni dosificación productiva"
+}
