@@ -11,7 +11,7 @@ def test_spanish_configuration_execution_history(tmp_path,monkeypatch,artifact_d
     monkeypatch.setenv('PISCICULTURA_DB',str(tmp_path/'ui.sqlite'))
     at=AppTest.from_file(str(Path(__file__).resolve().parents[1]/'app.py'),default_timeout=30).run()
     assert not at.exception
-    assert [t.label for t in at.tabs]==['Configuración','Ejecución y evolución','Comparación','Historial y exportación']
+    assert [t.label for t in at.tabs]==['Configuración','Ejecución y evolución','Vista del estanque','Comparación','Historial y exportación']
     assert len(by_label(at.selectbox,'Perfil de especie').options)==3
     by_label(at.button,'Duplicar perfil para editar').click().run()
     assert not at.exception

@@ -11,9 +11,10 @@ from piscicultura.repository import SQLiteRepository
 from piscicultura.service import SimulationService
 from piscicultura.export import export_bytes
 from piscicultura.charts import figures,LABELS
+from piscicultura.tank_view import show_tank,SHAPES
 
-st.set_page_config(page_title='Agua · Piscicultura',page_icon='💧',layout='wide')
-st.title('Calidad del agua · Simulador de control')
+st.set_page_config(page_title='AquaControl · Piscicultura',page_icon='💧',layout='wide')
+st.title('AquaControl · Calidad del agua')
 st.caption('SPC-AGUA-001 0.5.0 · M-AGUA-DEMO-1 1.0.0 · Cinco variables, un estanque por corrida')
 st.warning('Simulación académica sin validación de campo. pH y turbidez son aproximaciones empíricas; los parámetros demostrativos no son recomendaciones productivas.')
 STATUS={'PREPARED':'Preparada','RUNNING':'En ejecución','PAUSED':'Pausada','COMPLETED':'Completada','STOPPED':'Detenida','FAILED':'Fallida','INTERRUPTED':'Interrumpida'}
@@ -23,7 +24,7 @@ if 'service' not in st.session_state:
     st.session_state.service=SimulationService(SQLiteRepository(os.environ.get('PISCICULTURA_DB','work/piscicultura.sqlite')))
 service=st.session_state.service;repo=service.repo
 if 'profiles' not in st.session_state: st.session_state.profiles=deepcopy(DEFAULTS['profiles'])
-config_tab,execution_tab,compare_tab,history_tab=st.tabs(['Configuración','Ejecución y evolución','Comparación','Historial y exportación'])
+config_tab,execution_tab,tank_tab,compare_tab,history_tab=st.tabs(['Configuración','Ejecución y evolución','Vista del estanque','Comparación','Historial y exportación'])
 with config_tab:
     col1,col2,col3=st.columns(3)
     profiles=st.session_state.profiles
@@ -78,6 +79,7 @@ with config_tab:
             cfg=RunConfig.freeze(c)
             st.session_state.draft=cfg.data
             st.session_state.run_id=service.prepare(cfg.data)
+            st.session_state.presentation_run_id=st.session_state.run_id
             st.success('Configuración válida y congelada. Corrida preparada sin avanzar el tiempo.')
         except (ValueError,TypeError,KeyError,ZeroDivisionError) as exc: st.error('Configuración rechazada: '+str(exc))
     origins=pd.DataFrame(c['origin_registry']).replace({'bibliographic':'Bibliográfico','derived':'Derivado','demonstrative':'Demostrativo','Csat coefficients':'Coeficientes de saturación de oxígeno','temperature reference':'Referencia térmica','other references, bands, alarms, parameters':'Otras referencias, bandas, alarmas y parámetros','canonical per field':'Unidad indicada en cada campo'})
@@ -138,6 +140,18 @@ with execution_tab:
         except (ValueError,RuntimeError) as exc: st.error(str(exc))
         show_run(rid,'active')
     else: st.info('Prepare una corrida en Configuración. Consultar esta pestaña no integra el proceso.')
+with tank_tab:
+    view_runs=repo.list()
+    if view_runs:
+        st.caption('Consulte la corrida activa o una guardada. Avance, pause o detenga desde Ejecución y evolución; compare y exporte con las funciones existentes.')
+        view_cols=st.columns([2,1,1])
+        view_rid=view_cols[0].selectbox('Corrida en vista',[r['run_id'] for r in view_runs],key='presentation_run_id')
+        view_shape=view_cols[1].selectbox('Representación',SHAPES,key='presentation_tank_shape')
+        view_mode=view_cols[2].selectbox('Renderizado',['Automático (3D)','2.5D (sin WebGL)'],key='presentation_render_mode')
+        show_tank(repo,view_rid,view_shape,view_mode=='2.5D (sin WebGL)')
+        st.download_button('Descargar datos de la corrida en vista',export_bytes(repo,view_rid),file_name=view_rid+'.zip',mime='application/zip',key='tankdownload')
+    else:
+        st.info('Prepare una corrida en Configuración para visualizar su estado confirmado. La representación no crea corridas ni avanza el tiempo.')
 with compare_tab:
     st.write('Ambas estrategias comparten agua inicial, respuesta inicial de actuadores, calendario y tabla completa de ruido. Solo cambia la estrategia.')
     if st.button('Comparar estrategias con la configuración validada',disabled='draft' not in st.session_state):
