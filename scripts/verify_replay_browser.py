@@ -163,13 +163,17 @@ def verify_streamlit(browser,out,db,rid,check,report):
             handle.wait_for_function('__aquacontrol.suspended')
             check(handle.evaluate('__aquacontrol.suspended'),'Streamlit hidden tab suspends renderer')
             page.get_by_role('tab',name='Vista del estanque',exact=True).click()
-            page.get_by_label('Modo presentación académica',exact=True).check()
+            # Streamlit's visible label covers the native input. Exercise its
+            # supported keyboard interaction instead of clicking through it.
+            page.get_by_label('Modo presentación académica',exact=True).focus()
+            page.get_by_label('Modo presentación académica',exact=True).press('Space')
             page.wait_for_function("document.querySelectorAll('[role=tab]').length===0")
             check(page.get_by_role('button',name='Validar y preparar corrida',exact=True).count()==0,'Streamlit presentation hides forms')
             frame=page.get_by_title('AquaControl: estanque, sensores y actuadores').content_frame
             frame.locator('#run-badge').filter(has_text='COMPLETADA').wait_for(timeout=90000)
             check(frame.locator('.sensor').count()==5 and frame.locator('.actuator-row').count()==8,'Streamlit presentation preserves variables and channels')
-            page.get_by_label('Modo presentación académica',exact=True).uncheck()
+            page.get_by_label('Modo presentación académica',exact=True).focus()
+            page.get_by_label('Modo presentación académica',exact=True).press('Space')
             page.get_by_role('tab',name='Vista del estanque',exact=True).wait_for()
             check(page.get_by_role('tab').count()==5,'Streamlit presentation returns to all tabs')
             page.get_by_role('tab',name='Vista del estanque',exact=True).click()

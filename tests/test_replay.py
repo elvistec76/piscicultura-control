@@ -68,6 +68,13 @@ def test_real_projection_boundaries_quality_and_alarms(stored):
       assert.equal(replay.project(30).observed_sample,null);
       assert.equal(replay.project(-10).selected_time_s,0); assert.equal(replay.project(1000).selected_time_s,180);
       assert(replay.hasPerturbation); assert(replay.guide.every(g=>replay.times.includes(g.time_s)));
+      const perturbation=replay.guide.find(g=>g.label.startsWith('2'));
+      const changed=replay.guide.find(g=>g.label.startsWith('3'));
+      assert(changed.time_s>perturbation.time_s);
+      // A calendar injection alone must not manufacture an observed change.
+      const unchanged=structuredClone(history);
+      unchanged.samples.forEach(s=>{s.values=[...history.samples[0].values];s.qualities=[...history.samples[0].qualities];});
+      assert(!AquaReplay.create(base,unchanged).guide.some(g=>g.label.startsWith('3')));
     """)
 
 

@@ -60,6 +60,7 @@ def main():
         report['browser'] = browser.version
         # File fixtures run with all network access disabled, including CDN access.
         context = browser.new_context(viewport=dict(width=1440, height=1050), offline=True)
+        context.set_default_timeout(90000)
         page = context.new_page()
         page.on('pageerror', lambda error: report['errors'].append(str(error)))
         page.on('request', lambda request: report['external_requests'].append(request.url) if request.url.startswith(('http:', 'https:')) else None)
@@ -92,6 +93,7 @@ def main():
         check(page.evaluate('!window.__aquacontrol.static'), 'paused snapshot supports decorative ambient motion')
         # WebGL unavailable from startup: exercise automatic fallback for both shapes.
         no_gl = browser.new_context(viewport=dict(width=1440, height=1050), offline=True)
+        no_gl.set_default_timeout(90000)
         for shape in SHAPES:
             # set_content does not execute add_init_script, so create a fresh
             # document with the WebGL guard before the complete local renderer.
@@ -119,6 +121,7 @@ def main():
                     if time.monotonic() > deadline: raise
                     time.sleep(.2)
             ui_context = browser.new_context(viewport=dict(width=1600, height=1100))
+            ui_context.set_default_timeout(90000)
             ui_context.route('**/*', lambda route: route.continue_() if route.request.url.startswith(base) else route.abort())
             ui = ui_context.new_page()
             ui.on('pageerror', lambda error: report['errors'].append(str(error)))

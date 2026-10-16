@@ -62,9 +62,11 @@
     const perturbation=events.find(e=>e.category==='injection'&&e.transition==='activation');
     if(perturbation){
       guide.push({time_s:perturbation.time_s,label:'2 · Perturbación registrada: '+perturbation.code});
-      const measured=samples.find(s=>s.time_s>=perturbation.time_s);
-      if(measured)guide.push({time_s:measured.time_s,label:'3 · Mediciones registradas; consulte calidad'});
-      const decision=decisions.find(d=>d.time_s>=perturbation.time_s);
+      const before=at(samples,perturbation.time_s);
+      const measured=before?samples.find(s=>s.time_s>perturbation.time_s&&s.values.some((v,j)=>
+        s.qualities[j]!==before.qualities[j] || (s.qualities[j]==='GOOD'&&before.qualities[j]==='GOOD'&&finite(v)!==null&&finite(before.values[j])!==null&&v!==before.values[j]))):null;
+      if(measured)guide.push({time_s:measured.time_s,label:'3 · Cambio registrado en valores o calidad; sin atribuir causa'});
+      const decision=decisions.find(d=>d.time_s>=(measured?measured.time_s:perturbation.time_s));
       if(decision){
         guide.push({time_s:decision.time_s,label:'4 · Decisión registrada del controlador'});
         const action=history.actuator_records.find(a=>a.record_index===decision.decision_index&&a.mean_effective>0);

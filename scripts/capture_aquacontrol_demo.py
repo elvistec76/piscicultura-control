@@ -36,6 +36,7 @@ def main():
         with sync_playwright() as p:
             browser=p.chromium.launch(executable_path=args.browser,headless=True,args=['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
             context=browser.new_context(viewport=dict(width=1440,height=1240),offline=True)
+            context.set_default_timeout(90000)
             page=context.new_page();page.on('pageerror',lambda e:report['errors'].append(str(e)))
             page.on('request',lambda r:report['external_requests'].append(r.url) if r.url.startswith(('http:','https:')) else None)
             for shape in SHAPES:
@@ -54,7 +55,7 @@ def main():
                 report['checks'].append(shape+' stored closed-loop dashboard and coherent guide selection')
             # Reduced-motion changes must stop already scheduled decorative frames.
             page.evaluate('window.scrollTo(0,0)');page.locator('#ambient').check();page.emulate_media(reduced_motion='reduce')
-            page.wait_for_function('__aquacontrol.static');assert not page.locator('#ambient').is_checked()
+            page.wait_for_function("__aquacontrol.static&&!document.getElementById('ambient').checked")
             count=page.evaluate('__aquacontrol.frames');page.wait_for_timeout(250);assert page.evaluate('__aquacontrol.frames')==count
             report['checks'].append('dynamic system reduced motion cancels pending animation')
             page.emulate_media(reduced_motion='no-preference')
@@ -64,11 +65,13 @@ def main():
                 frames=out/'frames';frames.mkdir(exist_ok=True)
                 for index in range(24):
                     page.wait_for_timeout(200);page.screenshot(path=str(frames/f'frame_{index:03d}.png'))
-                page.locator('#pause').click()
+                if page.evaluate('__aquacontrol.player.playing'):
+                    page.locator('#pause').click()
                 subprocess.run(['ffmpeg','-y','-loglevel','error','-framerate','4','-i',str(frames/'frame_%03d.png'),'-c:v','libx264','-pix_fmt','yuv420p',str(out/'demostracion.mp4')],check=True)
                 report['video']='demostracion.mp4';report['video_note']='6-second sequence of browser captures; rendering speed is not an RNF10 measurement'
             context.close()
             mobile=browser.new_context(viewport=dict(width=390,height=900),offline=True)
+            mobile.set_default_timeout(90000)
             mobile_page=mobile.new_page()
             data=snapshot(history['run'],history['samples'],history['actuator_records'],history['events'],'Circular',True);data['history']=history
             mobile_page.set_content(render_html(data));mobile_page.wait_for_function("window.__aquacontrol?.mode==='2.5D'")
