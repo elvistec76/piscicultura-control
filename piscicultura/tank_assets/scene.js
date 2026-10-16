@@ -16,11 +16,12 @@
   const statuses = {PREPARED:'Preparada',RUNNING:'En ejecución',PAUSED:'Pausada',STOPPED:'Detenida',COMPLETED:'Completada',FAILED:'Fallida',INTERRUPTED:'Interrumpida'};
   const g = data.geometry, circular = g.shape === 'Circular';
   function updateDashboard() {
-  ['sensors','actuators','alarms','decision-rows','event-rows'].forEach(id=>el(id).replaceChildren());
+  ['sensors','actuators','alarms','decision-rows','event-rows','action-detail-rows'].forEach(id=>el(id).replaceChildren());
   text('run-badge', (statuses[data.status] || data.status).toUpperCase());
   if (data.status !== 'RUNNING') el('run-badge').classList.add(data.status === 'FAILED' ? 'failed' : 'still');
   text('shape-label', data.geometry.shape + ' industrial');
   text('profile', `${data.profile} · ${data.strategy === 'closed' ? 'Lazo cerrado' : 'Lazo abierto'} · ${data.run_id.slice(0, 10)}`);
+  text('scenario',base.history?'Escenario '+base.history.run.config.scenario:'Escenario: consultar configuración congelada');
   text('state-time', clock(data.state_time_s));
   text('sample-time', 'Última muestra y: ' + clock(data.sample_time_s));
   const symbols = ['♨','O₂','pH','◌','↕'];
@@ -54,6 +55,7 @@
       if (i === 1 && v !== null && v < 1) span.className = 'unavailable'; row.append(span);
     });
     row.title = (a.reason || 'Registro confirmado') + (a.interval_s ? ` · [${a.interval_s.join(', ')}] s` : ''); el('actuators').append(row);
+    const detail=document.createElement('tr');[a.label,a.record_index??'—',a.interval_s?`[${num(a.interval_s[0])}, ${num(a.interval_s[1])})`:'Sin intervalo',pct(a.command),num(a.availability),pct(a.effective),a.reason||'Sin limitación registrada'].forEach(v=>{const td=document.createElement('td');td.textContent=v;detail.append(td);});el('action-detail-rows').append(detail);
   });
   text('alarm-count', String(data.alarms.length));
   if (!data.alarms.length) { const p = document.createElement('div'); p.className = 'no-alarm'; p.textContent = data.sample_time_s === null ? '○ Aún no hay muestras para alarmas' : '✓ Sin alarmas activas registradas'; el('alarms').append(p); }
@@ -78,6 +80,7 @@
   }
   function updateDecision() {
     const d=data.decision,input=data.controller_input,after=data.observed_sample;
+    text('decision-summary',d?`Decisión #${d.decision_index} · t=${num(d.time_s)} s · ${[...new Set(d.reason_codes)].join(' / ')}`:'Aún no hay una decisión registrada.');
     text('controller-status',data.strategy==='open'?'LAZO ABIERTO · SIN CORRECCIÓN POR RETROALIMENTACIÓN':'LAZO CERRADO · HISTÉRESIS');
     text('decision-caption',d?`Decisión #${d.decision_index} · t = ${num(d.time_s)} s · entrada vinculada #${d.input_sample_index} · medición: ${input?clock(input.time_s):'registro ausente'}`:'Sin decisión registrada para este instante.');
     text('decision-note',data.strategy==='open'?'El programa constante no usa la medición para corregir órdenes. La lectura vinculada se conserva para auditoría.':'Errores y códigos proceden de la decisión registrada. Disponibilidad y acción efectiva: panel de ocho canales. La observación posterior no prueba causalidad.');
@@ -98,6 +101,9 @@
     el('timeline').value=player.time;el('selected-time').value=Number(player.time.toFixed(3));
     text('playback-time',`Tiempo de reproducción: ${num(player.elapsed,1)} s reales · ${player.speed}×`);
     text('source-times',`Estado x: ${num(data.state_time_s)} s · Medición y: ${data.sample_time_s===null?'ausente':num(data.sample_time_s)+' s'} · Cursor: ${num(player.time)} s`);
+    text('exact-caption',`t = ${num(data.state_time_s)} s · ${data.state_policy}`);
+    const guideIndex=el('guide').value;
+    if(guideIndex!==''&&replay.guide[Number(guideIndex)].time_s!==player.time)el('guide').value='';
     text('playback-status',player.playing?'REPRODUCIENDO':'EN PAUSA');
     el('play').disabled=player.playing||!replay.duration;el('pause').disabled=!player.playing;
   }
@@ -115,14 +121,15 @@
   }
   function seekUser(t){player.pause();selectTime(t,true);renderScene();}
   el('ambient').checked=!reducedMotion.matches;
-  el('ambient').onchange=()=>{updateMotionLabel();wakeScene();};
-  reducedMotion.addEventListener('change',()=>{if(reducedMotion.matches)el('ambient').checked=false;updateMotionLabel();wakeScene();});
+  el('ambient').onchange=()=>{updateMotionLabel();if(!el('ambient').checked&&!player.playing)suspend();else wakeScene();};
+  reducedMotion.addEventListener('change',()=>{if(reducedMotion.matches)el('ambient').checked=false;updateMotionLabel();if(!player.playing&&reducedMotion.matches)suspend();else wakeScene();});
   el('quality').onchange=()=>{quality=el('quality').value;refreshScene();wakeScene();};
-  el('presentation').onclick=()=>{document.body.classList.toggle('presentation');el('presentation').textContent=document.body.classList.contains('presentation')?'Volver a la interfaz normal':'Modo presentación';window.dispatchEvent(new Event('resize'));};
+  el('presentation').onclick=()=>{document.body.classList.toggle('presentation');el('presentation').textContent=document.body.classList.contains('presentation')?'Restaurar distribución':'Ampliar estanque';window.dispatchEvent(new Event('resize'));};
+  document.querySelector('a[href="#decision-detail"]').onclick=()=>{el('decision-detail').open=true;};
   if(replay){
     el('timeline').max=replay.duration;el('selected-time').max=replay.duration;
     el('play').onclick=()=>{player.play();applyTime(true);wakeScene();};
-    el('pause').onclick=()=>{player.pause();updatePlayer();};
+    el('pause').onclick=()=>{player.pause();updatePlayer();if(!el('ambient').checked)suspend();};
     el('restart').onclick=()=>{player.reset();applyTime(true);renderScene();};
     el('timeline').oninput=e=>seekUser(Number(e.target.value));el('selected-time').onchange=e=>seekUser(Number(e.target.value));
     el('speed').onchange=e=>{player.speed=Number(e.target.value);player.last=null;updatePlayer();};
@@ -157,7 +164,8 @@
     data.sensors.forEach((s,j)=>{const o=document.createElement('option');o.value=j;o.textContent=s.label;el('chart-variable').append(o);});
     el('chart-variable').onchange=drawStateChart;drawStateChart();
     const traces=base.actuators.map(a=>{const rows=base.history.actuator_records.filter(r=>r.actuator_id===a.key);return {x:rows.flatMap(r=>[r.start_s,r.end_s,null]),y:rows.flatMap(r=>[r.mean_effective,r.mean_effective,null]),mode:'lines',name:a.label,connectgaps:false,hovertemplate:'t=%{x} s<br>media efectiva=%{y}<extra>%{fullData.name}</extra>'};});
-    Plotly.newPlot(el('action-chart'),traces,chartLayout('Acciones efectivas medias · intervalos registrados',230),{responsive:true,displayModeBar:false});
+    const actionLayout=chartLayout('Acciones efectivas medias · intervalos registrados',270);actionLayout.margin.b=85;actionLayout.legend.y=-.35;
+    Plotly.newPlot(el('action-chart'),traces,actionLayout,{responsive:true,displayModeBar:false});
     ['state-chart','action-chart'].forEach(id=>el(id).on('plotly_click',e=>{if(e.points.length)seekUser(e.points[0].x);}));
     chartsReady=true;
   }
@@ -351,7 +359,7 @@
     for(let i=0;i<=4;i++){const y=H*i/4;line([[L/2+.09*u,y,-W/2],[L/2+.18*u,y,-W/2]],0x7eaabc);}
     let azimuth=.78,elevation=.49,distance=9.1,dragging=false,lastX=0,lastY=0;
     const target=new T.Vector3(0,H*root.scale.y*.45,0);
-    function render(){camera.position.set(target.x+distance*Math.cos(elevation)*Math.sin(azimuth),target.y+distance*Math.sin(elevation),target.z+distance*Math.cos(elevation)*Math.cos(azimuth));camera.lookAt(target);renderer.render(scene,camera);}
+    function render(){if(!viewportVisible||!pageVisible||document.visibilityState!=='visible')return;camera.position.set(target.x+distance*Math.cos(elevation)*Math.sin(azimuth),target.y+distance*Math.sin(elevation),target.z+distance*Math.cos(elevation)*Math.cos(azimuth));camera.lookAt(target);renderer.render(scene,camera);}
     function resize(){if(!running)return;renderer.setSize(viewport.clientWidth,viewport.clientHeight);camera.aspect=viewport.clientWidth/viewport.clientHeight;camera.updateProjectionMatrix();render();}
     function move(da,de,dd=0){azimuth+=da;elevation=Math.max(.12,Math.min(1.35,elevation+de));distance=Math.max(4,Math.min(18,distance+dd));render();}
     renderer.domElement.addEventListener('pointerdown',e=>{dragging=true;lastX=e.clientX;lastY=e.clientY;renderer.domElement.setPointerCapture(e.pointerId);});

@@ -100,12 +100,15 @@ def assets():
                  ('scene.html', 'scene.css', 'vendor/three.min.js', 'replay.js', 'scene.js'))
 
 
+@lru_cache(maxsize=1)
+def plotly_asset():
+    from plotly.offline import get_plotlyjs
+    return get_plotlyjs()
+
+
 def render_html(data):
     template, css, three, replay, js = assets()
-    plotly = ''
-    if 'history' in data:
-        from plotly.offline import get_plotlyjs
-        plotly = get_plotlyjs()
+    plotly = plotly_asset() if 'history' in data else ''
     # A profile name cannot terminate the JSON script or inject HTML.
     payload = json.dumps(data, ensure_ascii=False, allow_nan=False).replace('&', '\\u0026').replace('<', '\\u003c').replace('>', '\\u003e')
     return template.replace('/*__CSS__*/', css).replace('/*__THREE__*/', three).replace('/*__REPLAY__*/', replay).replace('/*__PLOTLY__*/', plotly).replace('/*__JS__*/', js).replace('__SNAPSHOT_JSON__', payload)
@@ -121,5 +124,5 @@ def show_tank(repo, rid, shape, force_fallback=False):
     data['history'] = history
     # Fixed frame height avoids layout/scroll-anchor jumps while a GPU canvas
     # is animating. Narrow layouts keep their native iframe scroll bar.
-    st.iframe(render_html(data), height=1550, alt='AquaControl: estanque, sensores y actuadores')
+    st.iframe(render_html(data), height=1950, alt='AquaControl: estanque, sensores y actuadores')
     return data

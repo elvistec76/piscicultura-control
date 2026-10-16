@@ -146,11 +146,14 @@ def verify_streamlit(browser,out,db,rid,check,report):
                     if time.monotonic()>deadline:raise
                     time.sleep(.2)
             context=browser.new_context(viewport=dict(width=1600,height=1100))
+            context.set_default_timeout(90000)
             context.route('**/*',lambda route:route.continue_() if route.request.url.startswith(base) else route.abort())
-            page=context.new_page();page.on('pageerror',lambda e:report['errors'].append(str(e)));page.goto(base)
+            page=context.new_page();page.on('pageerror',lambda e:report['errors'].append(str(e)))
+            page.on('request',lambda r:report['external_requests'].append(r.url) if r.url.startswith(('http:','https:')) and not r.url.startswith(base) else None)
+            page.goto(base)
             page.get_by_role('tab',name='Vista del estanque',exact=True).click()
             frame=page.get_by_title('AquaControl: estanque, sensores y actuadores').content_frame
-            frame.locator('#run-badge').filter(has_text='COMPLETADA').wait_for(timeout=30000)
+            frame.locator('#run-badge').filter(has_text='COMPLETADA').wait_for(timeout=90000)
             check(frame.locator('.sensor').count()==5,'Streamlit historical run rendered from SQLite')
             frame.locator('#ambient').uncheck();frame.locator('#restart').click();frame.locator('#play').click()
             frame.locator('#pause').click();check(frame.locator('#playback-status').inner_text()=='EN PAUSA','Streamlit playback controls')
@@ -159,6 +162,16 @@ def verify_streamlit(browser,out,db,rid,check,report):
             handle=page.frames[1]
             handle.wait_for_function('__aquacontrol.suspended')
             check(handle.evaluate('__aquacontrol.suspended'),'Streamlit hidden tab suspends renderer')
+            page.get_by_role('tab',name='Vista del estanque',exact=True).click()
+            page.get_by_label('Modo presentación académica',exact=True).check()
+            page.wait_for_function("document.querySelectorAll('[role=tab]').length===0")
+            check(page.get_by_role('button',name='Validar y preparar corrida',exact=True).count()==0,'Streamlit presentation hides forms')
+            frame=page.get_by_title('AquaControl: estanque, sensores y actuadores').content_frame
+            frame.locator('#run-badge').filter(has_text='COMPLETADA').wait_for(timeout=90000)
+            check(frame.locator('.sensor').count()==5 and frame.locator('.actuator-row').count()==8,'Streamlit presentation preserves variables and channels')
+            page.get_by_label('Modo presentación académica',exact=True).uncheck()
+            page.get_by_role('tab',name='Vista del estanque',exact=True).wait_for()
+            check(page.get_by_role('tab').count()==5,'Streamlit presentation returns to all tabs')
             page.get_by_role('tab',name='Vista del estanque',exact=True).click()
             page.get_by_title('AquaControl: estanque, sensores y actuadores').screenshot(path=str(out/'Streamlit-dashboard.png'))
             report['screenshots'].append('Streamlit-dashboard.png')

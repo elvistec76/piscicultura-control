@@ -88,7 +88,8 @@ def main():
             page.on('request', lambda request: report['external_requests'].append(request.url) if request.url.startswith(('http:', 'https:')) else None)
         page.set_content((out / 'paused.html').read_text(encoding='utf-8'))
         page.wait_for_function('window.__aquacontrol !== undefined')
-        check(page.evaluate('window.__aquacontrol.static && window.__aquacontrol.frames === 0'), 'paused snapshot has no animation loop')
+        page.wait_for_function('window.__aquacontrol.frames >= 2')
+        check(page.evaluate('!window.__aquacontrol.static'), 'paused snapshot supports decorative ambient motion')
         # WebGL unavailable from startup: exercise automatic fallback for both shapes.
         no_gl = browser.new_context(viewport=dict(width=1440, height=1050), offline=True)
         for shape in SHAPES:
@@ -155,7 +156,7 @@ def main():
             idle()
             ui.get_by_role('tab', name='Vista del estanque', exact=True).click()
             frame().locator('#run-badge').filter(has_text='PAUSADA').wait_for()
-            check('Escena estática' in frame().locator('#motion-label').inner_text(), 'Streamlit pause freezes illustration')
+            check('Modo ambiente' in frame().locator('#motion-label').inner_text(), 'Streamlit pause retains optional decorative motion')
             check(ui.get_by_test_id('stException').count() == 0, 'Streamlit repeated renders have no exception')
             # Capture after interactions: scrolling a tall iframe into view for
             # a screenshot can displace an open native select popover.

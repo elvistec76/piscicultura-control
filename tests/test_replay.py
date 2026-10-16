@@ -167,3 +167,22 @@ def test_closed_decision_input_and_status_do_not_change_playback(tmp_path, statu
         assert '\n'.join(repo.db.iterdump()) == before
     finally:
         repo.close()
+
+
+def test_academic_mode_hides_forms_preserves_run_and_returns(tmp_path, monkeypatch):
+    from streamlit.testing.v1 import AppTest
+    from tests.test_ui import by_label
+    monkeypatch.setenv('PISCICULTURA_DB', str(tmp_path / 'presentation.sqlite'))
+    at = AppTest.from_file(str(ROOT / 'app.py'), default_timeout=30).run()
+    by_label(at.button, 'Validar y preparar corrida').click().run()
+    by_label(at.button, 'Avanzar un intervalo').click().run()
+    repo = at.session_state['service'].repo
+    before = '\n'.join(repo.db.iterdump())
+    by_label(at.toggle, 'Modo presentación académica').set_value(True).run()
+    assert not at.exception and len(at.tabs) == 0
+    assert not any(b.label == 'Validar y preparar corrida' for b in at.button)
+    assert '\n'.join(repo.db.iterdump()) == before
+    by_label(at.toggle, 'Modo presentación académica').set_value(False).run()
+    assert not at.exception and len(at.tabs) == 5
+    assert any(b.label == 'Validar y preparar corrida' for b in at.button)
+    assert '\n'.join(repo.db.iterdump()) == before
