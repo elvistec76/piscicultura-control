@@ -1,0 +1,24 @@
+PASS: Circular WebGL offline
+PASS: Circular five sensors/eight actuators
+PASS: Circular unmodified confirmed snapshot
+PASS: Circular rotation and zoom
+PASS: Circular animation leaves physical time fixed
+PASS: Circular fallback after context loss
+PASS: Rectangular WebGL offline
+PASS: Rectangular five sensors/eight actuators
+PASS: Rectangular unmodified confirmed snapshot
+PASS: Rectangular rotation and zoom
+PASS: Rectangular animation leaves physical time fixed
+PASS: Rectangular fallback after context loss
+PASS: paused snapshot supports decorative ambient motion
+PASS: Circular automatic fallback without WebGL
+PASS: Rectangular automatic fallback without WebGL
+PASS: Streamlit switch Rectangular keeps running
+PASS: Streamlit switch Circular keeps running
+PASS: Streamlit switch Rectangular keeps running
+PASS: Streamlit switch Circular keeps running
+PASS: Streamlit pause retains optional decorative motion
+PASS: Streamlit repeated renders have no exception
+PASS: no external requests in offline scenes
+PASS: no browser JavaScript exceptions
+{"checks": 23, "screenshots": ["Circular-3D.png", "Rectangular-3D.png", "Circular-2.5D.png", "Rectangular-2.5D.png", "Streamlit-Rectangular.png"], "errors": [], "report": "/workspace/piscicultura-control/work/legacy-browser/browser-results.json"}

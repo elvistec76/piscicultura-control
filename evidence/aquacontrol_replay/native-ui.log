@@ -1,0 +1,11 @@
+PASS: Streamlit historical run rendered from SQLite
+PASS: Streamlit playback controls
+PASS: Streamlit hidden tab suspends renderer
+PASS: Streamlit presentation hides forms
+PASS: Streamlit presentation preserves variables and channels
+PASS: Streamlit presentation returns to all tabs
+PASS: Streamlit no exceptions
+PASS: playback leaves all SQLite records unchanged
+PASS: offline renderer makes no external requests
+PASS: no JavaScript exceptions
+CHECKS 60

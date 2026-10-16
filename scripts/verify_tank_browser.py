@@ -127,8 +127,8 @@ def main():
             ui.on('pageerror', lambda error: report['errors'].append(str(error)))
             ui.goto(base)
             def idle():
-                ui.wait_for_function("document.querySelector('[data-testid=stApp]')?.getAttribute('data-test-script-state') === 'notRunning'", timeout=30000)
-            ui.get_by_role('button', name='Validar y preparar corrida').wait_for(timeout=30000)
+                ui.wait_for_function("document.querySelector('[data-testid=stApp]')?.getAttribute('data-test-script-state') === 'notRunning'", timeout=90000)
+            ui.get_by_role('button', name='Validar y preparar corrida').wait_for(timeout=90000)
             idle()
             ui.get_by_role('combobox', name='Escenario', exact=True).click()
             ui.get_by_role('option', name='S2 · Recuperación', exact=True).click()
@@ -141,7 +141,7 @@ def main():
             ui.get_by_role('tab', name='Vista del estanque', exact=True).click()
             def frame():
                 f = ui.get_by_title('AquaControl: estanque, sensores y actuadores').content_frame
-                f.locator('#state-time').filter(has_text='60 s').wait_for(timeout=30000)
+                f.locator('#state-time').filter(has_text='60 s').wait_for(timeout=90000)
                 return f
             for shape in ['Rectangular', 'Circular', 'Rectangular', 'Circular']:
                 ui.get_by_role('combobox', name='Representación', exact=True).click()

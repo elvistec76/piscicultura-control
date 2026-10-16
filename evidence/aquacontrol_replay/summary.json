@@ -1,0 +1,20 @@
+{
+  "pytest": {
+    "tests": 109.0,
+    "failures": 0.0,
+    "errors": 0.0,
+    "skipped": 0.0,
+    "time": 1666.484
+  },
+  "focused_replay": {
+    "tests": 8.0,
+    "failures": 0.0,
+    "errors": 0.0,
+    "skipped": 0.0,
+    "time": 22.381
+  },
+  "browser_checks": 60,
+  "compatibility_browser_checks": 23,
+  "demo_checks": 8,
+  "rnf10": "PENDIENTE"
+}

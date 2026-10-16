@@ -1,0 +1,88 @@
+{
+  "base_commit": "c43f444151006461fb1ed3ec960a878a2349a549",
+  "implementation_commit": "1986829bfc717fbec4be4e98e3ab6d0aa9536029",
+  "protected_files": {
+    "piscicultura/model.py": {
+      "unchanged": true,
+      "sha256": "6726c7033070eef76b4141dc87ae4f525368eda5de587ab0c33e9953998a0a10"
+    },
+    "piscicultura/engine.py": {
+      "unchanged": true,
+      "sha256": "e9b4f0a608f5ef2a97668116803996375cd9a4e7c3d43c7a90c0cf2333c8d038"
+    },
+    "piscicultura/config.py": {
+      "unchanged": true,
+      "sha256": "480ad550169b2e69656fd0b4bb570fe13afccc8e06cd33eac50f6ae14b2003bf"
+    },
+    "piscicultura/control.py": {
+      "unchanged": true,
+      "sha256": "8b87bb5cb6a7b78b1eee11e6cd983277e55e6310229e579ffe1fc052d058f470"
+    },
+    "piscicultura/actuators.py": {
+      "unchanged": true,
+      "sha256": "7b1775a2168e9c48dec7382b759e838bf2c63fe4ff520ba1e41b0416644f6932"
+    },
+    "piscicultura/sensors.py": {
+      "unchanged": true,
+      "sha256": "a1b3326ec1742020681d12abd36cb0321da482f74b424c4ae690d64516dab7dc"
+    },
+    "piscicultura/scenarios.py": {
+      "unchanged": true,
+      "sha256": "e3e0852b403b65f64a2d9d897f3a5751c7819d0c6ad01835c7c3e828962f50d6"
+    },
+    "piscicultura/metrics.py": {
+      "unchanged": true,
+      "sha256": "80dab67c021682f9257c35b255fc66e8467fcf70172a740bb009ebac25feaa06"
+    },
+    "piscicultura/repository.py": {
+      "unchanged": true,
+      "sha256": "1ec421253f3e5fefca8e7108f342272e0f5679414cf016882ce7f3202aff821e"
+    },
+    "piscicultura/service.py": {
+      "unchanged": true,
+      "sha256": "760996a3e9c21b4af39c126ff5b37b53ce578086f852e57a9b1a06ea66989931"
+    },
+    "piscicultura/export.py": {
+      "unchanged": true,
+      "sha256": "2537f600aea1984eb072cd178fa1c27ebc38d5e7c84547554bcebf253af821a7"
+    },
+    "piscicultura/charts.py": {
+      "unchanged": true,
+      "sha256": "45d3c14500c0e95f60ad4427ea9a6a46c7c88166e059d00c0470184702bffbfc"
+    },
+    "requirements.txt": {
+      "unchanged": true,
+      "sha256": "42a06c685151e41d9a52b30d1d05086941265fd8ea75f5d14b21b2ce8e1fcab3"
+    },
+    "requirements-lock.txt": {
+      "unchanged": true,
+      "sha256": "d62ea8f9703634511ba42bc6b17047b2d33067d7c4d8029b5b4f767437e5db7e"
+    },
+    ".streamlit/config.toml": {
+      "unchanged": true,
+      "sha256": "a3edc6c0afed424c9ec2783a32d2a5d4d33d38e559f690308f8e53b7ce0cad7b"
+    },
+    "docs/MODEL_DEFAULTS.json": {
+      "unchanged": true,
+      "sha256": "45ae6b0b2b93742c34387deb82fd8499a4ae9fe6ffc602927fdf32b45ccf0089"
+    },
+    "docs/MATHEMATICAL_MODEL.md": {
+      "unchanged": true,
+      "sha256": "205e0f4247071882b8a6a9390286fe8af29e5e0e9dfcb4aa03d17638331b18d9"
+    }
+  },
+  "product_sha256": {
+    "app.py": "236d24892976e1858bcb888d24f4149405d381f3ff3c4c99e6a28ccb13ae6863",
+    "piscicultura/tank_view.py": "5730100f076c1846967901b141fc18b3e2a9985b5dc3e359f141370486c33fa2",
+    "piscicultura/replay.py": "8e2240c072e89492bb0fc910ba2b233d6a12e3de253fb38512ddbe4e473a32bc",
+    "piscicultura/tank_assets/replay.js": "06f56a27653069d1eee5246adb67872ff34f235048efce60ec0a647f7bd1edfa",
+    "piscicultura/tank_assets/scene.css": "334adf0e45069ae94a191e4e568dd864be95f84aa9e468ab6d6fe01dd6738b7e",
+    "piscicultura/tank_assets/scene.html": "b1e2025de97430a20093d797741f77f93a747719065759af04bf5dfb7bbe0af2",
+    "piscicultura/tank_assets/scene.js": "e621eb13794c8fdb47ee03a58372ce8dc173fd091db14ffa1202cbf31b19ef10",
+    "piscicultura/tank_assets/vendor/README.md": "db6e5d99f9cc746e2a185f090db981c40d91d2e853fcca6b021f04fd744d4249",
+    "piscicultura/tank_assets/vendor/THREE-LICENSE.txt": "4c40a1ef62450b857c3b2aaf294936304cd552d965fbcd9d32d4c5bcf4ba4454",
+    "piscicultura/tank_assets/vendor/three.min.js": "50dbd8f63f7f186c4bf687a2ed70294c1f62cb025974b2ddc2e67c6df7decaaa"
+  },
+  "main_reference_preserved": "6ac325a6c00f16236e42c7f935f894a184978f38",
+  "pr1_merged": false
+}

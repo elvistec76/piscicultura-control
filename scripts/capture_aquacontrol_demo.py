@@ -52,6 +52,13 @@ def main():
                 if shape=='Circular':
                     page.locator('a[href="#decision-detail"]').click();assert page.locator('#decision-detail').evaluate('e=>e.open')
                     page.locator('#decision-detail').screenshot(path=str(out/'decisiones.png'));report['screenshots'].append('decisiones.png')
+                    page.evaluate('__aquacontrol.seek(__aquacontrol.replay.duration)')
+                    assert page.evaluate('__aquacontrol.snapshot.observed_sample.time_s===__aquacontrol.player.time&&__aquacontrol.snapshot.controller_input.time_s<__aquacontrol.player.time')
+                    page.locator('#decision-detail').screenshot(path=str(out/'decisiones-final.png'));report['screenshots'].append('decisiones-final.png')
+                    step=page.evaluate("__aquacontrol.replay.guide.findIndex(g=>g.label.startsWith('3'))")
+                    page.locator('#guide').select_option(str(step))
+                    assert page.evaluate("__aquacontrol.player.time>__aquacontrol.replay.guide.find(g=>g.label.startsWith('2')).time_s")
+                    report['checks'].extend(['final decision links input and subsequent recorded measurement with separate times','guided observed change selects a subsequent record'])
                 report['checks'].append(shape+' stored closed-loop dashboard and coherent guide selection')
             # Reduced-motion changes must stop already scheduled decorative frames.
             page.evaluate('window.scrollTo(0,0)');page.locator('#ambient').check();page.emulate_media(reduced_motion='reduce')

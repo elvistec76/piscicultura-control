@@ -1,0 +1,26 @@
+{
+  "run_id": "b3c582e1fc064a2c809c1a8100006303",
+  "fixture": "S2 closed, 1 h, registered feed at [120,600) s; QA data, not field observations",
+  "screenshots": [
+    "Circular-demostracion.png",
+    "decisiones.png",
+    "Rectangular-demostracion.png",
+    "movil-2.5D.png",
+    "decisiones-final.png"
+  ],
+  "checks": [
+    "Circular stored closed-loop dashboard and coherent guide selection",
+    "Rectangular stored closed-loop dashboard and coherent guide selection",
+    "dynamic system reduced motion cancels pending animation",
+    "390px responsive fallback without horizontal document overflow",
+    "no SQLite changes during captures",
+    "no JavaScript errors or external requests",
+    "final decision links input and subsequent recorded measurement with separate times",
+    "guided observed change selects a subsequent record"
+  ],
+  "video": "demostracion.mp4",
+  "errors": [],
+  "external_requests": [],
+  "rnf10": "PENDIENTE",
+  "video_note": "6-second sequence of browser captures; rendering speed is not an RNF10 measurement"
+}
