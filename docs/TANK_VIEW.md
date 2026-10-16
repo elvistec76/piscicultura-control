@@ -32,7 +32,7 @@ Burbujas: acción de aireación. Partículas en tuberías: entrada/salida. Indic
 
 Solo `RUNNING` permite animación decorativa del último intervalo; x, y, h y t permanecen constantes hasta el siguiente comando del simulador. Una pausa o estado terminal no crea bucle de animación. Se respeta `prefers-reduced-motion`; las señales estáticas siguen visibles. La animación se limita a aproximadamente 30 imágenes/s y deja de renderizar si el documento está oculto. Es una decisión de implementación, no una acreditación de RNF10.
 
-Arrastre: giro y elevación. Rueda o botones: zoom. Botones de giro y restablecimiento permiten manejar la cámara sin arrastrar. La escena 2.5D SVG se selecciona automáticamente si falla la creación de WebGL o se pierde su contexto; también puede elegirse manualmente. 2.5D mantiene los datos y la altura de agua, pero es una proyección fija sin rotación, zoom ni animación continua.
+Arrastre: giro y elevación. Rueda o botones: zoom. Botones de giro y restablecimiento permiten manejar la cámara sin arrastrar. Three.js 0.170.0 requiere WebGL2 para la escena 3D. La escena 2.5D SVG se selecciona automáticamente si falla la creación de WebGL2 o se pierde su contexto; también puede elegirse manualmente. 2.5D mantiene los datos y la altura de agua, pero es una proyección fija sin rotación, zoom ni animación continua.
 
 Los valores de presentación se insertan como JSON escapado y como `textContent`; un nombre de perfil no se interpreta como HTML. No hay recursos de red, fuentes externas ni CDN en la escena.
 
