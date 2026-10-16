@@ -97,24 +97,29 @@ def snapshot(run, samples, actions, events, shape='Circular', force_fallback=Fal
 @lru_cache(maxsize=1)
 def assets():
     return tuple((ASSETS / name).read_text(encoding='utf-8') for name in
-                 ('scene.html', 'scene.css', 'vendor/three.min.js', 'scene.js'))
+                 ('scene.html', 'scene.css', 'vendor/three.min.js', 'replay.js', 'scene.js'))
 
 
 def render_html(data):
-    template, css, three, js = assets()
+    template, css, three, replay, js = assets()
+    plotly = ''
+    if 'history' in data:
+        from plotly.offline import get_plotlyjs
+        plotly = get_plotlyjs()
     # A profile name cannot terminate the JSON script or inject HTML.
     payload = json.dumps(data, ensure_ascii=False, allow_nan=False).replace('&', '\\u0026').replace('<', '\\u003c').replace('>', '\\u003e')
-    return template.replace('/*__CSS__*/', css).replace('/*__THREE__*/', three).replace('/*__JS__*/', js).replace('__SNAPSHOT_JSON__', payload)
+    return template.replace('/*__CSS__*/', css).replace('/*__THREE__*/', three).replace('/*__REPLAY__*/', replay).replace('/*__PLOTLY__*/', plotly).replace('/*__JS__*/', js).replace('__SNAPSHOT_JSON__', payload)
 
 
 def show_tank(repo, rid, shape, force_fallback=False):
     """Streamlit boundary: reads only; selection belongs to the caller's UI state."""
     import streamlit as st
-    with repo.lock:
-        data = snapshot(repo.get(rid), repo.records(rid, 'samples'),
-                        repo.records(rid, 'actuator_records'), repo.records(rid, 'events'),
-                        shape, force_fallback)
+    from .replay import load_history
+    history = load_history(repo.path, rid)
+    data = snapshot(history['run'], history['samples'], history['actuator_records'],
+                    history['events'], shape, force_fallback)
+    data['history'] = history
     # Fixed frame height avoids layout/scroll-anchor jumps while a GPU canvas
     # is animating. Narrow layouts keep their native iframe scroll bar.
-    st.iframe(render_html(data), height=1060, alt='AquaControl: estanque, sensores y actuadores')
+    st.iframe(render_html(data), height=1550, alt='AquaControl: estanque, sensores y actuadores')
     return data
