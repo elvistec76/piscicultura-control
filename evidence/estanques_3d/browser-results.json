@@ -1,0 +1,61 @@
+{
+  "environment": {
+    "python": "3.12.14",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "sqlite": "3.53.1",
+    "code": "0.1.1",
+    "packages": {
+      "numpy": "2.3.5",
+      "scipy": "1.17.0",
+      "pandas": "2.2.3",
+      "plotly": "7.1.0",
+      "streamlit": "1.66.0",
+      "pytest": "9.1.1"
+    }
+  },
+  "checks": [
+    "Circular WebGL offline",
+    "Circular five sensors/eight actuators",
+    "Circular unmodified confirmed snapshot",
+    "Circular rotation and zoom",
+    "Circular animation leaves physical time fixed",
+    "Circular fallback after context loss",
+    "Rectangular WebGL offline",
+    "Rectangular five sensors/eight actuators",
+    "Rectangular unmodified confirmed snapshot",
+    "Rectangular rotation and zoom",
+    "Rectangular animation leaves physical time fixed",
+    "Rectangular fallback after context loss",
+    "paused snapshot has no animation loop",
+    "Circular automatic fallback without WebGL",
+    "Rectangular automatic fallback without WebGL",
+    "Streamlit switch Rectangular keeps running",
+    "Streamlit switch Circular keeps running",
+    "Streamlit switch Rectangular keeps running",
+    "Streamlit switch Circular keeps running",
+    "Streamlit pause freezes illustration",
+    "Streamlit repeated renders have no exception",
+    "no external requests in offline scenes",
+    "no browser JavaScript exceptions"
+  ],
+  "screenshots": [
+    "Circular-3D.png",
+    "Rectangular-3D.png",
+    "Circular-2.5D.png",
+    "Rectangular-2.5D.png",
+    "Streamlit-Rectangular.png"
+  ],
+  "errors": [],
+  "external_requests": [],
+  "browser": "154.0.8037.57",
+  "source_sha256": {
+    "app.py": "af626d2d96f331e338a9de89270bd55b5d6a67a167fd9aa485b93653c6e9e572",
+    "piscicultura/tank_view.py": "8f8c9f3fb963491a1932033aca76b1b7b30293a53dc8b5dab1444b91698a0ec5",
+    "piscicultura/tank_assets/scene.css": "036823711bb50c72cb65510675d0acc9da5393ce6eeb6959e2bed32f7c6da7f8",
+    "piscicultura/tank_assets/scene.html": "4ca496a5d58846ecdf9a4112c1e18a847dec25eaa64066e1096369d2d74df8d5",
+    "piscicultura/tank_assets/scene.js": "1261e8128627d0d9eb3b5daa75663d6b1499c7787fbed0bc3744ad759062a1a0",
+    "piscicultura/tank_assets/vendor/README.md": "db6e5d99f9cc746e2a185f090db981c40d91d2e853fcca6b021f04fd744d4249",
+    "piscicultura/tank_assets/vendor/THREE-LICENSE.txt": "4c40a1ef62450b857c3b2aaf294936304cd552d965fbcd9d32d4c5bcf4ba4454",
+    "piscicultura/tank_assets/vendor/three.min.js": "50dbd8f63f7f186c4bf687a2ed70294c1f62cb025974b2ddc2e67c6df7decaaa"
+  }
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "repetition": 0,
+    "run_id": "b46104e67a3e433eb891496ab4952d1e",
+    "duration_s": 8.400498000999505,
+    "archive": "S8_rep0.zip"
+  },
+  {
+    "repetition": 1,
+    "run_id": "39221064d5af47008c606016af28cc3c",
+    "duration_s": 8.502229280999927,
+    "archive": "S8_rep1.zip"
+  },
+  {
+    "repetition": 2,
+    "run_id": "1c05cd8e157440298f40c17a0d8cbe30",
+    "duration_s": 8.400134212000012,
+    "archive": "S8_rep2.zip"
+  }
+]

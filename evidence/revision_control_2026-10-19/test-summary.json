@@ -1,0 +1,24 @@
+{
+  "unique_cases": 107,
+  "failures": 0,
+  "suites": [
+    {
+      "file": "numerical-tests.xml",
+      "cases": "57",
+      "failures": "0",
+      "seconds": "760.530"
+    },
+    {
+      "file": "interface-tests.xml",
+      "cases": "47",
+      "failures": "0",
+      "seconds": "63.815"
+    },
+    {
+      "file": "repository-integration-tests.xml",
+      "cases": "14",
+      "failures": "0",
+      "seconds": "14.547"
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+[
+  {
+    "phase": "completion",
+    "fault": "generation",
+    "run_id": "c536edc8723a42b6912307aaae0bc6fa",
+    "status": "COMPLETED",
+    "metrics_status": "FAILED",
+    "cause": "ERROR_METRICAS_GENERATION: ValueError: GENERACION_INYECTADA_R1",
+    "time_s": 3600.0,
+    "samples": 61,
+    "decisions": 60,
+    "archive": "OBS01_completion_generation.zip"
+  },
+  {
+    "phase": "completion",
+    "fault": "nonfinite",
+    "run_id": "a7831e31cdc442a08e1a17d9c71ea958",
+    "status": "COMPLETED",
+    "metrics_status": "FAILED",
+    "cause": "ERROR_METRICAS_NONFINITE: ValueError: metrics.J: resultado derivado no finito",
+    "time_s": 3600.0,
+    "samples": 61,
+    "decisions": 60,
+    "archive": "OBS01_completion_nonfinite.zip"
+  },
+  {
+    "phase": "completion",
+    "fault": "persistence",
+    "run_id": "bf4ddbf11e084ebf9e97b4448b3b6d91",
+    "status": "COMPLETED",
+    "metrics_status": "FAILED",
+    "cause": "ERROR_METRICAS_PERSISTENCE: IntegrityError: PERSISTENCIA_INYECTADA_R1",
+    "time_s": 3600.0,
+    "samples": 61,
+    "decisions": 60,
+    "archive": "OBS01_completion_persistence.zip"
+  },
+  {
+    "phase": "stop",
+    "fault": "generation",
+    "run_id": "5ec80af3b3d549c99ff50b42eaa362ae",
+    "status": "STOPPED",
+    "metrics_status": "FAILED",
+    "cause": "ERROR_METRICAS_GENERATION: ValueError: GENERACION_INYECTADA_R1",
+    "time_s": 60.0,
+    "samples": 2,
+    "decisions": 1,
+    "archive": "OBS01_stop_generation.zip"
+  },
+  {
+    "phase": "stop",
+    "fault": "nonfinite",
+    "run_id": "3cb4331eed5a4766aed6cd16d5472b1f",
+    "status": "STOPPED",
+    "metrics_status": "FAILED",
+    "cause": "ERROR_METRICAS_NONFINITE: ValueError: metrics.J: resultado derivado no finito",
+    "time_s": 60.0,
+    "samples": 2,
+    "decisions": 1,
+    "archive": "OBS01_stop_nonfinite.zip"
+  },
+  {
+    "phase": "stop",
+    "fault": "persistence",
+    "run_id": "0177d33dbad142adbcbe2cd18cfbd8e7",
+    "status": "STOPPED",
+    "metrics_status": "FAILED",
+    "cause": "ERROR_METRICAS_PERSISTENCE: IntegrityError: PERSISTENCIA_INYECTADA_R1",
+    "time_s": 60.0,
+    "samples": 2,
+    "decisions": 1,
+    "archive": "OBS01_stop_persistence.zip"
+  }
+]

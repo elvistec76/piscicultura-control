@@ -1,0 +1,23 @@
+{
+  "source_commit": "f69f4d8",
+  "unchanged": true,
+  "files": {
+    "README.md": "0cd161b790d640c667e80d50c87b0e38fad3c6c9f6ea6a8b7ecd6987a93f6781",
+    "diagrams/architecture.png": "cb6313b6ce9ad29045c889ebea41b56cd2618dcfc30131fba48c29c047ff6992",
+    "diagrams/architecture.svg": "2e893d7225b9a015248d27d9e16173243055cdd95d1249c474c905e5f2d2afa2",
+    "diagrams/control_loop.png": "05e12be6cdc6f027cbd935f56b093bff8b428819e4ac4d3297619cbb304cf3bf",
+    "diagrams/control_loop.svg": "3da061fa4e0958c8f3d2c0ca4b78ae357e44402a5c4b3f676e1160de45fe4370",
+    "docs/ACCEPTANCE_PLAN.md": "18505ef37b0b9ddc7e4df6c7450c05b3cc8d36505a18bf3df0d0a4e2c6daac06",
+    "docs/ANALYSIS_STAGE1.md": "0bfc72e167daf008a8ba90c6751181dd8a0a94f8887cac4a5e95d814c3738022",
+    "docs/CHANGELOG_DOCS.md": "7c2be0eceb8a17f0098de3ab1277d9f531e9894bb354f4ad2206d72243dc07c4",
+    "docs/HANDOFF_WORK.md": "b3331d79cad76c27a527b46c042d97d5c51240b9f961611de1f31ffa8cad0b66",
+    "docs/MATHEMATICAL_MODEL.md": "b50ef689a755bd647afb9cbf8e022538cd80e4972f658afb62943bb52014a79a",
+    "docs/MODEL_DEFAULTS.json": "45ae6b0b2b93742c34387deb82fd8499a4ae9fe6ffc602927fdf32b45ccf0089",
+    "docs/MODEL_REVIEW.md": "4f5f54461402f2733a475bb3e4db96511c11f70acd32f29ece12c7cf90e33509",
+    "docs/PROJECT_SPEC.md": "1a2087feaee85710cc77321894006d8da3424384a41884462387f125b04e56d4",
+    "docs/REPORT_APA.md": "2e1b260278dcec12bc49def569736a96e7678c072685b7a3ce0ab8227500f370",
+    "docs/REQUIREMENTS.md": "9f2b2692700a13122cb26e569de236df04511a96465235b9b26347a2e45a4a77",
+    "docs/RESEARCH_STAGE2.md": "942c624f6022bdea55846698d645c4e456ade114b6fa34562a1ad8bfce640a65",
+    "docs/SOURCE_MAP.md": "cc2a0d1b7ac5293f6ff8bd28a76c1faf069c78f3cc065340d3872a67ef365d53"
+  }
+}

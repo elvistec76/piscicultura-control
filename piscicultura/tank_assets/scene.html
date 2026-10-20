@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AquaControl · Vista del estanque</title><style>/*__CSS__*/</style></head>
+<body><main class="dashboard">
+  <header><div class="brand"><span class="brand-icon">≈</span><div><strong>AQUA<span>CONTROL</span></strong><small>SUPERVISIÓN DEL AGUA / SIMULADOR ACADÉMICO</small></div></div><div id="run-badge" class="badge"></div></header>
+  <section class="heading"><div><h1>Estado del agua<span id="shape-label"></span></h1><p id="profile"></p></div><div class="time"><small>TIEMPO SIMULADO</small><strong id="state-time"></strong><span id="sample-time"></span></div></section>
+  <section id="sensors" class="sensors" aria-label="Cinco sensores"></section>
+  <section class="workspace"><div class="scene-panel"><div class="panel-top"><div><span class="dot"></span> ESTANQUE 01 <span class="muted">/ PERSPECTIVA</span></div><span class="badge subtle" id="render-badge">Cargando escena…</span></div>
+    <div id="viewport" role="img" aria-label="Estanque con agua, peces, sensores y equipos de control"><div id="fallback"></div><div class="scene-overlay"><span id="water-label"></span></div><div class="view-controls"><button id="rotate-left" title="Rotar a la izquierda" aria-label="Rotar a la izquierda">↶</button><button id="rotate-right" title="Rotar a la derecha" aria-label="Rotar a la derecha">↷</button><button id="zoom-in" title="Acercar" aria-label="Acercar">＋</button><button id="zoom-out" title="Alejar" aria-label="Alejar">−</button><button id="reset" title="Restablecer cámara" aria-label="Restablecer cámara">⌂</button></div><div class="scene-key"><span><i class="cyan"></i>Sensores</span><span><i class="green"></i>Equipo activo</span><span><i class="gray"></i>Equipo sin actividad</span></div></div>
+    <p class="interval" id="motion-caption"></p>
+  </div><aside><div class="panel-top">EQUIPOS DE CONTROL</div><p class="interval" id="interval"></p><div class="actuator-head"><span>Equipo</span><span>Estado</span><span>Intensidad</span></div><div id="actuators"></div><p class="actuator-note">Intensidad promedio del último paso: 0% apagado, 100% máximo.</p><div class="alarm-heading"><strong>ALARMAS ACTIVAS</strong><span id="alarm-count"></span></div><div id="alarms" aria-live="polite"></div></aside></section>
+  <div id="warnings" role="status"></div>
+</main><script id="snapshot" type="application/json">__SNAPSHOT_JSON__</script><script>/*__THREE__*/</script><script>/*__JS__*/</script></body></html>
