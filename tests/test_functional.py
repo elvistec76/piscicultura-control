@@ -110,5 +110,6 @@ def test_charts_offline(tmp_path,monkeypatch):
     for f in fs:
         html=f.to_html(include_plotlyjs=True,full_html=True)
         assert 'cdn.plot.ly' not in html.split('<script src=')[0] or '<script src=' not in html
-        assert f.layout.xaxis.title.text=='Tiempo simulado (h)'
+        assert f.layout.xaxis.title.text=='Tiempo simulado'
+        assert f.layout.xaxis.ticktext and all('h' in label for label in f.layout.xaxis.ticktext)
     repo.close()

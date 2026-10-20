@@ -174,7 +174,7 @@ def test_OBS01_ui_metrics_failure_is_visible(tmp_path,monkeypatch,fault):
     by_label(at.button,'Detener').click().run()
     assert not at.exception
     assert service.repo.get(rid)['status']=='STOPPED'
-    assert any('Métricas no disponibles' in e.value for e in at.error)
+    assert any('No se pudieron calcular los resultados' in e.value for e in at.error)
     assert len(service.repo.records(rid,'samples'))==2
 
 

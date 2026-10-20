@@ -1,0 +1,22 @@
+TAP version 13
+# Subtest: repeated snapshots reuse the iframe and load its document only once
+ok 1 - repeated snapshots reuse the iframe and load its document only once
+  ---
+  duration_ms: 2.2327
+  type: 'test'
+  ...
+# Subtest: scene updates replace the readings without duplicating cards or alarms
+ok 2 - scene updates replace the readings without duplicating cards or alarms
+  ---
+  duration_ms: 90.3375
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 240.5079

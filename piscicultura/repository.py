@@ -13,8 +13,38 @@ from datetime import datetime,timezone
 def dumps(obj): return json.dumps(obj,ensure_ascii=False,allow_nan=False,separators=(',',':'))
 
 
+def process_stamp(pid):
+    """Identify a process incarnation without signalling or terminating it."""
+    if os.name=='nt':
+        import ctypes
+        from ctypes import wintypes
+        kernel=ctypes.WinDLL('kernel32',use_last_error=True)
+        kernel.OpenProcess.argtypes=[wintypes.DWORD,wintypes.BOOL,wintypes.DWORD]
+        kernel.OpenProcess.restype=wintypes.HANDLE
+        kernel.GetProcessTimes.argtypes=[wintypes.HANDLE]+[ctypes.POINTER(wintypes.FILETIME)]*4
+        kernel.GetProcessTimes.restype=wintypes.BOOL
+        kernel.CloseHandle.argtypes=[wintypes.HANDLE]
+        kernel.CloseHandle.restype=wintypes.BOOL
+        handle=kernel.OpenProcess(0x1000,False,pid)  # query limited information
+        if not handle:
+            error=ctypes.get_last_error()
+            if error==87: raise ProcessLookupError(pid)
+            raise PermissionError(error,'No se pudo consultar el propietario')
+        try:
+            times=[wintypes.FILETIME() for _ in range(4)]
+            if not kernel.GetProcessTimes(handle,*(ctypes.byref(value) for value in times)):
+                raise PermissionError(ctypes.get_last_error(),'No se pudo consultar el inicio del propietario')
+            if times[1].dwHighDateTime or times[1].dwLowDateTime:
+                raise ProcessLookupError(pid)
+            return 'win-'+str((times[0].dwHighDateTime<<32)|times[0].dwLowDateTime)
+        finally:
+            kernel.CloseHandle(handle)
+    # The process name in /proc can contain spaces; fields after ')' are stable.
+    return Path(f'/proc/{pid}/stat').read_text().rsplit(')',1)[1].split()[19]
+
+
 def process_owner():
-    try: stamp=Path(f'/proc/{os.getpid()}/stat').read_text().split()[21]
+    try: stamp=process_stamp(os.getpid())
     except OSError: stamp='unknown'
     return f'{platform.node()}:{os.getpid()}:{stamp}'
 
@@ -23,7 +53,9 @@ def owner_alive(owner):
     try:
         host,pid,stamp=owner.split(':')
         if host!=platform.node(): return True  # no afirmar muerte de un proceso remoto
-        return Path(f'/proc/{pid}/stat').read_text().split()[21]==stamp
+        actual=process_stamp(int(pid))
+        return stamp=='unknown' or actual==stamp
+    except PermissionError: return True  # inability to query does not prove death
     except (OSError,ValueError,IndexError): return False
 
 

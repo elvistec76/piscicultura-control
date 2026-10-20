@@ -169,7 +169,7 @@ def test_render_is_offline_and_profile_cannot_inject_scripts(tmp_path, monkeypat
     assert '<script src=' not in html and '<link ' not in html
     assert '</script><img' not in html
     assert '/*__' not in html and '__SNAPSHOT_JSON__' not in html
-    assert 'webglcontextlost' in html and 'VISTA 2.5D' in html
+    assert 'webglcontextlost' in html and 'Vista simplificada' in html
     repo.close()
 
 
@@ -183,6 +183,7 @@ def test_streamlit_repeated_switch_does_not_create_run_or_decision(tmp_path, mon
     assert not at.exception
     rid = at.session_state['run_id']
     service = at.session_state['service']
+    assert not any(box.label == 'Simulación' for box in at.selectbox)
     for status in ['PREPARED', 'RUNNING', 'PAUSED', 'STOPPED']:
         if status == 'RUNNING': by_label(at.button, 'Avanzar un intervalo').click().run()
         if status == 'PAUSED': by_label(at.button, 'Pausar').click().run()

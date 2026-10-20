@@ -1,0 +1,744 @@
+{
+  "AC10_p0": {
+    "max_error": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "status": "COMPLETED"
+  },
+  "AC10_p1": {
+    "max_error": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "status": "COMPLETED"
+  },
+  "AC10_p2": {
+    "max_error": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "status": "COMPLETED"
+  },
+  "AC11_p0_open": {
+    "max_error": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "samples": 2881,
+    "decisions": 2880,
+    "status": "COMPLETED"
+  },
+  "AC11_p1_open": {
+    "max_error": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "samples": 2881,
+    "decisions": 2880,
+    "status": "COMPLETED"
+  },
+  "AC11_p2_open": {
+    "max_error": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "samples": 2881,
+    "decisions": 2880,
+    "status": "COMPLETED"
+  },
+  "AC11_p0_closed": {
+    "max_error": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "samples": 2881,
+    "decisions": 2880,
+    "status": "COMPLETED"
+  },
+  "AC11_p1_closed": {
+    "max_error": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "samples": 2881,
+    "decisions": 2880,
+    "status": "COMPLETED"
+  },
+  "AC11_p2_closed": {
+    "max_error": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "samples": 2881,
+    "decisions": 2880,
+    "status": "COMPLETED"
+  },
+  "AC12_p0": {
+    "J_open": 0.8982199533080688,
+    "J_closed": 0.13703912194863252,
+    "ratio": 0.15256744346852785,
+    "recovery_s": [
+      600.0,
+      300.0,
+      1920.0,
+      2760.0,
+      300.0
+    ],
+    "in_band_4_12h": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "AC12_p1": {
+    "J_open": 1.0274654530815552,
+    "J_closed": 0.14896621711517466,
+    "ratio": 0.1449841614318009,
+    "recovery_s": [
+      1500.0,
+      300.0,
+      1920.0,
+      2760.0,
+      300.0
+    ],
+    "in_band_4_12h": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "AC12_p2": {
+    "J_open": 0.9013714138252956,
+    "J_closed": 0.13803360654218372,
+    "ratio": 0.1531373243315851,
+    "recovery_s": [
+      0.0,
+      240.0,
+      1920.0,
+      2760.0,
+      300.0
+    ],
+    "in_band_4_12h": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "AC13_S3_p0": {
+    "open": {
+      "status": "COMPLETED",
+      "cause": "",
+      "alarm_transitions": 7,
+      "usage": {
+        "inlet_m3": 0.008639999999999884,
+        "outlet_m3": 0.0,
+        "ph_base_normalized_s": 500.0000000000012,
+        "ph_acid_normalized_s": 0.0,
+        "partial_energy_kWh": 7.860219497354145,
+        "rain_m3": 0.0,
+        "leak_m3": 2.8800000000000017,
+        "evaporation_m3": 0.008639999999999927,
+        "exchange_m3": 0.0
+      }
+    },
+    "closed": {
+      "status": "COMPLETED",
+      "cause": "",
+      "alarm_transitions": 0,
+      "usage": {
+        "inlet_m3": 2.76000598832683,
+        "outlet_m3": 0.0,
+        "ph_base_normalized_s": 0.3472222288005062,
+        "ph_acid_normalized_s": 0.0,
+        "partial_energy_kWh": 1.6996251642227347,
+        "rain_m3": 0.0,
+        "leak_m3": 2.8800000000000017,
+        "evaporation_m3": 0.008639999999999927,
+        "exchange_m3": 0.0
+      }
+    },
+    "return_level_s": 0.0
+  },
+  "AC13_S3_p1": {
+    "open": {
+      "status": "COMPLETED",
+      "cause": "",
+      "alarm_transitions": 3,
+      "usage": {
+        "inlet_m3": 0.008639999999999884,
+        "outlet_m3": 0.0,
+        "ph_base_normalized_s": 500.0000000000012,
+        "ph_acid_normalized_s": 0.0,
+        "partial_energy_kWh": 7.088881738671734,
+        "rain_m3": 0.0,
+        "leak_m3": 2.8800000000000017,
+        "evaporation_m3": 0.008639999999999927,
+        "exchange_m3": 0.0
+      }
+    },
+    "closed": {
+      "status": "COMPLETED",
+      "cause": "",
+      "alarm_transitions": 0,
+      "usage": {
+        "inlet_m3": 2.7600059874614002,
+        "outlet_m3": 0.0,
+        "ph_base_normalized_s": 0.3472222295272501,
+        "ph_acid_normalized_s": 0.0,
+        "partial_energy_kWh": 0.934089499243448,
+        "rain_m3": 0.0,
+        "leak_m3": 2.8800000000000017,
+        "evaporation_m3": 0.008639999999999927,
+        "exchange_m3": 0.0
+      }
+    },
+    "return_level_s": 0.0
+  },
+  "AC13_S3_p2": {
+    "open": {
+      "status": "COMPLETED",
+      "cause": "",
+      "alarm_transitions": 5,
+      "usage": {
+        "inlet_m3": 0.008639999999999884,
+        "outlet_m3": 0.0,
+        "ph_base_normalized_s": 500.0000000000012,
+        "ph_acid_normalized_s": 0.0,
+        "partial_energy_kWh": 7.2512061835171,
+        "rain_m3": 0.0,
+        "leak_m3": 2.8800000000000017,
+        "evaporation_m3": 0.008639999999999927,
+        "exchange_m3": 0.0
+      }
+    },
+    "closed": {
+      "status": "COMPLETED",
+      "cause": "",
+      "alarm_transitions": 0,
+      "usage": {
+        "inlet_m3": 2.7600059873730056,
+        "outlet_m3": 0.0,
+        "ph_base_normalized_s": 0.34722222928085894,
+        "ph_acid_normalized_s": 0.0,
+        "partial_energy_kWh": 1.0867022211753348,
+        "rain_m3": 0.0,
+        "leak_m3": 2.8800000000000017,
+        "evaporation_m3": 0.008639999999999927,
+        "exchange_m3": 0.0
+      }
+    },
+    "return_level_s": 0.0
+  },
+  "AC13_S4_p0": {
+    "open": {
+      "status": "COMPLETED",
+      "cause": "",
+      "alarm_transitions": 63,
+      "usage": {
+        "inlet_m3": 0.017280000000000212,
+        "outlet_m3": 0.0,
+        "ph_base_normalized_s": 1000.0000000000102,
+        "ph_acid_normalized_s": 0.0,
+        "partial_energy_kWh": 15.72043899470825,
+        "rain_m3": 0.0,
+        "leak_m3": 0.0,
+        "evaporation_m3": 0.017280000000000063,
+        "exchange_m3": 0.0
+      }
+    },
+    "closed": {
+      "status": "COMPLETED",
+      "cause": "",
+      "alarm_transitions": 0,
+      "usage": {
+        "inlet_m3": 6.000000113672769e-06,
+        "outlet_m3": 0.0,
+        "ph_base_normalized_s": 0.3472222288005062,
+        "ph_acid_normalized_s": 0.0,
+        "partial_energy_kWh": 22.685737067889885,
+        "rain_m3": 0.0,
+        "leak_m3": 0.0,
+        "evaporation_m3": 0.017280000000000063,
+        "exchange_m3": 0.0
+      }
+    }
+  },
+  "AC13_S4_p1": {
+    "open": {
+      "status": "COMPLETED",
+      "cause": "",
+      "alarm_transitions": 71,
+      "usage": {
+        "inlet_m3": 0.017280000000000212,
+        "outlet_m3": 0.0,
+        "ph_base_normalized_s": 1000.0000000000102,
+        "ph_acid_normalized_s": 0.0,
+        "partial_energy_kWh": 14.177763477343488,
+        "rain_m3": 0.0,
+        "leak_m3": 0.0,
+        "evaporation_m3": 0.017280000000000063,
+        "exchange_m3": 0.0
+      }
+    },
+    "closed": {
+      "status": "COMPLETED",
+      "cause": "",
+      "alarm_transitions": 0,
+      "usage": {
+        "inlet_m3": 6.0000001262309045e-06,
+        "outlet_m3": 0.0,
+        "ph_base_normalized_s": 0.3472222295272501,
+        "ph_acid_normalized_s": 0.0,
+        "partial_energy_kWh": 21.132700571044506,
+        "rain_m3": 0.0,
+        "leak_m3": 0.0,
+        "evaporation_m3": 0.017280000000000063,
+        "exchange_m3": 0.0
+      }
+    }
+  },
+  "AC13_S4_p2": {
+    "open": {
+      "status": "COMPLETED",
+      "cause": "",
+      "alarm_transitions": 71,
+      "usage": {
+        "inlet_m3": 0.017280000000000212,
+        "outlet_m3": 0.0,
+        "ph_base_normalized_s": 1000.0000000000102,
+        "ph_acid_normalized_s": 0.0,
+        "partial_energy_kWh": 14.50241236703413,
+        "rain_m3": 0.0,
+        "leak_m3": 0.0,
+        "evaporation_m3": 0.017280000000000063,
+        "exchange_m3": 0.0
+      }
+    },
+    "closed": {
+      "status": "COMPLETED",
+      "cause": "",
+      "alarm_transitions": 0,
+      "usage": {
+        "inlet_m3": 6.000000121973264e-06,
+        "outlet_m3": 0.0,
+        "ph_base_normalized_s": 0.34722222928085894,
+        "ph_acid_normalized_s": 0.0,
+        "partial_energy_kWh": 21.472767500436014,
+        "rain_m3": 0.0,
+        "leak_m3": 0.0,
+        "evaporation_m3": 0.017280000000000063,
+        "exchange_m3": 0.0
+      }
+    }
+  },
+  "AC14_S5_p0": {
+    "open_status": "COMPLETED",
+    "closed_status": "FAILED",
+    "closed_time": 7200.0,
+    "closed_decisions": 120,
+    "quality_7200": "MISSING"
+  },
+  "AC14_S5_p1": {
+    "open_status": "COMPLETED",
+    "closed_status": "FAILED",
+    "closed_time": 7200.0,
+    "closed_decisions": 120,
+    "quality_7200": "MISSING"
+  },
+  "AC14_S5_p2": {
+    "open_status": "COMPLETED",
+    "closed_status": "FAILED",
+    "closed_time": 7200.0,
+    "closed_decisions": 120,
+    "quality_7200": "MISSING"
+  },
+  "AC14_S7_p0": {
+    "open_status": "COMPLETED",
+    "closed_status": "COMPLETED",
+    "closed_time": 21600.0,
+    "closed_decisions": 360,
+    "quality_7200": "GOOD"
+  },
+  "AC14_S7_p1": {
+    "open_status": "COMPLETED",
+    "closed_status": "COMPLETED",
+    "closed_time": 21600.0,
+    "closed_decisions": 360,
+    "quality_7200": "GOOD"
+  },
+  "AC14_S7_p2": {
+    "open_status": "COMPLETED",
+    "closed_status": "COMPLETED",
+    "closed_time": 21600.0,
+    "closed_decisions": 360,
+    "quality_7200": "GOOD"
+  },
+  "AC15_S6_p0": {
+    "open": {
+      "status": "COMPLETED",
+      "time_s": 43200.0,
+      "cause": "",
+      "termination": null
+    },
+    "closed": {
+      "status": "COMPLETED",
+      "time_s": 43200.0,
+      "cause": "",
+      "termination": null
+    }
+  },
+  "AC15_S6_p1": {
+    "open": {
+      "status": "COMPLETED",
+      "time_s": 43200.0,
+      "cause": "",
+      "termination": null
+    },
+    "closed": {
+      "status": "COMPLETED",
+      "time_s": 43200.0,
+      "cause": "",
+      "termination": null
+    }
+  },
+  "AC15_S6_p2": {
+    "open": {
+      "status": "COMPLETED",
+      "time_s": 43200.0,
+      "cause": "",
+      "termination": null
+    },
+    "closed": {
+      "status": "COMPLETED",
+      "time_s": 43200.0,
+      "cause": "",
+      "termination": null
+    }
+  },
+  "AC15_S9_p0": {
+    "open": {
+      "status": "FAILED",
+      "time_s": 9700.0,
+      "cause": "CRUCE_DOMINIO",
+      "termination": {
+        "time_s": 9700.0,
+        "state": [
+          28.5533578751634,
+          5.245723896344555,
+          7.5,
+          9.999794515069338,
+          0.24999999999999975,
+          0.025,
+          0.41672763815393454,
+          0.011574074074074032,
+          0.14995000000000003,
+          9.999999999999999e-05
+        ]
+      }
+    },
+    "closed": {
+      "status": "FAILED",
+      "time_s": 14397.126574685026,
+      "cause": "CRUCE_DOMINIO",
+      "termination": {
+        "time_s": 14397.126574685026,
+        "state": [
+          28.485398560837044,
+          6.008652956875064,
+          7.484680390613648,
+          6.1287127596850945,
+          0.24999999999999997,
+          9.516850406372455e-211,
+          0.9999990848706225,
+          4.405949262209422e-211,
+          5.708206873742162e-210,
+          0.9999999999999999
+        ]
+      }
+    }
+  },
+  "AC15_S9_p1": {
+    "open": {
+      "status": "FAILED",
+      "time_s": 9699.999999999996,
+      "cause": "CRUCE_DOMINIO",
+      "termination": {
+        "time_s": 9699.999999999996,
+        "state": [
+          14.053357875163451,
+          8.690288443915417,
+          7.5,
+          9.999794515069343,
+          0.25,
+          0.025,
+          0.20246714963103782,
+          0.011574074074074032,
+          0.14995000000000003,
+          9.999999999999999e-05
+        ]
+      }
+    },
+    "closed": {
+      "status": "FAILED",
+      "time_s": 14397.126574684995,
+      "cause": "CRUCE_DOMINIO",
+      "termination": {
+        "time_s": 14397.126574684995,
+        "state": [
+          13.985398560837059,
+          9.002516419712936,
+          7.484680390613653,
+          6.128712759685097,
+          0.24999999999999997,
+          9.517663402850401e-211,
+          3.094921791170723e-129,
+          4.4063256494677425e-211,
+          5.70869450902966e-210,
+          0.9999999999999999
+        ]
+      }
+    }
+  },
+  "AC15_S9_p2": {
+    "open": {
+      "status": "FAILED",
+      "time_s": 9699.999999999998,
+      "cause": "CRUCE_DOMINIO",
+      "termination": {
+        "time_s": 9699.999999999998,
+        "state": [
+          25.053357875163456,
+          5.370826744477416,
+          7.5,
+          9.999794515069338,
+          0.24999999999999978,
+          0.025,
+          0.24755727319919335,
+          0.011574074074074032,
+          0.14995000000000003,
+          9.999999999999999e-05
+        ]
+      }
+    },
+    "closed": {
+      "status": "FAILED",
+      "time_s": 14397.126574685006,
+      "cause": "CRUCE_DOMINIO",
+      "termination": {
+        "time_s": 14397.126574685006,
+        "state": [
+          24.985398560837066,
+          6.194535508274643,
+          7.484680390613647,
+          6.128712759685041,
+          0.25,
+          9.517401106891336e-211,
+          8.760158017802968e-106,
+          4.406204216153351e-211,
+          5.708537183913374e-210,
+          0.9999999999999999
+        ]
+      }
+    }
+  },
+  "AC16": {
+    "max_error": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "first_batch_counts": [
+      2,
+      1,
+      0
+    ],
+    "final_samples": 2881
+  },
+  "AC17": {
+    "counts_before_and_after": {
+      "samples": 2,
+      "decisions": 1,
+      "actuator_records": 8,
+      "events": 0
+    },
+    "confirmed_time": 60.0,
+    "status": "FAILED",
+    "cause": "ERROR_PERSISTENCIA: FALLO_DE_ESCRITURA_INYECTADO",
+    "orphan_status": "INTERRUPTED",
+    "export_manifest": {
+      "run_id": "fa1dc110b2b84c4a8557656401583224",
+      "metrics_status": "PENDING",
+      "metrics_cause": "",
+      "spec_id": "SPC-AGUA-001",
+      "spec_version": "0.5.0",
+      "model_version": "1.0.0",
+      "units": {
+        "temperature_C": "°C",
+        "oxygen_mg_L": "mg/L",
+        "ph": "1",
+        "turbidity_NTU": "NTU",
+        "level_m": "m"
+      },
+      "time_unit": "s",
+      "missing": "CSV vacío / JSON null, acompañado de quality",
+      "noise_sha256": "63bda228390dd12f8ec08a36f37c8c8d1b098306ae144c2bafcd1562ef571679",
+      "noise_authority": "noise.csv clipped epsilon; PCG64; sin generación en RK45",
+      "action_units": "normalizada; medias por intervalo",
+      "ph": "Modelo empírico; acciones en segundos normalizados, sin dosis reales",
+      "turbidity": "Índice empírico, sin conversión a sólidos",
+      "notice": "Simulación académica sin validación productiva"
+    }
+  },
+  "AC18_p0_open": {
+    "max_error": [
+      1.0302869668521453e-13,
+      5.861977570020827e-14,
+      4.973799150320701e-14,
+      1.2789769243681803e-13,
+      0.0
+    ],
+    "tolerances": [
+      0.002,
+      0.002,
+      0.0002,
+      0.02,
+      2e-05
+    ]
+  },
+  "AC18_p1_open": {
+    "max_error": [
+      7.105427357601002e-14,
+      3.730349362740526e-14,
+      1.9539925233402755e-14,
+      2.913225216616411e-13,
+      0.0
+    ],
+    "tolerances": [
+      0.002,
+      0.002,
+      0.0002,
+      0.02,
+      2e-05
+    ]
+  },
+  "AC18_p2_open": {
+    "max_error": [
+      1.8829382497642655e-13,
+      5.417888360170764e-14,
+      1.9539925233402755e-14,
+      1.4921397450962104e-13,
+      0.0
+    ],
+    "tolerances": [
+      0.002,
+      0.002,
+      0.0002,
+      0.02,
+      2e-05
+    ]
+  },
+  "AC18_p0_closed": {
+    "max_error": [
+      6.17177420281223e-10,
+      1.3190843972665789e-09,
+      6.500489035943247e-11,
+      8.974730292266031e-09,
+      1.3146839172861746e-10
+    ],
+    "tolerances": [
+      0.002,
+      0.002,
+      0.0002,
+      0.02,
+      2e-05
+    ]
+  },
+  "AC18_p1_closed": {
+    "max_error": [
+      5.982272455185011e-10,
+      1.1537775179704113e-09,
+      6.296829724306008e-11,
+      8.699899467501382e-09,
+      1.2735179577560984e-10
+    ],
+    "tolerances": [
+      0.002,
+      0.002,
+      0.0002,
+      0.02,
+      2e-05
+    ]
+  },
+  "AC18_p2_closed": {
+    "max_error": [
+      6.021991794114001e-10,
+      1.6282184489568863e-09,
+      6.339551106293584e-11,
+      8.757240266277222e-09,
+      1.2822221062691597e-10
+    ],
+    "tolerances": [
+      0.002,
+      0.002,
+      0.0002,
+      0.02,
+      2e-05
+    ]
+  },
+  "AC19": {
+    "iae": [
+      2.0
+    ],
+    "outside_s": [
+      1.0
+    ],
+    "energy_kWh": 10.0
+  },
+  "AC20": {
+    "durations_s": [
+      22.282370100030676,
+      26.04597119987011,
+      26.47643889999017
+    ],
+    "median_s": 26.04597119987011,
+    "threshold_s": 60,
+    "network": "socket connect denegado",
+    "hardware_eligibility": "NO EVALUABLE hasta verificar almacenamiento SSD y equipo local de referencia"
+  }
+}

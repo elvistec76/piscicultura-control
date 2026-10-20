@@ -1,0 +1,20 @@
+{
+  "method": "Streamlit AppTest",
+  "tabs": [
+    "Configuración",
+    "Ejecución y evolución",
+    "Comparación",
+    "Historial y exportación"
+  ],
+  "profiles": 4,
+  "initial_time_s": 0,
+  "after_command_time_s": 60,
+  "status": "STOPPED",
+  "render_does_not_advance": true,
+  "exceptions": 0,
+  "comparison_common_s": 3600,
+  "copy_reference_C": 29.0,
+  "original_reference_C": 28.5,
+  "charts_per_view": 6,
+  "metrics_per_view": 5
+}

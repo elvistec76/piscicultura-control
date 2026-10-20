@@ -41,7 +41,7 @@ def snapshot(run, samples, actions, events, shape='Circular', force_fallback=Fal
     level = state[4]
     warnings = []
     if level is None or not 0 <= level <= g['height_m']:
-        warnings.append('Nivel exacto fuera de la geometría o no finito; no se recorta ni se corrige.')
+        warnings.append('El nivel del agua no se puede representar dentro de las dimensiones del estanque.')
     sensors = []
     for j, (key, label, unit) in enumerate(zip(VARIABLES, LABELS, UNITS)):
         value = finite(last['values'][j]) if last else None
@@ -52,8 +52,11 @@ def snapshot(run, samples, actions, events, shape='Circular', force_fallback=Fal
             quality = 'INVALID'
         if quality != 'GOOD':
             value = None
+        lo,hi=c['profile']['operating_bands'][j]
+        in_band=None if value is None else value<=hi and (j==3 or value>=lo)
         sensors.append(dict(key=key, label=label, unit='adim.' if unit == '1' else unit,
                             value=value, quality=quality, exact=state[j],
+                            in_band=in_band,
                             diagnosis=last['diagnostics'][j] if last else 'SIN_MUESTRA',
                             reference=c['profile']['references'][j],
                             band=c['profile']['operating_bands'][j]))
@@ -86,7 +89,7 @@ def snapshot(run, samples, actions, events, shape='Circular', force_fallback=Fal
         interval = [row['start_s'], row['end_s']]
     return dict(schema='aquacontrol-view-1', run_id=run['run_id'], status=run['status'],
                 profile=c['profile']['name'], strategy=c['strategy'], cause=run['cause'],
-                geometry=g, state=state, state_time_s=run['time_s'],
+                geometry=g, state=state, state_time_s=run['time_s'], horizon_s=c['time']['horizon_s'],
                 sample_time_s=last['time_s'] if last else None, interval_s=interval,
                 volume_m3=c['parameters']['area_m2'] * level if level is not None else None,
                 sensors=sensors, actuators=actuators, alarms=list(alarm_map.values()),
@@ -100,21 +103,31 @@ def assets():
                  ('scene.html', 'scene.css', 'vendor/three.min.js', 'scene.js'))
 
 
-def render_html(data):
+def document_template():
     template, css, three, js = assets()
+    return template.replace('/*__CSS__*/', css).replace('/*__THREE__*/', three).replace('/*__JS__*/', js)
+
+
+def render_html(data):
     # A profile name cannot terminate the JSON script or inject HTML.
     payload = json.dumps(data, ensure_ascii=False, allow_nan=False).replace('&', '\\u0026').replace('<', '\\u003c').replace('>', '\\u003e')
-    return template.replace('/*__CSS__*/', css).replace('/*__THREE__*/', three).replace('/*__JS__*/', js).replace('__SNAPSHOT_JSON__', payload)
+    return document_template().replace('__SNAPSHOT_JSON__', payload)
+
+
+@lru_cache(maxsize=1)
+def live_component():
+    from streamlit.components.v2 import component
+    js=(ASSETS/'live.js').read_text(encoding='utf-8')
+    js=js.replace('/*__DOCUMENT__*/',json.dumps(document_template()))
+    return component('aquacontrol_live_tank',js=js)
 
 
 def show_tank(repo, rid, shape, force_fallback=False):
     """Streamlit boundary: reads only; selection belongs to the caller's UI state."""
-    import streamlit as st
     with repo.lock:
         data = snapshot(repo.get(rid), repo.records(rid, 'samples'),
                         repo.records(rid, 'actuator_records'), repo.records(rid, 'events'),
                         shape, force_fallback)
-    # Fixed frame height avoids layout/scroll-anchor jumps while a GPU canvas
-    # is animating. Narrow layouts keep their native iframe scroll bar.
-    st.iframe(render_html(data), height=1060, alt='AquaControl: estanque, sensores y actuadores')
+    # Stable component identity keeps the iframe and its camera across updates.
+    live_component()(data=data,key='live_tank_'+rid,height=1000)
     return data

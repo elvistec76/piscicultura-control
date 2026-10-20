@@ -1,20 +1,27 @@
 /* Local renderer: consumes a snapshot, never sends commands or advances time. */
-(() => {
+function renderSnapshot(data) {
   'use strict';
-  const data = JSON.parse(document.getElementById('snapshot').textContent);
+  const previous = window.__aquacontrol;
+  const savedView = previous?.snapshot?.run_id === data.run_id ? previous.view : null;
   const el = id => document.getElementById(id);
   const text = (id, value) => { el(id).textContent = value; };
   const num = (v, digits = 3) => v === null ? '—' : Number(v).toLocaleString('es', {maximumFractionDigits: digits});
   const pct = v => v === null ? '—' : v > 0 && v < .0001 ? '<0,01%' : num(v * 100, 2) + '%';
-  const clock = t => t === null ? 'Sin muestra' : `${num(t, 3)} s · ${num(t / 3600, 4)} h`;
-  const statuses = {PREPARED:'Preparada',RUNNING:'En ejecución',PAUSED:'Pausada',STOPPED:'Detenida',COMPLETED:'Completada',FAILED:'Fallida',INTERRUPTED:'Interrumpida'};
+  const clock = t => {
+    if (t === null) return 'Sin lecturas';
+    const total = Math.max(0, Math.round(t)), hours = Math.floor(total / 3600), minutes = Math.floor(total % 3600 / 60), seconds = total % 60;
+    return `${hours} h${minutes || seconds ? ` ${minutes} min` : ''}${seconds ? ` ${seconds} s` : ''}`;
+  };
+  const statuses = {PREPARED:'Lista para iniciar',RUNNING:'En ejecución',PAUSED:'Pausada',STOPPED:'Detenida',COMPLETED:'Completada',FAILED:'Fallida',INTERRUPTED:'Interrumpida'};
+  el('run-badge').classList.remove('failed','still');
   text('run-badge', (statuses[data.status] || data.status).toUpperCase());
   if (data.status !== 'RUNNING') el('run-badge').classList.add(data.status === 'FAILED' ? 'failed' : 'still');
-  text('shape-label', data.geometry.shape + ' industrial');
-  text('profile', `${data.profile} · ${data.strategy === 'closed' ? 'Lazo cerrado' : 'Lazo abierto'} · ${data.run_id.slice(0, 10)}`);
-  text('state-time', clock(data.state_time_s));
-  text('sample-time', 'Última muestra y: ' + clock(data.sample_time_s));
+  text('shape-label', data.geometry.shape);
+  text('profile', data.profile);
+  text('state-time', `${clock(data.state_time_s)} de ${clock(data.horizon_s)}`);
+  text('sample-time', data.sample_time_s === null ? 'Aún no hay lecturas' : data.sample_time_s !== data.state_time_s ? 'Última lectura: ' + clock(data.sample_time_s) : '');
   const symbols = ['♨','O₂','pH','◌','↕'];
+  el('sensors').replaceChildren();
   data.sensors.forEach((s, j) => {
     const card = document.createElement('article'); card.className = 'sensor';
     const title = document.createElement('div'); title.className = 'sensor-top';
@@ -22,51 +29,52 @@
     const icon = document.createElement('span'); icon.className = 'sensor-icon'; icon.textContent = symbols[j];
     title.append(label, icon);
     const value = document.createElement('div'); value.className = 'sensor-value';
-    value.textContent = s.value === null ? 'Sin lectura' : num(s.value, 4);
-    const unit = document.createElement('small'); unit.textContent = s.unit; value.append(unit);
+    value.textContent = s.value === null ? 'Sin lectura' : num(s.value, 2);
+    const unit = document.createElement('small'); unit.textContent = s.unit === 'adim.' ? '' : s.unit; value.append(unit);
     const quality = document.createElement('div'); quality.className = 'sensor-quality' + (s.quality !== 'GOOD' ? ' bad' : '');
-    const qualityText = document.createElement('span'); qualityText.textContent = {GOOD:'● Válida',MISSING:'○ Ausente',INVALID:'! Inválida'}[s.quality];
-    const ref = document.createElement('span'); ref.textContent = 'Ref. ' + num(s.reference);
-    quality.append(qualityText, ref); quality.title = s.diagnosis;
+    const inBand = s.in_band;
+    const qualityText = document.createElement('span'); qualityText.textContent = s.quality === 'GOOD' ? (inBand ? '● En rango' : '! Fuera de rango') : {MISSING:'○ Sin lectura',INVALID:'! Lectura inválida'}[s.quality];
+    if (s.quality === 'GOOD' && !inBand) quality.classList.add('bad');
+    const ref = document.createElement('span'); ref.textContent = 'Objetivo: ' + num(s.reference, 2);
+    quality.append(qualityText, ref);
     card.append(title, value, quality);
     el('sensors').append(card);
   });
   const g = data.geometry, circular = g.shape === 'Circular';
-  text('water-label', `NIVEL EXACTO h = ${num(data.state[4], 5)} m`);
-  text('volume-label', `V = A × h = ${num(data.volume_m3, 5)} m³`);
-  text('dimensions', circular ? `A ${num(g.area_m2)} m² · r ${num(g.radius_m)} m · H ${num(g.height_m)} m` : `A ${num(g.area_m2)} m² · ${num(g.length_m)} × ${num(g.width_m)} m · H ${num(g.height_m)} m`);
-  text('exact-caption', `t = ${num(data.state_time_s)} s · volumen y nivel sin recorte`);
-  text('interval', data.interval_s ? `Intervalo confirmado: [${num(data.interval_s[0])}, ${num(data.interval_s[1])}] s` : 'Sin intervalo confirmado. No se infiere actividad.');
+  text('water-label', `Nivel del estanque: ${num(data.state[4], 2)} m`);
+  text('interval', data.interval_s ? `Último paso: ${clock(data.interval_s[0])} a ${clock(data.interval_s[1])}` : 'Inicie la simulación para ver la actividad.');
+  el('actuators').replaceChildren();
   data.actuators.forEach(a => {
     const row = document.createElement('div'); row.className = 'actuator-row' + (a.active ? ' active' : '');
     const name = document.createElement('span'); const dot = document.createElement('i'); name.append(dot, a.label); row.append(name);
-    [a.command, a.availability, a.effective].forEach((v, i) => {
-      const span = document.createElement('span'); span.textContent = i === 1 ? num(v, 3) : pct(v);
-      if (i === 2) span.className = 'effective';
-      if (i === 1 && v !== null && v < 1) span.className = 'unavailable'; row.append(span);
-    });
-    row.title = a.reason || 'Registro confirmado'; el('actuators').append(row);
+    const status = document.createElement('span');
+    status.textContent = a.effective === null ? 'Sin datos' : a.availability === 0 ? 'No disponible' : a.availability < 1 ? 'Capacidad reducida' : a.active ? 'Activo' : 'Apagado';
+    if (a.availability !== null && a.availability < 1) status.className = 'unavailable';
+    const intensity = document.createElement('span'); intensity.className = 'effective'; intensity.textContent = pct(a.effective);
+    row.append(status, intensity); el('actuators').append(row);
   });
   text('alarm-count', String(data.alarms.length));
+  el('alarms').replaceChildren();
   if (!data.alarms.length) { const p = document.createElement('div'); p.className = 'no-alarm'; p.textContent = data.sample_time_s === null ? '○ Aún no hay muestras para alarmas' : '✓ Sin alarmas activas registradas'; el('alarms').append(p); }
   data.alarms.forEach(a => {
     const row = document.createElement('div'); row.className = 'alarm' + (a.severity === 'CRITICA' ? ' critical' : '');
     const sensor = data.sensors.find(s => s.key === a.target);
-    row.textContent = `${sensor ? sensor.label : a.target}: ${a.code.replaceAll('_', ' ')}`;
-    const time = document.createElement('small'); time.textContent = `Activada en t = ${num(a.time_s)} s · ${a.severity}`; row.append(time); el('alarms').append(row);
+    const descriptions = {LIMITE_CRITICO:'Fuera de los límites de alarma',FUERA_DE_BANDA:'Fuera del rango deseado',LECTURA_MISSING:'Sin lectura del sensor',LECTURA_INVALID:'Lectura inválida'};
+    row.textContent = `${sensor ? sensor.label : a.target}: ${descriptions[a.code] || a.code.replaceAll('_', ' ')}`;
+    const time = document.createElement('small'); time.textContent = `Desde ${clock(a.time_s)} · ${a.severity === 'CRITICA' ? 'Requiere atención' : 'Aviso'}`; row.append(time); el('alarms').append(row);
   });
-  text('motion-label', data.animate ? 'Animación ilustrativa del último intervalo confirmado' : 'Escena estática · ' + (statuses[data.status] || data.status));
-  text('motion-caption', data.animate ? 'Las burbujas y los flujos indican acciones efectivas registradas. La animación no avanza el tiempo ni interpola el estado.' : 'El agua, los equipos y los peces conservan la última posición. Rotación y zoom disponibles en 3D.');
-  text('warnings', [...data.warnings, data.cause ? 'Terminación: ' + data.cause : ''].filter(Boolean).join(' '));
+  text('motion-caption', 'Puede girar y acercar el estanque. Los equipos muestran la actividad del último paso simulado.');
+  const causes = {LECTURA_REQUERIDA_INVALIDA:'La simulación se detuvo porque falta una lectura válida del sensor.',CRUCE_DOMINIO:'El agua salió de los límites que admite el modelo. La simulación se detuvo.'};
+  const cause = !data.cause || data.cause === 'DETENCION_SOLICITADA' ? '' : causes[data.cause] || (data.cause.startsWith('ERROR_PERSISTENCIA') ? 'No se pudieron guardar los datos. Revise el historial.' : data.cause.startsWith('ERROR_NUMERICO') ? 'No se pudo continuar el cálculo. Revise el historial.' : 'La simulación se interrumpió. Revise el historial.');
+  text('warnings', [...data.warnings, cause].filter(Boolean).join(' '));
 
   const viewport = el('viewport');
   let renderer, raf = null, running = false;
   function fallback(reason) {
     running = false; if (raf !== null) cancelAnimationFrame(raf);
     if (renderer) { renderer.domElement.remove(); renderer.dispose(); }
-    text('render-badge', 'VISTA 2.5D · ' + reason);
-    text('motion-label', 'Vista 2.5D estática · ' + (statuses[data.status] || data.status));
-    text('motion-caption', 'Los símbolos indican acciones efectivas registradas. Proyección fija del estado confirmado, sin evolución ni animación continua.');
+    text('render-badge', 'Vista simplificada');
+    text('motion-caption', 'Los indicadores muestran los equipos activos en el último paso simulado.');
     const target = el('fallback'); target.style.display = 'block';
     document.querySelectorAll('.view-controls button').forEach(b => {b.disabled = true;});
     // Orthographic isometric projection in metres. Water height is never clamped.
@@ -94,16 +102,19 @@
     ['T','O₂','pH','U','h'].forEach((label,i)=>{const p=project(-L*.3+i*L*.15,H+.12,-W*.28);svg+=`<line x1="${p[0]}" y1="${p[1]}" x2="${p[0]}" y2="${p[1]+35}" stroke="#69ddeb" stroke-width="3"/><text x="${p[0]-7}" y="${p[1]-9}" fill="#b0e6ef" font-size="11">${label}</text>`;});
     if (data.actuators[2].active && h !== null && h>0) for(let i=0;i<9;i++){const p=project(L*.12,h*(.15+i*.08),W*.1);svg+=`<circle cx="${p[0]}" cy="${p[1]}" r="${2+i%3}" fill="none" stroke="#b2f0f6"/>`;}
     target.innerHTML = svg + '</svg>';
-    window.__aquacontrol = {mode:'2.5D',snapshot:data,static:true,reason};
+    window.__aquacontrol = {mode:'2.5D',snapshot:data,static:true,reason,dispose(){}};
   }
 
   function start3d() {
+    el('fallback').style.display='none';
+    document.querySelectorAll('.view-controls button').forEach(b=>{b.disabled=false;});
     const T = THREE;
-    renderer = new T.WebGLRenderer({antialias:true,alpha:true,powerPreference:'low-power'});
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.7));
+    renderer = previous?.mode==='3D' && !previous.renderer.getContext().isContextLost() ? previous.renderer : new T.WebGLRenderer({antialias:true,alpha:true,powerPreference:'low-power'});
+    renderer.domElement.dataset.instance ??= crypto.randomUUID();
+    if(renderer!==previous?.renderer) renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.7));
     renderer.setClearColor(0x0b1c2a, 0); renderer.shadowMap.enabled = true; renderer.shadowMap.type=T.PCFSoftShadowMap;
     renderer.toneMapping=T.ACESFilmicToneMapping; renderer.toneMappingExposure=1.5;
-    viewport.prepend(renderer.domElement);
+    if(renderer.domElement.parentElement!==viewport) viewport.prepend(renderer.domElement);
     const scene=new T.Scene(); const root=new T.Group(); scene.add(root);
     const L=circular?g.radius_m*2:g.length_m, W=circular?g.radius_m*2:g.width_m, H=g.height_m, span=Math.max(L,W,H*2), u=span/4;
     root.scale.setScalar(4/span);
@@ -218,18 +229,20 @@
     if(activity(5)){const {x,z}=equipment[5];rotor=box(x,.59*u,z,.22*u,.02*u,.03*u,statusMaterial(5));}
     // Level ruler shows physical geometry; camera motion does not alter it.
     for(let i=0;i<=4;i++){const y=H*i/4;line([[L/2+.09*u,y,-W/2],[L/2+.18*u,y,-W/2]],0x7eaabc);}
-    let azimuth=.78,elevation=.49,distance=9.1,dragging=false,lastX=0,lastY=0,elapsed=0,lastStamp=null,lastTick=null;
+    let azimuth=savedView?.azimuth??.78,elevation=savedView?.elevation??.49,distance=savedView?.distance??9.1,dragging=false,lastX=0,lastY=0,elapsed=savedView?.elapsed??0,lastStamp=null,lastTick=null;
     const target=new T.Vector3(0,H*root.scale.y*.45,0);
     function render(){camera.position.set(target.x+distance*Math.cos(elevation)*Math.sin(azimuth),target.y+distance*Math.sin(elevation),target.z+distance*Math.cos(elevation)*Math.cos(azimuth));camera.lookAt(target);renderer.render(scene,camera);}
     function resize(){if(!running)return;renderer.setSize(viewport.clientWidth,viewport.clientHeight);camera.aspect=viewport.clientWidth/viewport.clientHeight;camera.updateProjectionMatrix();render();}
     function move(da,de,dd=0){azimuth+=da;elevation=Math.max(.12,Math.min(1.35,elevation+de));distance=Math.max(4,Math.min(18,distance+dd));render();}
-    renderer.domElement.addEventListener('pointerdown',e=>{dragging=true;lastX=e.clientX;lastY=e.clientY;renderer.domElement.setPointerCapture(e.pointerId);});
-    renderer.domElement.addEventListener('pointerup',()=>{dragging=false;});
-    renderer.domElement.addEventListener('pointermove',e=>{if(!dragging)return;move(-(e.clientX-lastX)*.007,(e.clientY-lastY)*.007);lastX=e.clientX;lastY=e.clientY;});
-    renderer.domElement.addEventListener('wheel',e=>{e.preventDefault();move(0,0,e.deltaY*.006);},{passive:false});
+    const listeners=[];
+    function listen(type,callback,options){renderer.domElement.addEventListener(type,callback,options);listeners.push(()=>renderer.domElement.removeEventListener(type,callback,options));}
+    listen('pointerdown',e=>{dragging=true;lastX=e.clientX;lastY=e.clientY;renderer.domElement.setPointerCapture(e.pointerId);});
+    listen('pointerup',()=>{dragging=false;});
+    listen('pointermove',e=>{if(!dragging)return;move(-(e.clientX-lastX)*.007,(e.clientY-lastY)*.007);lastX=e.clientX;lastY=e.clientY;});
+    listen('wheel',e=>{e.preventDefault();move(0,0,e.deltaY*.006);},{passive:false});
     el('rotate-left').onclick=()=>move(-.22,0);el('rotate-right').onclick=()=>move(.22,0);el('zoom-in').onclick=()=>move(0,0,-.6);el('zoom-out').onclick=()=>move(0,0,.6);
     el('reset').onclick=()=>{azimuth=.78;elevation=.49;distance=9.1;render();};
-    renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();fallback('WebGL no disponible');});
+    listen('webglcontextlost',e=>{e.preventDefault();fallback('WebGL no disponible');});
     running=true; const observer=new ResizeObserver(resize);observer.observe(viewport);resize();
     let frames=0;
     function animate(stamp){
@@ -248,10 +261,21 @@
       raf=requestAnimationFrame(animate);
     }
     if(data.animate && !window.matchMedia('(prefers-reduced-motion: reduce)').matches)raf=requestAnimationFrame(animate);
-    window.addEventListener('pagehide',()=>{running=false;if(raf!==null)cancelAnimationFrame(raf);observer.disconnect();scene.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){if(o.material.map)o.material.map.dispose();o.material.dispose();}});renderer.dispose();},{once:true});
-    text('render-badge','3D · THREE.JS LOCAL');
-    window.__aquacontrol={mode:'3D',snapshot:data,scene,camera,renderer,static:!data.animate,get frames(){return frames;}};
+    const dispose=(keepRenderer=false)=>{running=false;if(raf!==null)cancelAnimationFrame(raf);observer.disconnect();listeners.forEach(remove=>remove());scene.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){if(o.material.map)o.material.map.dispose();o.material.dispose();}});if(!keepRenderer){renderer.domElement.remove();renderer.dispose();renderer.forceContextLoss();}};
+    text('render-badge','Vista 3D');
+    window.__aquacontrol={mode:'3D',snapshot:data,scene,camera,renderer,dispose,static:!data.animate,get view(){return {azimuth,elevation,distance,elapsed};},get frames(){return frames;}};
   }
   if(data.force_fallback)fallback('selección manual');
   else{try{start3d();}catch(error){console.warn('AquaControl: alternativa 2.5D',error.message);fallback('WebGL no disponible');}}
-})();
+  // Draw the replacement before disposing the previous canvas: no blank frame.
+  previous?.dispose?.(window.__aquacontrol?.mode==='3D' && window.__aquacontrol.renderer===previous.renderer);
+}
+
+renderSnapshot(JSON.parse(document.getElementById('snapshot').textContent));
+window.addEventListener('message',event=>{
+  if(event.source!==window.parent||event.data?.type!=='aquacontrol:snapshot')return;
+  const next=event.data.snapshot, current=window.__aquacontrol?.snapshot;
+  if(JSON.stringify(next)===JSON.stringify(current))return;
+  renderSnapshot(next);
+});
+window.addEventListener('pagehide',()=>window.__aquacontrol?.dispose?.(),{once:true});
